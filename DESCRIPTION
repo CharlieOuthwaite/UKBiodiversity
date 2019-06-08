@@ -1,8 +1,12 @@
 Package: UKBiodiversity
 Title: Recreates analyses and figures of Outhwaite et al (in prep)
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Date: 2019-06-08
+Authors@R: person("Charlotte", "Outhwaite", email = "charlotteouthwaite@gmail.com", role = c("aut", "cre"))
+Description: This package contains functions to generate the results 
+and figures presented in the paper "Complexity of biodiversity change 
+revealed through long-term trends of invertebrates, bryophytes and lichens" 
+by Outhwaite et al.
 Depends: R (>= 3.5.1)
 License: What license is it under?
 Encoding: UTF-8
