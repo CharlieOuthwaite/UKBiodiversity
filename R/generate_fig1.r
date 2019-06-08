@@ -5,97 +5,67 @@
 ##%######################################################%##
 
 
+#datadir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads"
 
+# load the major groups list
+#data(major_groups)
+major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/Major_groups.csv")
 
-# function to calculate the geometric mean
-calc_geo <- function(x){
-  exp(mean(log(x), na.rm = TRUE))
-}
-
-species_lists <- list.files(output_dir, pattern = "Good_sp")
-
-# species_list <- read.csv("W:/PYWELL_SHARED/Pywell Projects/BRC/Charlie/1.c. New Model Rerun/6. Indicators and other analyses/Good_sp_list_PAPER.csv")
 
 ## loop through each species list and make an indicator
 
-for(sp_list in species_lists){
+for(group in unique(major_groups$Major_group)){
 
-  species_list <- read.csv(paste(output_dir, "/", sp_list, sep = ""))
+  species_list <- major_groups[major_groups$Major_group == group, "Species"]
 
-  temp_post <- matrix(NA, ncol = 49)
-  colnames(temp_post) <- c(1970:2016, "spp", "iter")
+  temp_post <- NULL
 
-  m_group <- sub("_G.*", "", sp_list)
-  #m_group <- "ALL"
+  # load each species posterior and cut out the bits needed.
 
-  # get the posterior for species within each taxa
-  for(group in unique(species_list$GROUP)){
+  allfiles <- list.files(paste0(datadir, "/POSTERIOR_SAMPLES/"))
 
-    # which species do we want
-    sp <- species_list[species_list$GROUP == group, 'SPECIES']
+  for(i in 1:length(species_list)){
 
-    # read in the posterior samples for that group
-    if(group %in% c("Bryophytes", "Lichens", "VascPlants", "Dragonflies", "Moths")){
 
-      load(paste(dir, "/", group, "_jasmin_psi_sampled_posterior_1000.rdata", sep = ""))
+    sp <- allfiles[grep(species_list[i], allfiles)]
 
-      if(length(grep("species", names(j_post))) == 1){
-        names(j_post) <- sub("species", "spp", names(j_post))
-        names(j_post) <- sub("iteration", "iter", names(j_post))
-      }
+    sp_post <- read.csv(paste0(datadir, "/POSTERIOR_SAMPLES/", sp))
 
-    }else{
-      load(paste(dir, "/", group, "_cirrus_psi_sampled_posterior_1000.rdata", sep = ""))
 
-    } # end of load posterior
 
-    # just want UK or GB level
-    if(sum(grep("UK", names(j_post))) > 0){
+    # just GB or UK
 
-      j_post <- j_post[, c(grep("UK", names(j_post)), grep("spp", names(j_post)), grep("iter", names(j_post)))]
+    if(sum(grep("UK", sp_post$Region)) > 0) {
+
+
+      sp_post <- sp_post[sp_post$Region == "UK", ]
+
+      sp_post <- sp_post[, c(5:50, 2, 4)]
+
+      colnames(sp_post) <- c(1970:2015, "spp", "iter")
 
 
     }else{
 
-      j_post <- j_post[, c(grep("GB", names(j_post)), grep("spp", names(j_post)), grep("iter", names(j_post)))]
+      sp_post <- sp_post[sp_post$Region == "GB", ]
+
+      sp_post <- sp_post[, c(5:50, 2, 4)]
+
+      colnames(sp_post) <- c(1970:2015, "spp", "iter")
+
 
     }
 
 
-    # subset to required species
-    sp_post <- j_post[j_post$spp %in% sp, ]
 
-
-
-    if(group == "RoveBeetles"){
-
-      NA_tab <- matrix(nrow = 79000, ncol = 10, data = NA)
-      sp_post <- cbind(NA_tab, sp_post)
-
-      colnames(sp_post) <- c(1970:2016, "spp", "iter")
-
-    }else{
-
-      if(ncol(sp_post) != 49){
-
-        col <- 49 - ncol(sp_post)
-        NA_tab <- matrix(nrow = nrow(sp_post), ncol = col, data = NA)
-
-        sp_post <- cbind(sp_post[, 1:(ncol(sp_post)-2)], NA_tab, sp_post[, (ncol(sp_post)-1):ncol(sp_post)])
-
-
-      }
-
-
-      colnames(sp_post) <- c(1970:2016, "spp", "iter")
-
-    }
 
 
     # add into temp_post table
     temp_post <- rbind(temp_post, sp_post)
 
-  } # end of loop through groups
+  } # end of loop through species
+
+
   j_post <- temp_post[2:nrow(temp_post), ]
 
 

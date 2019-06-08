@@ -11,12 +11,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-```{r}
+```{r, echo = TRUE}
 
 
 # set working directory
-setwd("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository download")
+datadir <- ("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads")
+
+
+list.files(datadir)
+
+
 
 
 
 ```
+
+
+# Recreating Figure 1 and associated trend estimates
+
+
+
+```{r, echo = TRUE}
+
+
+
+
