@@ -1,0 +1,22 @@
+---
+title: "Recreate UK Biodiversity trends paper"
+author: "Charlie Outhwaite"
+date: "08/06/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+
+
+# set working directory
+setwd("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository download")
+
+
+
+```
