@@ -30,7 +30,7 @@ In the repository you will find the following:
 For this analysis you will need to unzip the POSTERIOR_SAMPLES folder.
 
 
-## Generate combined posteriors
+## Generation group level posterior sample datasets
 
 For some of the analysis here we will need a matrix containing all the posterior samples of the species within each of the major groups and also for each of the taxa level groups.  In the repository these are saved as individual csv files for each species.  Here, we used the `combine_posteriors` function to make the combinations and save these as .rdata files. 
 
@@ -50,7 +50,6 @@ list.files(datadir)
 ```
 
 
-# Generation group level posterior sample datasets
 
 
 
@@ -59,7 +58,7 @@ list.files(datadir)
 
 
 
-```{r, echo = TRUE}
+```{r generate_fig1, echo = TRUE}
 
 
 
