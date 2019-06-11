@@ -53,7 +53,7 @@ for(group in unique(major_groups$Major_group)){
 
   }
 
-  temp_post <- NULL
+  group_post <- NULL
 
   # loop through each species, get the posterior values and combine into one matrix
   for(i in 1:length(species_list)){
@@ -95,13 +95,13 @@ for(group in unique(major_groups$Major_group)){
 
 
     # add into temp_post table
-    temp_post <- rbind(temp_post, sp_post)
+    group_post <- rbind(group_post, sp_post)
 
   } # end of loop through species
 
 
   # save posterior combination in outdir
-  save(temp_post, file = paste0(outdir, "/", group, "_posterior_samples_national.rdata"))
+  save(group_post, file = paste0(outdir, "/", group, "_posterior_samples_national.rdata"))
 
 }
 

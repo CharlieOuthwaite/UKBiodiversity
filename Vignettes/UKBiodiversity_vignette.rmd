@@ -12,14 +12,14 @@ urlcolor: blue
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This vignette using the UKBiodiversity R package to recreate the figures generated in the paper "" by Outhwaite et al.
+This vignette uses the UKBiodiversity R package to recreate the figures generated in the paper "" by Outhwaite et al.
 
 
 # Set up R environment
 
-First you will need to download the datasets used.  These data can be found within the EIDC repository and are described in full in the accompanying data paper (REF).
+First you will need to download the datasets used.  These data are freely available from the EIDC [repository](https://catalogue.ceh.ac.uk/documents/0ec7e549-57d4-4e2d-b2d3-2199e1578d84) and are described in full in the accompanying data paper (REF).  
 
-In the repository you will find the following:
+In the repository you will find the following items:
 
 * POSTERIOR_SAMPLES: zip file containing 1 file per species of the posterior samples
 * SUMMARY_TABLES: zip file containing 1 file per species of model output summary tables
@@ -27,23 +27,32 @@ In the repository you will find the following:
 * Species_Names: csv file containing information on species names
 * Species_Trends: csv file containing all estimates of species trends
 
-For this analysis you will need to unzip the POSTERIOR_SAMPLES folder.
+For this analysis you will need to unzip the POSTERIOR_SAMPLES folder and set this folder as the working directory using the function `setwd()`.
 
 
-## Generation group level posterior sample datasets
 
-For some of the analysis here we will need a matrix containing all the posterior samples of the species within each of the major groups and also for each of the taxa level groups.  In the repository these are saved as individual csv files for each species.  Here, we used the `combine_posteriors` function to make the combinations and save these as .rdata files. 
+## Generation gof roup level posterior sample datasets
+
+For some of the analyses we will need a matrix containing all the posterior samples of the species within each of the major groups and also for each of the taxa level groups.  In the repository, the posterior samples for each species are saved as individual csv files, one for each species.  Use the `combine_posteriors` function to make the required combinations of the posteriors by group and save these as .rdata files. 
 
 ```{r combine_posteriors, echo = TRUE}
 
 
-# set working directory
+# Set working directory
 datadir <- ("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads")
 
+# Take a look at files within the POSTERIOR_SAMPLES folder
+head(ist.files(datadir))
 
-list.files(datadir)
+# Run for major groups (4 groups)
+outdir_mg <- dir.create(paste0(getwd(), "/Major_groups"))
 
+combine_posteriors(dir = getwd(), outdir = outdir_mg, group_level = "major_groups")
 
+# Run for taxa (31 groups)
+outdir_taxa <- dir.create(paste0(getwd(), "/Taxa"))
+
+combine_posteriors(dir = getwd(), outdir = outdir_taxa, group_level = "major_groups")
 
 
 

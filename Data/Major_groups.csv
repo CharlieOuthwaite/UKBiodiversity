@@ -293,7 +293,7 @@ Bryophytes,Anastrophyllum hellerianum,LOWER_PLANTS
 Bryophytes,Anastrophyllum minutum,LOWER_PLANTS
 Bryophytes,Andreaea alpina,LOWER_PLANTS
 Bryophytes,Andreaea rothii agg. sensu smith (1978),LOWER_PLANTS
-Bryophytes,Andreaea rupestris agg. sensu Smith (1978),LOWER_PLANTS
+Bryophytes,Andreaea rupestris agg. sensu smith (1978),LOWER_PLANTS
 Bryophytes,Aneura pinguis,LOWER_PLANTS
 Bryophytes,Anoectangium aestivum,LOWER_PLANTS
 Bryophytes,Anomobryum julaceum s.l.,LOWER_PLANTS
@@ -4634,7 +4634,7 @@ Spiders,Pardosa prativaga,TERRESTRIAL_NONINSECT_INVERTS
 Spiders,Pardosa proxima,TERRESTRIAL_NONINSECT_INVERTS
 Spiders,Pardosa pullata,TERRESTRIAL_NONINSECT_INVERTS
 Spiders,Pardosa purbeckensis,TERRESTRIAL_NONINSECT_INVERTS
-Spiders,Pardosa saltans/lugubris,TERRESTRIAL_NONINSECT_INVERTS
+Spiders,Pardosa saltans_lugubris,TERRESTRIAL_NONINSECT_INVERTS
 Spiders,Pelecopsis mengei,TERRESTRIAL_NONINSECT_INVERTS
 Spiders,Pelecopsis nemoralioides,TERRESTRIAL_NONINSECT_INVERTS
 Spiders,Pelecopsis nemoralis,TERRESTRIAL_NONINSECT_INVERTS
