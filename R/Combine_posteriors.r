@@ -20,6 +20,7 @@ major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodive
 # remove brackets from list and outputs
 major_groups$Species <- sub("\\(", "", major_groups$Species)
 major_groups$Species <- sub("\\)", "", major_groups$Species)
+major_groups$Species <- gsub("\\?", "", major_groups$Species)
 
 #list all the file names of the species level posterior samples
 allfiles <- list.files(paste0(datadir, "/POSTERIOR_SAMPLES/"))
@@ -27,12 +28,13 @@ allfiles <- list.files(paste0(datadir, "/POSTERIOR_SAMPLES/"))
 # create a copy but remove brackets from file names as it causes trouble.
 allfiles2 <- sub("\\(", "", allfiles)
 allfiles2 <- sub("\\)", "", allfiles2)
+allfiles2 <- gsub("\\?", "", allfiles2)
 
 
 ## function to combine all the species level posteriors into group or major group level sets ##
 
 # set group level within function to "taxa" or "major_group"
-group_level <- "major_group"
+group_level <- "major_group" # or "taxa"
 
 
 

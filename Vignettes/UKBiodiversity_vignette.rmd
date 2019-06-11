@@ -1,17 +1,40 @@
 ---
 title: "Recreate UK Biodiversity trends paper"
-author: "Charlie Outhwaite"
+author: "Charlotte L. Outhwaite"
 date: "08/06/2019"
-output: pdf_document
+output:
+  pdf_document:
+    toc: true 
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+This vignette using the UKBiodiversity R package to recreate the figures generated in the paper "" by Outhwaite et al.
 
 
-```{r, echo = TRUE}
+# Set up R environment
+
+First you will need to download the datasets used.  These data can be found within the EIDC repository and are described in full in the accompanying data paper (REF).
+
+In the repository you will find the following:
+
+* POSTERIOR_SAMPLES: zip file containing 1 file per species of the posterior samples
+* SUMMARY_TABLES: zip file containing 1 file per species of model output summary tables
+* Dataset_Information: csv file containing input data metadata
+* Species_Names: csv file containing information on species names
+* Species_Trends: csv file containing all estimates of species trends
+
+For this analysis you will need to unzip the POSTERIOR_SAMPLES folder.
+
+
+## Generate combined posteriors
+
+For some of the analysis here we will need a matrix containing all the posterior samples of the species within each of the major groups and also for each of the taxa level groups.  In the repository these are saved as individual csv files for each species.  Here, we used the `combine_posteriors` function to make the combinations and save these as .rdata files. 
+
+```{r combine_posteriors, echo = TRUE}
 
 
 # set working directory
@@ -25,6 +48,11 @@ list.files(datadir)
 
 
 ```
+
+
+# Generation group level posterior sample datasets
+
+
 
 
 # Recreating Figure 1 and associated trend estimates
