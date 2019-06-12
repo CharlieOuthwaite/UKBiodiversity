@@ -11,6 +11,14 @@ calc_geo <- function(x){
 }
 
 
+# function to rescale posterior geomean values
+rescale <- function(x){
+
+  multipier <- 100/x[1]
+  rescaled <- x*multipier
+  return(rescaled)
+}
+
 
 
 

@@ -34,11 +34,23 @@ allfiles2 <- gsub("\\?", "", allfiles2)
 ## function to combine all the species level posteriors into group or major group level sets ##
 
 # set group level within function to "taxa" or "major_group"
-group_level <- "major_group"
+#group_level <- "major_group"
 
-#group_level <- "taxa"
+group_level <- "taxa"
 
-for(group in unique(major_groups$Major_group)){
+if(group_level == "major_taxa"){
+
+  groups <- unique(major_groups$Major_group)
+}
+
+
+if(group_level == "taxa"){
+
+  groups <- unique(major_groups$Group)
+}
+
+
+for(group in groups){
 
   if(group_level == "taxa"){
 
