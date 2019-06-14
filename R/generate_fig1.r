@@ -12,7 +12,7 @@ dir.create(paste0(postdir, "/geomeans"))
 outdir <- paste0(postdir, "/geomeans")
 
 # list the
-files <- list.files(postdir)
+files <- list.files(postdir, pattern = ".rdata")
 
 # loop through each group and generate the indicator values
 for(file in files){
@@ -50,7 +50,7 @@ for(file in files){
 
 
 # save the posterior geometric means
-write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals.csv", sep = ""))
+write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals.csv", sep = ""), row.names = FALSE)
 
 
 all_means_rescaled <- t(apply(all_means, 1, rescale))
@@ -98,7 +98,6 @@ all_plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater, n = 318", all_plot
 all_plot_data$group <- sub("LOWER_PLANTS", "Bryophytes & lichens, n = 1269", all_plot_data$group)
 all_plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects, n = 3168", all_plot_data$group)
 all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts, n = 538", all_plot_data$group)
-all_plot_data$group <- sub("VASCULAR_PLANTS", "Plants, n = 1107", all_plot_data$group)
 
 
 

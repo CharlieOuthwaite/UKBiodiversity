@@ -52,7 +52,7 @@ for(file in files){
 
 
   # save the posterior geometric means
-  write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals.csv", sep = ""))
+  write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals.csv", sep = ""), row.names = FALSE)
 
 
   all_means_rescaled <- t(apply(all_means, 1, rescale))
