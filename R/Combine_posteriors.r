@@ -4,8 +4,10 @@
 #                                                          #
 ##%######################################################%##
 
-# level: can be "group" or "major group"
+# group_level: can be "taxa" or "major_group"
 # outdir: where to save group level outputs
+# datadir: where are the repository files?
+# status = TRUE, print sp number
 
 datadir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads"
 
@@ -38,19 +40,24 @@ allfiles2 <- gsub("\\?", "", allfiles2)
 
 group_level <- "taxa"
 
-if(group_level == "major_taxa"){
+if(group_level == "major_group"){
 
   groups <- unique(major_groups$Major_group)
+
+  dir.create(paste0(outdir, "/MajorGroups"))
+  outdir <- paste0(outdir, "/MajorGroups")
 }
 
 
 if(group_level == "taxa"){
 
   groups <- unique(major_groups$Group)
+  dir.create(paste0(outdir, "/Taxa"))
+  outdir <- paste0(outdir, "/Taxa")
 }
 
 
-for(group in groups){
+  for(group in groups){
 
   if(group_level == "taxa"){
 
@@ -69,6 +76,8 @@ for(group in groups){
 
   # loop through each species, get the posterior values and combine into one matrix
   for(i in 1:length(species_list)){
+
+    if(status == TRUE) print(paste(i, "of", length(species_list)))
 
     # get the species specific filename
     sp <- allfiles[grep(paste0(species_list[i], ".csv"), allfiles2, fixed = TRUE)]
