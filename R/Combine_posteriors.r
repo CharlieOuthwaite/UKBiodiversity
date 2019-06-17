@@ -1,22 +1,55 @@
-##%######################################################%##
-#                                                          #
-####   COmbining species level posteriors for groups    ####
-#                                                          #
-##%######################################################%##
+#' Combining species level posteriors for group level analyses
+#'
+#' This takes the individual posterior sample files for each species from a directory
+#' where these have been downloaded from the associated EIDC reposotory entry and combines
+#' them for the group level analyses presented within the associated paper.
+#'
+#' @param group_level A character string of either \code{"taxa"} or \code{"major_group"} depending on analysis level of interest.
+#' @param datadir A filepath specifying where the repository downloads are saved.  POSTERIOR_SAMPLES subfolder must be within this directory.
+#' @param outdir A filepath specifying where the combined posterior outputs are to be saved.
+#' @param status Logical. If \code{TRUE} then the status of the function will be printed to the consolde.
+#' This specifies where in each group the function is up to in number of species out of the total number of species.
+#' e.g. 1 of 29 for the first ant species. Default is \code{TRUE}
+#'
+#' @keywords trends, species, distribution, occupancy,
+#' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
+#' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
+#'  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
+#'  NERC Environmental Information Data Centre. https://doi.org/10.5285/0ec7e549-57d4-4e2d-b2d3-2199e1578d84
+#' @examples
+#' \dontrun{
+#'
+#' # Run combine_posteriors function for taxa level analyses.
+#' combine_posteriors(group_level = "taxa",
+#'datadir = paste0(getwd(), "/Repository downloads"),
+#'outdir = paste0(getwd(), "/Outputs"),
+#'status = TRUE)
+#'
+#'#' # Run combine_posteriors function for major group level analyses.
+#' combine_posteriors(group_level = "major_group",
+#'datadir = paste0(getwd(), "/Repository downloads"),
+#'outdir = paste0(getwd(), "/Outputs"),
+#'status = TRUE)
+#'
+#' }
+#' @export
+#' @importFrom
+#' @importFrom
 
-# group_level: can be "taxa" or "major_group"
-# outdir: where to save group level outputs
-# datadir: where are the repository files?
-# status = TRUE, print sp number
 
-datadir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads"
+combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
+
+  # check for correct group level specification
+  if(!group_level == "taxa" | !group_level == "taxa") stop("group_level must be taxa or major_group")
+
+#datadir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads"
 
 # specify outdir in function
-outdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing"
+#outdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing"
 
 # load the major groups list
-#data(major_groups)
-major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/Major_groups.csv")
+data(major_groups)
+#major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/Major_groups.csv")
 
 
 # remove brackets from list and outputs
@@ -26,6 +59,9 @@ major_groups$Species <- gsub("\\?", "", major_groups$Species)
 
 #list all the file names of the species level posterior samples
 allfiles <- list.files(paste0(datadir, "/POSTERIOR_SAMPLES/"))
+
+# check that files available in the datadir
+if(length(allfiles) == 0) stop("Repository POSTERIOR_SAMPLES folder not in datadir")
 
 # create a copy but remove brackets from file names as it causes trouble.
 allfiles2 <- sub("\\(", "", allfiles)
@@ -126,3 +162,5 @@ if(group_level == "taxa"){
 
 }
 
+
+}
