@@ -4,8 +4,37 @@
 #                                                          #
 ##%######################################################%##
 
+
+# postdir: where are the combined posteriors for the major groups saved?
+
+#' Generating figure 1
+#'
+#' This takes the major group level posterior combinations generating using the
+#' \code{combine_posteriors} function and generates figure 1 presenting within the paper.
+#'
+#' @param postdir A charilepath specifying where the posteior combinations are saved.
+#'
+#' @keywords trends, species, distribution, occupancy
+#' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
+#' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
+#'  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
+#'  NERC Environmental Information Data Centre. https://doi.org/10.5285/0ec7e549-57d4-4e2d-b2d3-2199e1578d84
+#' @examples
+#' \dontrun{
+#'
+#' # Run generate_fig1 function
+#' # postdir should be the filepath of where the 4 major group level posteriors combinationss are saved.
+#' generate_fig1(postdir = paste0(getwd(), "/MajorGroups"))
+#'
+#' }
+#' @export
+#' @importFrom
+#' @importFrom
+
+generate_fig1  <- function(postdir){
+
 # where are the posteriors?
-postdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/Major_groups"
+postdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups"
 
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
@@ -13,6 +42,9 @@ outdir <- paste0(postdir, "/geomeans")
 
 # list the
 files <- list.files(postdir, pattern = ".rdata")
+
+# check there's only 4 sets of posteriors
+if(length(files) != 4) stop("There are more than 4 datafiles in the directory.")
 
 # loop through each group and generate the indicator values
 for(file in files){
@@ -126,9 +158,7 @@ ggsave(filename = paste0(outdir, "/Figure_1.pdf"), height = 6, width = 6)
 
 
 
-
-
-
+}
 
 
 
