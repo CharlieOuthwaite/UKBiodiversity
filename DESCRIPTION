@@ -8,6 +8,8 @@ and figures presented in the paper "Complexity of biodiversity change
 revealed through long-term trends of invertebrates, bryophytes and lichens" 
 by Outhwaite et al.
 Depends: R (>= 3.5.1)
-License: What license is it under?
+Imports: ggplot
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+VignetteBuilder: knitr
