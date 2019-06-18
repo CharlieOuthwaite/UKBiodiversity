@@ -1,17 +1,30 @@
-##%######################################################%##
-#                                                          #
-####           Function to generate Figure 2            ####
-#                                                          #
-##%######################################################%##
+#' Generate Figure 2
+#'
+#' This takes the posterior values of the group level indicators generated within the
+#' \code{generage_fig1} function and generates the boxplots presented in figure 2 of the associated paper.
+#'
+#' @param datadir A filepath specifying where the posteior indicator values are saved.
+#' If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".
+#'
+#' @keywords trends, species, distribution, occupancy
+#' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
+#' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
+#'  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
+#'  NERC Environmental Information Data Centre. https://doi.org/10.5285/0ec7e549-57d4-4e2d-b2d3-2199e1578d84
+#' @examples
+#' \dontrun{
+#'
+#' # Run generate_fig2 function to produce boxplot.
+#' # datadir should be the filepath of where the posterior indicator values are saved.
+#' # generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+#'
+#' }
+#' @export
+#' @import ggplot2
 
 
-rm(list = ls())
+generate_fig2 <- function(datadir){
 
-# load libraries
-library(ggplot2)
-
-# where are the outputs
-datadir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/Major_groups/geomeans"
 
 # list the geomean iterations outputs
 datasets <- list.files(datadir, pattern = "indicator_posterior_vals")
@@ -29,9 +42,6 @@ for(dataset in datasets){
 
   # read in the dataset for this group
   iters_data <- read.csv(paste0(datadir, "/", dataset))
-
-  # remove unnecessary column
-  iters_data <- iters_data[, 2:ncol(iters_data)]
 
   # remove "X" from column names
   colnames(iters_data) <- sub("X", "", colnames(iters_data))
@@ -81,23 +91,7 @@ write.csv(results_tab, paste0(datadir, "/GROUP_before_after_1992_change_CIs_abso
 
 write.csv(iters_tab, paste0(datadir, "/Group_before_after_1992_change_iters_absolute.csv"), row.names = F)
 
-
-
-##%######################################################%##
-#                                                          #
-####    Box plots of long-term and short-term trends    ####
-#                                                          #
-##%######################################################%##
-
-# read in long-term and short-term trends
-rm(list = ls())
-
-# load libraries
-library(ggplot2)
-library(reshape2)
-
-# where are the outputs
-datadir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/Major_groups/geomeans"
+### now generate the box plot ###
 
 # read in short-term and long-term trend iterations
 plot_data <- read.csv(paste0(datadir, "/", "Group_before_after_1992_change_iters_absolute.csv"))
@@ -121,13 +115,7 @@ plot_data$group <- as.factor(plot_data$group)
 plot_data$group <- factor(plot_data$group, levels(plot_data$group)[c(2, 3, 4, 1)] )
 
 
-quantiles_95 <- function(x) {
-  r <- quantile(x, probs=c(0.025, 0.25, 0.5, 0.75, 0.975))
-  names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
-  r
-}
-
-#### used this one in latest draft 26/07/2018
+# generate the plot
 
 ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
   stat_summary(fun.data = quantiles_95, geom="boxplot", lwd = 0.1) +
@@ -148,3 +136,5 @@ ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
                      expand = c(0,0))
 
 ggsave(filename = paste0(datadir, "/Figure_2.pdf"), height = 6, width = 6)
+
+}

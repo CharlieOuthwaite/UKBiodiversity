@@ -1,7 +1,7 @@
 #' Calculate group level trends
 #'
 #' This takes the posterior values of the group level indicators generated within the
-#' \code{generage_fig1} function and calculated the group level average change and
+#' \code{generage_fig1} function and calculates the group level average change and
 #' associated 95% credible intervals.  These are presented within the text of the
 #' accompanying paper.
 #'
