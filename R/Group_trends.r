@@ -1,17 +1,33 @@
-##%######################################################%##
-#                                                          #
-####      Function to calculate group level change      ####
-#                                                          #
-##%######################################################%##
+#' Calculate group level trends
+#'
+#' This takes the posterior values of the group level indicators generated within the
+#' \code{generage_fig1} function and calculated the group level average change and
+#' associated 95% credible intervals.  These are presented within the text of the
+#' accompanying paper.
+#'
+#' @param datadir A filepath specifying where the posteior indicator values are saved.
+#' If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".
+#'
+#' @keywords trends, species, distribution, occupancy
+#' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
+#' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
+#'  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
+#'  NERC Environmental Information Data Centre. https://doi.org/10.5285/0ec7e549-57d4-4e2d-b2d3-2199e1578d84
+#' @examples
+#' \dontrun{
+#'
+#' # Run group_trends function to estimate in text values
+#' # datadir should be the filepath of where the posterior indicator values are saved.
+#' #' group_trends(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+#'
+#' }
+#' @export
+#' @importFrom
+#' @importFrom
 
 
-# use the 1000 geomean estimates to determine the group level change
 
-
-rm(list = ls())
-
-# where are the outputs
-datadir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/Major_groups/geomeans"
+group_trends <- function(datadir){
 
 # list the geomean iterations outputs
 files <- list.files(datadir, pattern = "_indicator_posterior_vals")
@@ -30,8 +46,6 @@ for(file in files){
 
   # read in the dataset for this group
   iters_data <- read.csv(paste(datadir, "/", file, sep = ""))
-
-  iters_data <- iters_data[, 2:47]
 
   # get the mean and 95% CIs for the change in this group
   overall_change <- ((iters_data[,46] - iters_data[, 1])/iters_data[, 1]) * 100
@@ -55,7 +69,7 @@ for(file in files){
   # add to results table
   results_tab <- rbind(results_tab, result)
 
-}
+} # end of group level files
 
 colnames(results_tab) <- c("Group", "Mean change", "LCI", "UCI")
 
@@ -64,3 +78,6 @@ write.csv(results_tab, paste0(datadir, "/Group_level_change.csv"), row.names = F
 
 write.csv(iters_tab, paste0(datadir, "/Long_term_change_iters.csv"), row.names = F)
 
+# return the main results table
+return(results_tab)
+}

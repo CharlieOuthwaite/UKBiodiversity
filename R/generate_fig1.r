@@ -1,18 +1,9 @@
-##%######################################################%##
-#                                                          #
-####           Function to generate figure 1            ####
-#                                                          #
-##%######################################################%##
-
-
-# postdir: where are the combined posteriors for the major groups saved?
-
 #' Generating figure 1
 #'
 #' This takes the major group level posterior combinations generating using the
 #' \code{combine_posteriors} function and generates figure 1 presenting within the paper.
 #'
-#' @param postdir A charilepath specifying where the posteior combinations are saved.
+#' @param postdir A filepath specifying where the posteior combinations are saved.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
