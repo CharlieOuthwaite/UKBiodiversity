@@ -1,9 +1,9 @@
-#' Generating figure 1
+#' Generating Figure 1
 #'
-#' This takes the major group level posterior combinations generating using the
-#' \code{combine_posteriors} function and generates figure 1 presenting within the paper.
+#' This takes the major group level posterior combinations generated using the
+#' \code{combine_posteriors} function and generates figure 1 presented within the paper.
 #'
-#' @param postdir A filepath specifying where the posteior combinations are saved.
+#' @param postdir A filepath specifying where the posterior combinations are saved.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -19,19 +19,18 @@
 #'
 #' }
 #' @export
-#' @importFrom
-#' @importFrom
+#' @import ggplot
 
 generate_fig1  <- function(postdir){
 
-# where are the posteriors?
+# where are the posteriors saved?
 postdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups"
 
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
 outdir <- paste0(postdir, "/geomeans")
 
-# list the
+# list the posterior combination files
 files <- list.files(postdir, pattern = ".rdata")
 
 # check there's only 4 sets of posteriors
@@ -46,7 +45,7 @@ for(file in files){
   # load in the combined posterior generated from the combine_posteriors function
   load(paste0(postdir, "/", file))
 
-  # convert 0 and 1 to 0.0001 and 0.9999 - solve the issue with logging zero and 1
+  # convert 0 and 1 to 0.0001 and 0.9999 - solve the issue with logging 0 and 1
   temp_post <- group_post[,1:(ncol(group_post)-2)]
   temp_post[temp_post == 0] <- 0.0001
   temp_post[temp_post == 1] <- 0.9999
@@ -75,11 +74,11 @@ for(file in files){
 # save the posterior geometric means
 write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals.csv", sep = ""), row.names = FALSE)
 
-
+# rescale the valiues to start at 100 in 1970
 all_means_rescaled <- t(apply(all_means, 1, rescale))
 
 
-# calculate mean and 90% CIs
+# calculate mean and 95% CIs
 final_rescaled <- data.frame(avg_occ = apply(all_means_rescaled, 2, mean, na.rm = TRUE),
                     upper_CI = apply(all_means_rescaled, 2, quantile, probs = 0.95, na.rm = TRUE),
                     lower_CI = apply(all_means_rescaled, 2, quantile, probs = 0.05, na.rm = TRUE))
@@ -91,9 +90,9 @@ final_rescaled$year <- as.numeric(rownames(final_rescaled))
 write.csv(final_rescaled, file = paste0(outdir, "/", group, "_rescaled_indicator_vals.csv"), row.names = FALSE)
 
 
-}
+} # end of loop through files
 
-# Read in and organise all rescaled indicator files
+#### Read in and organise all rescaled indicator files ####
 
 # list the files of rescaled indicator values.  One per group.
 files <- list.files(outdir, pattern = "_rescaled_indicator_vals")
@@ -101,6 +100,7 @@ files <- list.files(outdir, pattern = "_rescaled_indicator_vals")
 # somewhere to save the info
 all_plot_data <- NULL
 
+# combine all files to get a matrix of plot data
 for(file in files){
 
   # read in first group plot data
@@ -122,8 +122,6 @@ all_plot_data$group <- sub("LOWER_PLANTS", "Bryophytes & lichens, n = 1269", all
 all_plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects, n = 3168", all_plot_data$group)
 all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts, n = 538", all_plot_data$group)
 
-
-
 # change order of the lines
 all_plot_data$group <- as.factor(all_plot_data$group)
 all_plot_data$group <- factor(all_plot_data$group, levels(all_plot_data$group)[c(2,3,4,1)])
@@ -144,7 +142,7 @@ ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fill = "
         legend.position = c(0.2,0.85), panel.grid.minor = element_blank(),
         panel.grid.major = element_blank())
 
-
+# save the plot
 ggsave(filename = paste0(outdir, "/Figure_1.pdf"), height = 6, width = 6)
 
 

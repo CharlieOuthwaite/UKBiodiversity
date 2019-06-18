@@ -1,13 +1,13 @@
 #' Combining species level posteriors for group level analyses
 #'
 #' This takes the individual posterior sample files for each species from a directory
-#' where these have been downloaded from the associated EIDC reposotory entry and combines
+#' where these have been downloaded from the associated EIDC reposotory and combines
 #' them for the group level analyses presented within the associated paper.
 #'
 #' @param group_level A character string of either \code{"taxa"} or \code{"major_group"} depending on analysis level of interest.
 #' @param datadir A filepath specifying where the repository downloads are saved.  POSTERIOR_SAMPLES subfolder must be within this directory.
 #' @param outdir A filepath specifying where the combined posterior outputs are to be saved.
-#' @param status Logical. If \code{TRUE} then the status of the function will be printed to the consolde.
+#' @param status Logical. If \code{TRUE} then the status of the function will be printed to the console.
 #' This specifies where in each group the function is up to in number of species out of the total number of species.
 #' e.g. 1 of 29 for the first ant species. Default is \code{TRUE}
 #'
@@ -33,24 +33,15 @@
 #'
 #' }
 #' @export
-#' @importFrom
-#' @importFrom
-
 
 combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
 
   # check for correct group level specification
   if(!group_level == "taxa" | !group_level == "taxa") stop("group_level must be taxa or major_group")
 
-#datadir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads"
-
-# specify outdir in function
-#outdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing"
-
 # load the major groups list
 data(major_groups)
 #major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/Major_groups.csv")
-
 
 # remove brackets from list and outputs
 major_groups$Species <- sub("\\(", "", major_groups$Species)
@@ -69,13 +60,7 @@ allfiles2 <- sub("\\)", "", allfiles2)
 allfiles2 <- gsub("\\?", "", allfiles2)
 
 
-## function to combine all the species level posteriors into group or major group level sets ##
-
-# set group level within function to "taxa" or "major_group"
-#group_level <- "major_group"
-
-group_level <- "taxa"
-
+# great an output folder
 if(group_level == "major_group"){
 
   groups <- unique(major_groups$Major_group)
@@ -92,8 +77,10 @@ if(group_level == "taxa"){
   outdir <- paste0(outdir, "/Taxa")
 }
 
+# loop through each group, combining outputs into one matrix
+for(group in groups){
 
-  for(group in groups){
+  # get the list of species in the group
 
   if(group_level == "taxa"){
 
@@ -108,11 +95,13 @@ if(group_level == "taxa"){
 
   }
 
+  # somewhere to save the combined posteriors
   group_post <- NULL
 
   # loop through each species, get the posterior values and combine into one matrix
   for(i in 1:length(species_list)){
 
+    # print progress if status = T specified
     if(status == TRUE) print(paste(i, "of", length(species_list)))
 
     # get the species specific filename
@@ -120,8 +109,6 @@ if(group_level == "taxa"){
 
     # read in the species csv posterior samples file
     sp_post <- read.csv(paste0(datadir, "/POSTERIOR_SAMPLES/", sp))
-
-
 
     # select the largest region values (GB or UK)
 
@@ -160,7 +147,7 @@ if(group_level == "taxa"){
   # save posterior combination in outdir
   save(group_post, file = paste0(outdir, "/", group, "_posterior_samples_national.rdata"))
 
-}
+} # end of loop through groups
 
 
 }

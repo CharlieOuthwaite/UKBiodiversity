@@ -1,16 +1,40 @@
-##%######################################################%##
-#                                                          #
-####           Function to generate Figure 5            ####
-#                                                          #
-##%######################################################%##
+#' Generate Figure 5
+#'
+#' This takes the posterior estimates for each species and the species trend estimates
+#' downloaded from the repository, calculates the average occupancy across the time frame
+#' of each species for whihch data were available and generates figure 5 of the
+#' associated paper.
+#' \code{generage_fig5} function estimates species level average occupancy and generates figure 5.
+#'
+#' @param postdir A filepath specifying where the species level posteriors have been saved.
+#' If outputs have not been moved, this will be in a directory "/POSTERIOR_SAMPLES".
+#' @param outdir A filepath specifying where the outputs of the function are to be saved.
+#' @param sp_trends A dataframe, downloaded from the repository which details the species
+#' level trends in occupancy and the years for which data were avaialble for each species.
+#' @param status Logical. If TRUE the species name being worked on will be printed to the console.
+#'
+#' @keywords trends, species, distribution, occupancy
+#' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
+#' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
+#'  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
+#'  NERC Environmental Information Data Centre. https://doi.org/10.5285/0ec7e549-57d4-4e2d-b2d3-2199e1578d84
+#' @examples
+#' \dontrun{
+#'
+#' # Run generate_fig5 function to produce plot of average occupancy against trend in occupancy.
+#' # datadir should be the filepath of where the posterior samples are saved.
+#' generate_fig5(postdir = "/POSTERIOR_SAMPLES", outdir = getwd(), sp_trends = read.csv(paste0(datadir, "/Species_Trends.csv")))
+#'
+#'
+#' }
+#' @export
+#' @import ggplot2
+#' @import viridis
 
-datadir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads"
 
+#sp_trends <- read.csv(paste0(datadir, "/Species_Trends.csv"))
 
-# where to save results
-outdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/Taxa/geomeans"
-
-sp_trends <- read.csv(paste0(datadir, "/Species_Trends.csv"))
+generate_fig5 <- function(postdir, outdir, sp_trends, status = TRUE){
 
 
 #### first need to calculate average occupancy for each species
@@ -18,7 +42,7 @@ sp_trends <- read.csv(paste0(datadir, "/Species_Trends.csv"))
 
 # use group posteriors to calculate average occupancy
 
-postdir <- paste0(datadir, "/POSTERIOR_SAMPLES")
+#postdir <- paste0(datadir, "/POSTERIOR_SAMPLES")
 
 post.files <- list.files(postdir)
 
@@ -39,14 +63,19 @@ sp_trends$Species <- sub("\\(", "", sp_trends$Species)
 sp_trends$Species <- sub("\\)", "", sp_trends$Species)
 sp_trends$Species <- gsub("\\?", "", sp_trends$Species)
 
-sp_trends$Species <- gsub("Pardosa saltanslugubris", "Pardosa saltans_lugubris", sp_trends$Species)
+sp_trends$Species <- gsub("Pardosa saltans/lugubris", "Pardosa saltans_lugubris", sp_trends$Species)
 
 
 # loop through each group in good sp table
 for(sp in unique(sp_trends$Species)){
 
+  # i status = T, print progress
+  if(status == TRUE) print(sp)
+
+  # select the correct posterior file
   post <- post.files[grep(paste0(sp, ".csv"), post.files2)]
 
+  # read in the file
   sp.post <- read.csv(paste0(postdir, "/", post))
 
 
@@ -78,45 +107,42 @@ for(sp in unique(sp_trends$Species)){
   }
 
 
+    # extract the first and last year for which there was raw data (see method of paper)
     startyr <- sp_trends[sp_trends$Species == sp, 'First_Year']
     endyr <- sp_trends[sp_trends$Species == sp, 'Last_Year']
 
-
-    # just years with data
+    # select posterior years with data
     sp.post <- sp.post[, grep(startyr, colnames(sp.post)):grep(endyr, colnames(sp.post))]
 
-    # calc the average across a set of years - make this selectable, end at 2015
+    # calculate the average occupancy across iterations
     sp.means <- colMeans(sp.post)
 
     # overall mean across years
     overall.mean <- mean(sp.means, na.rm = T)
 
-
+    # save result in table
     mean.tab[mean.tab$Species == sp, 3] <- overall.mean
 
 
-  }
+  } # end of loop through species
 
 
 
 # save table of average occupancies
 write.csv(mean.tab, file = paste0(outdir, "/Average_occ.csv"), row.names = F)
 
-### sort data for ggplot ###
+### sort data for plot ###
 
 plot.data <- mean.tab
 
 # add on column for growth rates
 plot.data$gr.rate <- sp_trends[match(plot.data$Species, sp_trends$Species), 'Mean_growth_rate']
 
-
-
+# data for a central line in plot
 line_data <- data.frame(x = c(0,1), y = c(0,-1), w = c(0,1), z = c(1,0))
 
 
-library(viridis)
-
-# Nick recommended plotting growth rate rather than absolute change
+# generate figure
 ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
   stat_bin_hex(aes(fill = ..count..), binwidth = c(0.025, 0.5)) +
   scale_fill_viridis(limits = c(1, 50),  name = "n species", trans = "log", breaks = c(1,3,7,20)) +
@@ -136,7 +162,8 @@ ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
   scale_x_sqrt(expand = c(0,0), limits=c(0, 1)) +
   scale_y_continuous(limits = c(-20, 25))
 
-
+# save the plot
 ggsave(filename = paste0(outdir, "/Figure_5.pdf"), height = 6, width = 6)
 
 
+}

@@ -16,7 +16,7 @@
 #'
 #' # Run generate_fig2 function to produce boxplot.
 #' # datadir should be the filepath of where the posterior indicator values are saved.
-#' # generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+#' generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
 #'
 #' }
 #' @export
@@ -24,7 +24,6 @@
 
 
 generate_fig2 <- function(datadir){
-
 
 # list the geomean iterations outputs
 datasets <- list.files(datadir, pattern = "indicator_posterior_vals")
@@ -49,7 +48,6 @@ for(dataset in datasets){
   # separate out before and after 2000
   iters_data_before <- iters_data[, as.character(1970:1992)]
   iters_data_after <- iters_data[, as.character(1993:2015)]
-
 
   # get the mean and 95% CIs for the change in this group
   overall_change_before <- ((iters_data_before[,"1992"] - iters_data_before[, 1]))
@@ -76,14 +74,14 @@ for(dataset in datasets){
   # combine results
   result <- c(group, mean_before, LCI_95_before, UCI_95_before, mean_after, LCI_95_after, UCI_95_after)
 
-  # add to results table
+  # add to results tables
   results_tab <- rbind(results_tab, result)
 
   iters_tab <- rbind(iters_tab, overall_change_before, overall_change_after)
 
 }
 
-
+# edit column names
 colnames(results_tab) <- c("Group", "before", "B_lower", "B_upper", "after", "A_lower", "A_upper")
 
 # save tables
@@ -96,6 +94,7 @@ write.csv(iters_tab, paste0(datadir, "/Group_before_after_1992_change_iters_abso
 # read in short-term and long-term trend iterations
 plot_data <- read.csv(paste0(datadir, "/", "Group_before_after_1992_change_iters_absolute.csv"))
 
+# edit labels
 plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater", plot_data$group)
 plot_data$group <- sub("LOWER_PLANTS", "Bryophytes \n& Lichens", plot_data$group)
 plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects", plot_data$group)
@@ -116,7 +115,6 @@ plot_data$group <- factor(plot_data$group, levels(plot_data$group)[c(2, 3, 4, 1)
 
 
 # generate the plot
-
 ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
   stat_summary(fun.data = quantiles_95, geom="boxplot", lwd = 0.1) +
   theme_bw() +
@@ -135,6 +133,7 @@ ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
   scale_y_continuous(limits = c(-0.05, 0.06), breaks = seq(-0.05, 0.06, 0.01),
                      expand = c(0,0))
 
+# save the plot
 ggsave(filename = paste0(datadir, "/Figure_2.pdf"), height = 6, width = 6)
 
 }
