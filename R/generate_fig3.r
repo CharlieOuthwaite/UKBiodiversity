@@ -1,12 +1,30 @@
-##%######################################################%##
-#                                                          #
-####           Function to generate Figure 3            ####
-#                                                          #
-##%######################################################%##
+#' Generate Figure 3
+#'
+#' This takes the posterior values of the group level indicators generated within the
+#' \code{generage_fig1} function, calculates the quantiles and plots the group level quantiles presented in figure 3.
+#'
+#' @param postdir A filepath specifying where the posteior samples that are generated
+#' from the combine_posteriors function are saved. are saved. If outputs have not been
+#' moved, this will be in a directory "/MajorGroups".
+#'
+#' @keywords trends, species, distribution, occupancy
+#' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
+#' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
+#'  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
+#'  NERC Environmental Information Data Centre. https://doi.org/10.5285/0ec7e549-57d4-4e2d-b2d3-2199e1578d84
+#' @examples
+#' \dontrun{
+#'
+#' # Run generate_fig2 function to produce boxplot.
+#' # datadir should be the filepath of where the posterior indicator values are saved.
+#' # generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+#'
+#' }
+#' @export
+#' @import ggplot2
 
 
-# where are the posteriors?
-postdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/Major_groups"
+generate_fig3 <- function(postdir){
 
 # where to save the outputs
 dir.create(paste0(postdir, "/quantiles"))
@@ -62,11 +80,11 @@ for(file in files){
   # save the posterior geometric means
   write.csv(all_quants, file = paste0(outdir, "/", group, "_quantiles_posterior_vals.csv"), row.names = FALSE)
 
-
+  # rescale to start at 100 in 1970.
   all_quants_rescaled <- t(apply(all_quants, 1, rescale))
 
 
-  # calculate mean and 90% CIs
+  # calculate mean and 95% CIs
   quants_rescaled <- data.frame(avg_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = 0.25, na.rm = TRUE),
                       upper_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = 0.95, na.rm = TRUE),
                       lower_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = 0.05, na.rm = TRUE),
@@ -88,11 +106,12 @@ for(file in files){
 }
 
 
-#Read in and organise all rescaled indicator files
+# Read in and organise all rescaled indicator files
 
 # list the files of rescaled indicator values.  One per group.
 files <- list.files(outdir, pattern = "_rescaled_quantile_vals")
 
+# combine into one matrix
 # somewhere to save the info
 all_plot_data <- NULL
 
@@ -151,4 +170,5 @@ ggplot() +
 
 ggsave(filename = paste0(outdir, "/Figure_3.pdf"), height = 6, width = 6)
 
+}
 
