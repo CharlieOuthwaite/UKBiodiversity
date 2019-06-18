@@ -1,13 +1,28 @@
-##%######################################################%##
-#                                                          #
-####       function to generate figure 4 of paper       ####
-#                                                          #
-##%######################################################%##
+#' Generating figure 4
+#'
+#' This takes the taxa level posterior combinations generating using the
+#' \code{combine_posteriors} function and generates figure 4 presented within the paper.
+#'
+#' @param postdir A filepath specifying where the posteior combinations are saved.
+#'
+#' @keywords trends, species, distribution, occupancy
+#' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
+#' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
+#'  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
+#'  NERC Environmental Information Data Centre. https://doi.org/10.5285/0ec7e549-57d4-4e2d-b2d3-2199e1578d84
+#' @examples
+#' \dontrun{
+#'
+#' # Run generate_fig4 function
+#' # postdir should be the filepath of where the 4 major group level posteriors combinationss are saved.
+#' generate_fig4(postdir = paste0(getwd(), "/Taxa"))
+#'
+#' }
+#' @export
+#' @import ggplot
+#' @import cowplot
 
-
-
-# where are the posteriors?
-postdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/Taxa"
+generate_fig4 <- function(postdir){
 
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
@@ -96,14 +111,6 @@ for(file in files){
 colnames(all_plot_data) <- c("mean", "UCI", "LCI", "year", "group")
 
 
-# change order of the lines
-#all_plot_data$group <- as.factor(all_plot_data$group)
-#all_plot_data$group <- factor(all_plot_data$group, levels(all_plot_data$group)[c(2,3,4,1)])
-
-
-library(viridis)
-library(gridExtra)
-
 # read in major orders file (this will be data within the package)
 major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/Major_groups.csv")
 
@@ -171,7 +178,6 @@ p[[1]] <-   ggplot(all_plot_data[all_plot_data$major_group == "TERRESTRIAL_INSEC
   guides(colour = guide_legend(ncol = 2))
 
 
-library(cowplot)
 plot_grid(p[[2]], p[[1]], p[[4]], p[[3]], align = "hv", ncol = 2,
           labels = c("Freshwater Species",
                      "Insects",
@@ -180,3 +186,5 @@ plot_grid(p[[2]], p[[1]], p[[4]], p[[3]], align = "hv", ncol = 2,
           hjust = 0, label_size = 12, label_x = 0.1)
 
 ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 10, width = 16)
+
+}
