@@ -72,3 +72,39 @@ combine_posteriors(dir = getwd(), outdir = outdir_taxa, group_level = "major_gro
 
 
 
+# Testing combine posteriors function
+combine_posteriors(group_level = "taxa",
+                   datadir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads",
+                   outdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing",
+                   status = TRUE)
+
+# testing generate fig 1 function
+generate_fig1(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups")
+
+
+# testing group_trends function
+trends <- group_trends(datadir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups/geomeans")
+
+# testing generate fig 2 function
+generate_fig2(datadir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups/geomeans")
+
+
+# testing generate_fig3 function - this takes a while to run.
+generate_fig3(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups")
+
+
+# testing generate fig 4 function
+generate_fig4(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/Taxa")
+
+
+# testing generate_fig5 function - this takes a while to run.
+generate_fig5(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads/POSTERIOR_SAMPLES",
+              outdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing",
+              sp_trends = read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads/Species_Trends.csv"))
+
+# testing generate_fig1supp function - this takes a while to run
+generate_fig1supp(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups",
+                  sp_trends = read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads/Species_Trends.csv"))
+
+
+
