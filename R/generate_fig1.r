@@ -2,6 +2,9 @@
 #'
 #' This takes the major group level posterior combinations generated using the
 #' \code{combine_posteriors} function and generates figure 1 presented within the paper.
+#' It also generates the posteriors of average change across species for each group that
+#' are also used in the estimation of major group level trends presented within the text
+#' of the associated paper and for the generation of figure 3.
 #'
 #' @param postdir A filepath specifying where the posterior combinations are saved.
 #'
@@ -34,7 +37,7 @@ outdir <- paste0(postdir, "/geomeans")
 files <- list.files(postdir, pattern = ".rdata")
 
 # check there's only 4 sets of posteriors
-if(length(files) != 4) stop("There are more than 4 datafiles in the directory.")
+if(length(files) != 5) stop("There are more than 5 datafiles in the directory.")
 
 # loop through each group and generate the indicator values
 for(file in files){
@@ -96,6 +99,9 @@ write.csv(final_rescaled, file = paste0(outdir, "/", group, "_rescaled_indicator
 
 # list the files of rescaled indicator values.  One per group.
 files <- list.files(outdir, pattern = "_rescaled_indicator_vals")
+
+# remove ALL species file
+files <- files[!grepl("ALL", files)]
 
 # somewhere to save the info
 all_plot_data <- NULL
