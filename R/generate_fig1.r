@@ -24,7 +24,7 @@
 generate_fig1  <- function(postdir){
 
 # where are the posteriors saved?
-postdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups"
+#postdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups"
 
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
@@ -137,7 +137,6 @@ ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fill = "
   xlab("\nYear") +
   scale_y_continuous(limits = c(40, 150), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1970, 2015), expand = c(0, 0)) +
-  ggtitle("Figure 1") +
   theme(text = element_text(size = 10), aspect.ratio = 1, legend.title = element_blank(),
         legend.position = c(0.2,0.85), panel.grid.minor = element_blank(),
         panel.grid.major = element_blank())
