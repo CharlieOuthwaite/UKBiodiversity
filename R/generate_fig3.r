@@ -33,6 +33,9 @@ outdir <- paste0(postdir, "/quantiles")
 # list the
 files <- list.files(postdir, pattern = ".rdata")
 
+# remove ALL species file
+files <- files[!grepl("ALL", files)]
+
 
 for(file in files){
 
