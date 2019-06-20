@@ -5,7 +5,7 @@
 #' @param postdir A filepath specifying where the posterior combinations are saved.
 #' @param sp_trends A dataframe, downloaded from the repository which details the species
 #' level trends in occupancy and the years for which data were avaialble for each species.
-#' @param outdir A filepath specifying where the plot should be saved.
+#' @param status Logical. If \code{TRUE} the progress through each group and number of records subset will be printed to the console.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -24,7 +24,7 @@
 #' @import ggplot
 #' @import cowplot
 
-generate_fig1supp  <- function(postdir){
+generate_fig1supp  <- function(postdir, sp_trends, status){
 
   dir.create(paste0(postdir, "/supplementary"))
   outdir <- paste0(postdir, "/supplementary")
@@ -64,7 +64,7 @@ generate_fig1supp  <- function(postdir){
     # how many species in the subset
     nsp <- length(unique(group_post$spp))
 
-    print(paste0(group, ", ", nsp, " species.  nrec minimum = ", val))
+    if(status == TRUE) print(paste0(group, ", nrec minimum = ", val))
 
     # convert 0 and 1 to 0.0001 and 0.9999 - solve the issue with logging 0 and 1
     temp_post <- group_post[,1:(ncol(group_post)-2)]
