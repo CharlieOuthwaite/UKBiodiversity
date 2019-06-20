@@ -5,6 +5,7 @@
 #' them for the group level analyses presented within the associated paper.
 #'
 #' @param group_level A character string of either \code{"taxa"} or \code{"major_group"} depending on analysis level of interest.
+#' Selecting \code{"major_group"} will also produce a combined posterior file for all species so that change across all species can be calculated later.
 #' @param datadir A filepath specifying where the repository downloads are saved.  POSTERIOR_SAMPLES subfolder must be within this directory.
 #' @param outdir A filepath specifying where the combined posterior outputs are to be saved.
 #' @param status Logical. If \code{TRUE} then the status of the function will be printed to the console.
@@ -37,7 +38,7 @@
 combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
 
   # check for correct group level specification
-  if(!group_level == "taxa" | !group_level == "taxa") stop("group_level must be taxa or major_group")
+  if(!group_level == "taxa" & !group_level == "major_group") stop("group_level must be taxa or major_group")
 
 # load the major groups list
 data(major_groups)
@@ -52,7 +53,7 @@ major_groups$Species <- gsub("\\?", "", major_groups$Species)
 allfiles <- list.files(paste0(datadir, "/POSTERIOR_SAMPLES/"))
 
 # check that files available in the datadir
-if(length(allfiles) == 0) stop("Repository POSTERIOR_SAMPLES folder not in datadir")
+if(!length(allfiles) == 5293) stop("Repository POSTERIOR_SAMPLES folder not in datadir")
 
 # create a copy but remove brackets from file names as it causes trouble.
 allfiles2 <- sub("\\(", "", allfiles)
@@ -73,6 +74,7 @@ if(group_level == "major_group"){
 if(group_level == "taxa"){
 
   groups <- unique(major_groups$Group)
+
   dir.create(paste0(outdir, "/Taxa"))
   outdir <- paste0(outdir, "/Taxa")
 }
@@ -148,6 +150,29 @@ for(group in groups){
   save(group_post, file = paste0(outdir, "/", group, "_posterior_samples_national.rdata"))
 
 } # end of loop through groups
+
+
+
+  ### combine posterior sets of all groups to get an "ALL" set for all species ###
+  # this is used later to estimate overall change in average occupancy.
+  files <- list.files(outdir, pattern = "_posterior_samples_national.rdata")
+
+  # where to save
+  all_post <- NULL
+
+  # loop through each file and combine
+  for(file in files){
+
+    # read in file
+    load(paste0(outdir, "/", file))
+
+    # combine
+    all_post <- rbind(all_post, group_post)
+
+  }
+
+  # save as rdata file
+  save(group_post, file = paste0(outdir, "/ALL_posterior_samples_national.rdata"))
 
 
 }
