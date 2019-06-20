@@ -171,6 +171,8 @@ for(group in groups){
 
   }
 
+  group_post <- all_post
+
   # save as rdata file
   save(group_post, file = paste0(outdir, "/ALL_posterior_samples_national.rdata"))
 

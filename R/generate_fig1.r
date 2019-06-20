@@ -26,9 +26,6 @@
 
 generate_fig1  <- function(postdir){
 
-# where are the posteriors saved?
-#postdir <- "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups"
-
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
 outdir <- paste0(postdir, "/geomeans")
