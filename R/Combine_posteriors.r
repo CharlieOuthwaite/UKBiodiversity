@@ -41,7 +41,7 @@ combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
   if(!group_level == "taxa" & !group_level == "major_group") stop("group_level must be taxa or major_group")
 
 # load the major groups list
-data(Major_groups)
+data("major_groups")
 #Major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/Major_groups.csv")
 
 # remove brackets from list and outputs
