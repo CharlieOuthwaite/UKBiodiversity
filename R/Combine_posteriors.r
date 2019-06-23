@@ -41,13 +41,13 @@ combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
   if(!group_level == "taxa" & !group_level == "major_group") stop("group_level must be taxa or major_group")
 
 # load the major groups list
-data(major_groups)
-#major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/Major_groups.csv")
+data(Major_groups)
+#Major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/Major_groups.csv")
 
 # remove brackets from list and outputs
-major_groups$Species <- sub("\\(", "", major_groups$Species)
-major_groups$Species <- sub("\\)", "", major_groups$Species)
-major_groups$Species <- gsub("\\?", "", major_groups$Species)
+Major_groups$Species <- sub("\\(", "", Major_groups$Species)
+Major_groups$Species <- sub("\\)", "", Major_groups$Species)
+Major_groups$Species <- gsub("\\?", "", Major_groups$Species)
 
 #list all the file names of the species level posterior samples
 allfiles <- list.files(paste0(datadir, "/POSTERIOR_SAMPLES/"))
@@ -64,7 +64,7 @@ allfiles2 <- gsub("\\?", "", allfiles2)
 # great an output folder
 if(group_level == "major_group"){
 
-  groups <- unique(major_groups$Major_group)
+  groups <- unique(Major_groups$Major_group)
 
   dir.create(paste0(outdir, "/MajorGroups"))
   outdir <- paste0(outdir, "/MajorGroups")
@@ -73,7 +73,7 @@ if(group_level == "major_group"){
 
 if(group_level == "taxa"){
 
-  groups <- unique(major_groups$Group)
+  groups <- unique(Major_groups$Group)
 
   dir.create(paste0(outdir, "/Taxa"))
   outdir <- paste0(outdir, "/Taxa")
@@ -86,14 +86,14 @@ for(group in groups){
 
   if(group_level == "taxa"){
 
-    species_list <- as.character(major_groups[major_groups$Group == group, "Species"])
+    species_list <- as.character(Major_groups[Major_groups$Group == group, "Species"])
 
   }
 
 
   if(group_level == "major_group"){
 
-    species_list <- as.character(major_groups[major_groups$Major_group == group, "Species"])
+    species_list <- as.character(Major_groups[Major_groups$Major_group == group, "Species"])
 
   }
 
