@@ -10,101 +10,184 @@ urlcolor: blue
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing")
 ```
 
-This vignette uses the UKBiodiversity R package to recreate the figures generated in the paper "" by Outhwaite et al.
+This vignette uses the UKBiodiversity R package to recreate the figures generated in the paper "Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens" by Outhwaite et al.
 
 
 # Set up R environment
 
-First you will need to download the datasets used.  These data are freely available from the EIDC [repository](https://catalogue.ceh.ac.uk/documents/0ec7e549-57d4-4e2d-b2d3-2199e1578d84) and are described in full in the accompanying data paper (REF).  
+First you will need to download the dataset used.  These data are freely available from the EIDC [repository](https://catalogue.ceh.ac.uk/documents/0ec7e549-57d4-4e2d-b2d3-2199e1578d84) and are described in full in the accompanying data paper: Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O. L., … Isaac, N. J. B. (in review). Annual estimates of occupancy for bryophytes, lichens and invertebrates in the UK (1970 – 2015). Scientific Data..  
 
 In the repository you will find the following items:
 
-* POSTERIOR_SAMPLES: zip file containing 1 file per species of the posterior samples
-* SUMMARY_TABLES: zip file containing 1 file per species of model output summary tables
-* Dataset_Information: csv file containing input data metadata
-* Species_Names: csv file containing information on species names
-* Species_Trends: csv file containing all estimates of species trends
+* POSTERIOR_SAMPLES: zip file containing 1 file per species of the posterior samples of average occupancy.
+* SUMMARY_TABLES: zip file containing 1 file per species of ocucupancy model output summary tables.
+* Dataset_Information: csv file containing input dataset metadata.
+* Species_Names: csv file containing information on species names.
+* Species_Trends: csv file containing all estimates of species trends as annual percentage growth rates.
 
-For this analysis you will need to unzip the POSTERIOR_SAMPLES folder and set this folder as the working directory using the function `setwd()`.
+For this analysis you will need to unzip the POSTERIOR_SAMPLES folder.
+
+Set your working direct so that this folder is within it, you can do this using the function `setwd()`.
+
+You will also need to download the R package called UKBiodiversity from Github.  This is detailed below.
 
 
+```{r explore data}
 
-## Generation gof roup level posterior sample datasets
+# where are the datasets
+datadir <- paste0(getwd(), "/POSTERIOR_SAMPLES")
 
-For some of the analyses we will need a matrix containing all the posterior samples of the species within each of the major groups and also for each of the taxa level groups.  In the repository, the posterior samples for each species are saved as individual csv files, one for each species.  Use the `combine_posteriors` function to make the required combinations of the posteriors by group and save these as .rdata files. 
+# list the files
+files <- list.files(datadir)
+
+# how many files are there?
+length(files) # 5293, one for each species
+
+# take a look at the files
+head(files)
+
+
+## Download the UKBiodiversity R package from GitHub
+install.packages("devtools")
+library(devtools)
+
+install_github("CharlieOuthwaite/UKBiodiversity")
+
+library(UKBiodiversity)
+
+```
+
+## Generation of group level posterior sample datasets
+
+For some of the analyses we will need a matrix containing all the posterior samples of the species within each of the major groups and for each of the taxa level groups.  In the repository, the posterior samples for each species are saved as individual csv files, one for each species.  Use the `combine_posteriors` function to make the required combinations of the posteriors by group and save these as .rdata files. The function will save the outputs in a subfolder of the directory that you specify, within a group specific subfolder. Use the `group_level` argument to select either "major_groups" or "taxa" level datasets.
 
 ```{r combine_posteriors, echo = TRUE}
 
+# Run the combine posteriors function providing a data directory and and output directory.
 
-# Set working directory
-datadir <- ("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads")
+## First for Major groups.
+# Runtime of this function:
+combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
+                   outdir = getwd(), 
+                   group_level = "major_groups",
+                   status = TRUE)
 
-# Take a look at files within the POSTERIOR_SAMPLES folder
-head(ist.files(datadir))
+# take a look at the outputs in the function generate subdirectory
+files <- list.files(paste0(getwd(), "/MajorGroups"), pattern = "posterior_samples")
+head(files)
 
-# Run for major groups (4 groups)
-outdir_mg <- dir.create(paste0(getwd(), "/Major_groups"))
 
-combine_posteriors(dir = getwd(), outdir = outdir_mg, group_level = "major_groups")
 
-# Run for taxa (31 groups)
-outdir_taxa <- dir.create(paste0(getwd(), "/Taxa"))
+## Then for taxa.
+# Runtime for this function:
+combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
+                   outdir = getwd(), 
+                   group_level = "taxa",
+                   status = TRUE)
 
-combine_posteriors(dir = getwd(), outdir = outdir_taxa, group_level = "major_groups")
+files <- list.files(paste0(getwd(), "/Taxa"), pattern = "posterior_samples")
+head(files)
 
+```
+
+
+# Recreating Figure 1 and associated trend estimates
+
+Figure 1 within the paper presents indicators of average occupancy over time for the four major groups.  Within the text are associated group level trends and a trend for all species since 1970.
+
+First, use the `generate_fig1` function to determine the group level average change and associated indicator values.  The use the `group_trends` function to estimate group level trends.  The `generate_fig1` function will save csv files of the indicator posterior values, the indicator values and a pdf file of the plot within a subdirectory of your specified folder.
+
+This function will only work using the output files from the "major_groups" specification of the `combine_posteriors` function.  These will be in a subfolder called "MajorGroups" in the outdir that you specified within that function.
+
+```{r generate_fig1}
+
+
+# Use the generate_fig1 function to generate figure 1
+# Runtime of this function:
+p1 <- generate_fig1(postdir = paste0(getwd(), "/MajorGroups"),
+              status = TRUE)
+
+p1
+
+# Use the group_trends function to estimate overall and major group level change
+# Runtime of this function:
+trends <- group_trends(datadir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups/geomeans")
 
 
 ```
 
 
+# Recreating figure 2
 
+Figure 2 presents box plots of absolute change in average occupancy across 2 halves of the time period assessed for each major group.  It shows estimates for 1970 to 1992 and for 1993 to 2015.
 
+Again, this function uses the major group level posteriors of average occupancy across each group that were generated and saved within the `generate_fig1` function.  These will have been saved within a subfolder within the `/MajorGroups` folder called "geomeans".  You will need to direct the function to this folder.
 
-
-# Recreating Figure 1 and associated trend estimates
-
-
-
-```{r generate_fig1, echo = TRUE}
-
-
-
-
-# Testing combine posteriors function
-combine_posteriors(group_level = "taxa",
-                   datadir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads",
-                   outdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing",
-                   status = TRUE)
-
-# testing generate fig 1 function
-generate_fig1(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups")
-
-
-# testing group_trends function
-trends <- group_trends(datadir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups/geomeans")
+```{r generate_fig2}
 
 # testing generate fig 2 function
 generate_fig2(datadir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups/geomeans")
 
 
+```
+
+
+# Recreating figure 3
+
+
+
+```{r generate_fig3}
 # testing generate_fig3 function - this takes a while to run.
 generate_fig3(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups")
 
 
+
+
+```
+
+
+# Recreating figure 4
+
+
+
+```{r generate_fig4}
+
 # testing generate fig 4 function
 generate_fig4(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/Taxa")
 
+
+
+```
+
+
+
+# Generate figure 5
+
+
+```{r generate_fig5}
 
 # testing generate_fig5 function - this takes a while to run.
 generate_fig5(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads/POSTERIOR_SAMPLES",
               outdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing",
               sp_trends = read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads/Species_Trends.csv"))
 
+```
+
+
+# Generate supplementary figure 1
+
+
+```{r generate_fi1supp}
+
 # testing generate_fig1supp function - this takes a while to run
 generate_fig1supp(postdir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing/MajorGroups",
                   sp_trends = read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Repository downloads/Species_Trends.csv"))
 
 
+```
 
+
+You have now recreated the analyses carried out in the paper by Outhwaite et al using the original data files!

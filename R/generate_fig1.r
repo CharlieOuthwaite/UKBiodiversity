@@ -7,6 +7,8 @@
 #' of the associated paper and for the generation of figure 3.
 #'
 #' @param postdir A filepath specifying where the posterior combinations are saved.
+#' @param status Logical.  If `TRUE`, group name will be printed to the console
+#' as means and indicator values are being estimated.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -24,7 +26,7 @@
 #' @export
 #' @import ggplot
 
-generate_fig1  <- function(postdir){
+generate_fig1  <- function(postdir, status = TRUE){
 
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
@@ -41,6 +43,8 @@ for(file in files){
 
   # extract the group name
   group <- sub("_posterior_samples_national.rdata", "", file)
+
+  if(status == TRUE) print(group)
 
   # load in the combined posterior generated from the combine_posteriors function
   load(paste0(postdir, "/", file))
@@ -147,7 +151,7 @@ ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fill = "
 # save the plot
 ggsave(filename = paste0(outdir, "/Figure_1.pdf"), height = 6, width = 6)
 
-
+return(last_plot)
 
 }
 

@@ -136,4 +136,6 @@ ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
 # save the plot
 ggsave(filename = paste0(datadir, "/Figure_2.pdf"), height = 6, width = 6)
 
+last_plot
+
 }
