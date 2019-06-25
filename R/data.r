@@ -10,4 +10,4 @@
 #'   \item{Major_group}{Major group, e.g. FREHWATER_SPECIES, 4 levels}
 #'   ...
 #' }
-"Major_groups"
+"major_groups"
