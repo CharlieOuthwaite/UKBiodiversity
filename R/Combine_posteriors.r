@@ -150,7 +150,7 @@ for(group in groups){
 
 } # end of loop through groups
 
-
+if(group_level == "major_group"){
 
   ### combine posterior sets of all groups to get an "ALL" set for all species ###
   # this is used later to estimate overall change in average occupancy.
@@ -174,6 +174,6 @@ for(group in groups){
 
   # save as rdata file
   save(group_post, file = paste0(outdir, "/ALL_posterior_samples_national.rdata"))
-
+}
 
 }

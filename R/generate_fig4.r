@@ -115,8 +115,8 @@ for(file in files){
 colnames(all_plot_data) <- c("mean", "UCI", "LCI", "year", "group")
 
 
-# read in major orders file (this is supplied within the package)
-major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/Major_groups.csv")
+# get data on major groupings
+major_groups <- as.data.frame(major_groups)
 
 # space to save major group
 all_plot_data$major_group <- NA
