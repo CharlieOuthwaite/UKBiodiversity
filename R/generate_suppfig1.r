@@ -27,7 +27,7 @@
 #' @import ggplot2
 #' @import cowplot
 
-generate_fig1supp  <- function(postdir, sp_trends, status){
+generate_fig1supp  <- function(postdir, sp_trends, status = TRUE){
 
   dir.create(paste0(postdir, "/supplementary"))
   outdir <- paste0(postdir, "/supplementary")

@@ -43,7 +43,7 @@ combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
 # load the major groups list
 #data("major_groups")
 
-major_groups
+major_groups <- major_groups
 
 # remove brackets from list and outputs
 major_groups$Species <- sub("\\(", "", major_groups$Species)
