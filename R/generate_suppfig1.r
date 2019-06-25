@@ -16,8 +16,11 @@
 #' \dontrun{
 #'
 #' # Run generate_fig1 function
-#' # postdir should be the filepath of where the 4 major group level posteriors combinationss are saved.
-#' generate_fig1supp(postdir = paste0(getwd(), "/MajorGroups"), sp_trends = read.csv(paste0(datadir, "/Species_Trends.csv")), outdir = paste0(getwd(), "/MajorGroups"))
+#' # postdir should be the filepath of where the 4 major group level posteriors
+#' # combinationss are saved.
+#' generate_fig1supp(postdir = paste0(getwd(), "/MajorGroups"),
+#' sp_trends = read.csv(paste0(datadir, "/Species_Trends.csv")),
+#' outdir = paste0(getwd(), "/MajorGroups"))
 #'
 #' }
 #' @export

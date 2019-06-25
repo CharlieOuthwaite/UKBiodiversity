@@ -19,7 +19,8 @@
 #' \dontrun{
 #'
 #' # Run generate_fig1 function
-#' # postdir should be the filepath of where the 4 major group level posteriors combinationss are saved.
+#' # postdir should be the filepath of where the 4 major group level posteriors
+#' # combinations are saved.
 #' generate_fig1(postdir = paste0(getwd(), "/MajorGroups"))
 #'
 #' }
