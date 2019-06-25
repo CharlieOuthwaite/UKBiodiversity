@@ -4,7 +4,7 @@
 \alias{generate_fig1supp}
 \title{Generating Supplementary Figure 1}
 \usage{
-generate_fig1supp(postdir, sp_trends, status)
+generate_fig1supp(postdir, sp_trends, status = TRUE)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the posterior combinations are saved.}
