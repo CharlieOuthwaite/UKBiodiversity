@@ -41,9 +41,7 @@ combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
   if(!group_level == "taxa" & !group_level == "major_group") stop("group_level must be taxa or major_group")
 
 # load the major groups list
-#data("major_groups")
-
-major_groups <- major_groups
+major_groups <- as.data.frame(major_groups)
 
 # remove brackets from list and outputs
 major_groups$Species <- sub("\\(", "", major_groups$Species)
