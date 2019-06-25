@@ -5,6 +5,7 @@
 #'
 #' @param datadir A filepath specifying where the posteior indicator values are saved.
 #' If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".
+#' @param save_plot Logical. If `TRUE` plot will be saved in `datadir`
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -23,7 +24,7 @@
 #' @import ggplot2
 
 
-generate_fig2 <- function(datadir){
+generate_fig2 <- function(datadir, save_plot = TRUE){
 
 # list the geomean iterations outputs
 datasets <- list.files(datadir, pattern = "indicator_posterior_vals")
@@ -136,8 +137,10 @@ p1 <- ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
   scale_y_continuous(limits = c(-0.05, 0.06), breaks = seq(-0.05, 0.06, 0.01),
                      expand = c(0,0))
 
+if(save_plot == TRUE){
 # save the plot
 ggsave(filename = paste0(datadir, "/Figure_2.pdf"), plot = p1, height = 6, width = 6)
+}
 
 return(p1)
 
