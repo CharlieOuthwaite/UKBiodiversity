@@ -118,7 +118,7 @@ plot_data$group <- factor(plot_data$group, levels(plot_data$group)[c(2, 3, 4, 1)
 
 
 # generate the plot
-ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
+p1 <- ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
   stat_summary(fun.data = quantiles_95, geom="boxplot", lwd = 0.1) +
   theme_bw() +
   theme(axis.title.x = element_blank(),
@@ -137,8 +137,8 @@ ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
                      expand = c(0,0))
 
 # save the plot
-ggsave(filename = paste0(datadir, "/Figure_2.pdf"), height = 6, width = 6)
+ggsave(filename = paste0(datadir, "/Figure_2.pdf"), plot = p1, height = 6, width = 6)
 
-
+return(p1)
 
 }
