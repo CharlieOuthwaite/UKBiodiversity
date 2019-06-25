@@ -19,7 +19,7 @@
 #'
 #' }
 #' @export
-#' @import ggplot
+#' @import ggplot2
 #' @import cowplot
 
 generate_fig4 <- function(postdir){

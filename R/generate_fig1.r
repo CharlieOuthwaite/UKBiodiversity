@@ -23,7 +23,6 @@
 #' generate_fig1(postdir = paste0(getwd(), "/MajorGroups"))
 #'
 #' }
-#' @export
 #' @import ggplot2
 
 generate_fig1  <- function(postdir, status = TRUE){

@@ -33,7 +33,6 @@
 #'status = TRUE)
 #'
 #' }
-#' @export
 
 combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
 
@@ -42,7 +41,6 @@ combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
 
 # load the major groups list
 data("major_groups")
-#major_groups <- read.csv("C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/UKBiodiversity/Data/major_groups.csv")
 
 # remove brackets from list and outputs
 major_groups$Species <- sub("\\(", "", major_groups$Species)
