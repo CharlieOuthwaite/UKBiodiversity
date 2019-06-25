@@ -94,6 +94,9 @@ write.csv(iters_tab, paste0(datadir, "/Group_before_after_1992_change_iters_abso
 # read in short-term and long-term trend iterations
 plot_data <- read.csv(paste0(datadir, "/", "Group_before_after_1992_change_iters_absolute.csv"))
 
+# Remove the data for group "ALL"
+plot_data <- plot_data[!plot_data$group == "ALL", ]
+
 # edit labels
 plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater", plot_data$group)
 plot_data$group <- sub("LOWER_PLANTS", "Bryophytes \n& Lichens", plot_data$group)
