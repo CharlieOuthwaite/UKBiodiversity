@@ -5,7 +5,7 @@ Date: 2019-06-08
 Authors@R: person("Charlotte", "Outhwaite", email = "charlotteouthwaite@gmail.com", role = c("aut", "cre"))
 Description: This package contains functions to generate the results and figures presented in the paper "Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens" by Outhwaite et al.
 Depends: R (>= 3.5.0)
-Imports: ggplot2, cowplot, viridis
+Imports: ggplot2, cowplot, viridis, utils, stats
 Suggests: knitr, roxygen2 
 License: MIT + file LICENSE
 Encoding: UTF-8
