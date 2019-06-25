@@ -37,7 +37,10 @@ generate_fig1supp  <- function(postdir, sp_trends, status){
   files <- list.files(postdir, pattern = ".rdata")
 
   # check there's only 4 sets of posteriors
-  if(length(files) != 4) stop("There are more than 4 datafiles in the directory.")
+  if(length(files) != 5) stop("There are more than 5 datafiles in the directory.")
+
+  # remove the all species files
+  files <- files[!grepl("ALL", files)]
 
   # remove dodgy characters
   sp_trends$Species <- sub("/", "_", sp_trends$Species)
