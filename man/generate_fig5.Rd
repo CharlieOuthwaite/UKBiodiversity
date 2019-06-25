@@ -27,9 +27,11 @@ associated paper.
 \examples{
 \dontrun{
 
-# Run generate_fig5 function to produce plot of average occupancy against trend in occupancy.
+# Run generate_fig5 function to produce plot of average occupancy against
+# trend in occupancy.
 # datadir should be the filepath of where the posterior samples are saved.
-generate_fig5(postdir = "/POSTERIOR_SAMPLES", outdir = getwd(), sp_trends = read.csv(paste0(datadir, "/Species_Trends.csv")))
+generate_fig5(postdir = "/POSTERIOR_SAMPLES", outdir = getwd(),
+sp_trends = read.csv(paste0(datadir, "/Species_Trends.csv")))
 
 
 }

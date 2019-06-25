@@ -17,7 +17,8 @@ This takes the taxa level posterior combinations generated using the
 \dontrun{
 
 # Run generate_fig4 function
-# postdir should be the filepath of where the 4 major group level posteriors combinationss are saved.
+# postdir should be the filepath of where the 4 major group level posteriors
+# combinationss are saved.
 generate_fig4(postdir = paste0(getwd(), "/Taxa"))
 
 }

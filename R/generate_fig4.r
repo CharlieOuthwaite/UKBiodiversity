@@ -21,7 +21,7 @@
 #' }
 #' @export
 #' @import ggplot2
-#' @import cowplot
+#' @importFrom cowplot plot_grid
 
 generate_fig4 <- function(postdir){
 
