@@ -8,7 +8,7 @@
 #'
 #' @param postdir A filepath specifying where the posterior combinations are saved.
 #' @param status Logical.  If `TRUE`, group name will be printed to the console
-#' as means and indicator values are being estimated.
+#' as means and indicator values are being estimated. Default is `TRUE`.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -24,7 +24,7 @@
 #'
 #' }
 #' @export
-#' @import ggplot
+#' @import ggplot2
 
 generate_fig1  <- function(postdir, status = TRUE){
 
