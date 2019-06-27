@@ -49,7 +49,7 @@ major_groups$Species <- sub("\\)", "", major_groups$Species)
 major_groups$Species <- gsub("\\?", "", major_groups$Species)
 
 #list all the file names of the species level posterior samples
-allfiles <- list.files(paste0(datadir, "/POSTERIOR_SAMPLES/"))
+allfiles <- list.files(datadir)
 
 # check that files available in the datadir
 if(!length(allfiles) == 5293) stop("Repository POSTERIOR_SAMPLES folder not in datadir")

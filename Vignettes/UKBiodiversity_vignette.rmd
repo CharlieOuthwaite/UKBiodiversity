@@ -74,7 +74,7 @@ For some of the analyses we will need a matrix containing all the posterior samp
 # Runtime of this function:
 combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
                    outdir = getwd(), 
-                   group_level = "major_groups",
+                   group_level = "major_group",
                    status = TRUE)
 
 # Take a look at the outputs in the function generated subdirectory
