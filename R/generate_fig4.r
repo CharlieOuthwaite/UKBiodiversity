@@ -4,6 +4,8 @@
 #' \code{combine_posteriors} function and generates figure 4 presented within the paper.
 #'
 #' @param postdir A filepath specifying where the posterior combinations are saved.
+#' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
+#' within the `postdir`. Default is `TRUE`.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -23,7 +25,7 @@
 #' @import ggplot2
 #' @importFrom cowplot plot_grid
 
-generate_fig4 <- function(postdir){
+generate_fig4 <- function(postdir, save_plot = TRUE){
 
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
@@ -188,7 +190,10 @@ plot_grid(p[[2]], p[[1]], p[[4]], p[[3]], align = "hv", ncol = 2,
                      "Bryophytes & Lichens"),
           hjust = 0, label_size = 12, label_x = 0.1)
 
+if(save_plot == TRUE){
 # save the plot
 ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 10, width = 16)
+
+}
 
 }
