@@ -1,6 +1,3 @@
-```{r setup, include=FALSE, echo = F}
-knitr::opts_chunk$set(echo = TRUE)
-```
 # UKBiodiversity
 
 The functions in UKBiodiversity can be used to recreate the analyses carried out in the associated paper "Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens" by Outhwaite *et al*.
