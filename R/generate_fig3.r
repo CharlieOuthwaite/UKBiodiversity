@@ -6,6 +6,8 @@
 #' @param postdir A filepath specifying where the posteior samples that are generated
 #' from the combine_posteriors function are saved. are saved. If outputs have not been
 #' moved, this will be in a directory "/MajorGroups".
+#' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
+#' within the `postdir`. Default is `TRUE`.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -24,7 +26,7 @@
 #' @import ggplot2
 
 
-generate_fig3 <- function(postdir){
+generate_fig3 <- function(postdir, save_plot = TRUE){
 
 # where to save the outputs
 dir.create(paste0(postdir, "/quantiles"))
@@ -146,7 +148,7 @@ all_plot_data$group <- as.factor(all_plot_data$group)
 all_plot_data$group <- factor(all_plot_data$group, levels(all_plot_data$group)[c(2,3,4,1)])
 
 
-ggplot() +
+p1 <- ggplot() +
   geom_line(data = all_plot_data, aes(x = year, y = mean_0.25), colour = c("#EE3B3B"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.25', ymax = 'UCI_0.25', linetype = NA),
               alpha = 0.4, fill = c("#EE3B3B")) +
@@ -171,7 +173,11 @@ ggplot() +
         axis.ticks = element_line(size = 0.2),
         strip.background = element_rect(size = 0.2))
 
-ggsave(filename = paste0(outdir, "/Figure_3.pdf"), height = 6, width = 6)
+if(save_plot == TRUE){
+# save the plot as a pdf
+ggsave(filename = paste0(outdir, "/Figure_3.pdf"), plot = p1, height = 6, width = 6)
+}
 
+return(p1)
 }
 

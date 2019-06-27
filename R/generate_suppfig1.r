@@ -5,7 +5,9 @@
 #' @param postdir A filepath specifying where the posterior combinations are saved.
 #' @param sp_trends A dataframe, downloaded from the repository which details the species
 #' level trends in occupancy and the years for which data were avaialble for each species.
-#' @param status Logical. If \code{TRUE} the progress through each group and number of records subset will be printed to the console.
+#' @param status Logical. If `TRUE` the progress through each group and number of records subset will be printed to the console.
+#' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
+#' within the `outdir`. Default is `TRUE`.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -27,7 +29,7 @@
 #' @import ggplot2
 #' @import cowplot
 
-generate_fig1supp  <- function(postdir, sp_trends, status = TRUE){
+generate_fig1supp  <- function(postdir, sp_trends, status = TRUE, save_plot = TRUE){
 
   dir.create(paste0(postdir, "/supplementary"))
   outdir <- paste0(postdir, "/supplementary")
@@ -166,7 +168,7 @@ generate_fig1supp  <- function(postdir, sp_trends, status = TRUE){
 
 
 
-  ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fill = "group")) +
+p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fill = "group")) +
     theme_bw() +
     geom_ribbon(aes_string(ymin = "LCI", ymax = "UCI", linetype = NA),
                 alpha = 0.3) +
@@ -184,11 +186,13 @@ generate_fig1supp  <- function(postdir, sp_trends, status = TRUE){
           axis.ticks = element_line(size = 0.2)) +
     facet_wrap(~nrecs, nrow = 2)
 
+if(save_plot == TRUE){
   # save the plot
-  ggsave(filename = paste0(outdir, "/Supp_Fig1.pdf"), height = 10, width = 16)
+  ggsave(filename = paste0(outdir, "/Supp_Fig1.pdf"), plot = p1, height = 10, width = 16)
 
+  }
 
-
+return(p1)
   }
 
 

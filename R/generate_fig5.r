@@ -12,6 +12,8 @@
 #' @param sp_trends A dataframe, downloaded from the repository which details the species
 #' level trends in occupancy and the years for which data were avaialble for each species.
 #' @param status Logical. If TRUE the species name being worked on will be printed to the console.
+#' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
+#' within the `outdir`. Default is `TRUE`.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -34,9 +36,7 @@
 #' @import viridis
 
 
-#sp_trends <- read.csv(paste0(datadir, "/Species_Trends.csv"))
-
-generate_fig5 <- function(postdir, outdir, sp_trends, status = TRUE){
+generate_fig5 <- function(postdir, outdir, sp_trends, status = TRUE, save_plot = TRUE){
 
 
 #### first need to calculate average occupancy for each species
@@ -145,7 +145,7 @@ line_data <- data.frame(x = c(0,1), y = c(0,-1), w = c(0,1), z = c(1,0))
 
 
 # generate figure
-ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
+p1 <- ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
   stat_bin_hex(aes(fill = ..count..), binwidth = c(0.025, 0.5)) +
   scale_fill_viridis(limits = c(1, 50),  name = "n species", trans = "log", breaks = c(1,3,7,20)) +
   geom_hline(yintercept = 0, linetype = 'dashed', lwd = 0.5) +
@@ -164,8 +164,11 @@ ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
   scale_x_sqrt(expand = c(0,0), limits=c(0, 1)) +
   scale_y_continuous(limits = c(-20, 25))
 
+if(save_plot == TRUE){
 # save the plot
-ggsave(filename = paste0(outdir, "/Figure_5.pdf"), height = 6, width = 6)
+ggsave(filename = paste0(outdir, "/Figure_5.pdf"), plot = p1, height = 6, width = 6)
+}
 
+return(p1)
 
 }

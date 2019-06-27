@@ -9,6 +9,8 @@
 #' @param postdir A filepath specifying where the posterior combinations are saved.
 #' @param status Logical.  If `TRUE`, group name will be printed to the console
 #' as means and indicator values are being estimated. Default is `TRUE`.
+#' @param save_plot Logical. If `TRUE` plot will be saved as a PDF file as well
+#' as being returned to the console.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -135,7 +137,7 @@ all_plot_data$group <- as.factor(all_plot_data$group)
 all_plot_data$group <- factor(all_plot_data$group, levels(all_plot_data$group)[c(2,3,4,1)])
 
 # recreate figure 1
-ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fill = "group")) +
+p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fill = "group")) +
   theme_bw() +
   geom_ribbon(aes_string(ymin = "LCI", ymax = "UCI", linetype = NA),
               alpha = 0.3) +
@@ -149,10 +151,12 @@ ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fill = "
         legend.position = c(0.2,0.85), panel.grid.minor = element_blank(),
         panel.grid.major = element_blank())
 
+if(save_plot == TRUE){
 # save the plot
-ggsave(filename = paste0(outdir, "/Figure_1.pdf"), height = 6, width = 6)
+ggsave(filename = paste0(outdir, "/Figure_1.pdf"), plot = p1, height = 6, width = 6)
+}
 
-return(last_plot)
+return(p1)
 
 }
 
