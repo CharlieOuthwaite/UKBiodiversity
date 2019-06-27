@@ -75,7 +75,7 @@ For some of the analyses we will need a matrix containing all the posterior samp
 combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
                    outdir = getwd(), 
                    group_level = "major_group",
-                   status = TRUE)
+                   status = FALSE)
 
 # Take a look at the outputs in the function generated subdirectory
 files <- list.files(paste0(getwd(), "/MajorGroups"), pattern = "posterior_samples")
@@ -87,7 +87,7 @@ head(files)
 combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
                    outdir = getwd(), 
                    group_level = "taxa",
-                   status = TRUE)
+                   status = FALSE)
 
 # Take a look at the outputs in the function generated subdirectory
 files <- list.files(paste0(getwd(), "/Taxa"), pattern = "posterior_samples")
@@ -112,7 +112,7 @@ This function will only work using the output files from the "major_groups" spec
 # Use the generate_fig1 function to generate figure 1 nad associated outputs.
 # Runtime of this function:
 generate_fig1(postdir = paste0(getwd(), "/MajorGroups"),
-              status = TRUE,
+              status = FALSE,
               save_plot = TRUE)
 
 
@@ -197,7 +197,7 @@ Supplementary Figure 1 is a representation of Figure 1 in the main text except v
 # Runtime for this function
 generate_fig1supp(postdir = paste0(getwd(), "/MajorGroups"),
                   sp_trends = paste0(getwd(), "/Species_Trends.csv"),
-                  status = TRUE,
+                  status = FALSE,
                   save_plot = TRUE)
 
 
