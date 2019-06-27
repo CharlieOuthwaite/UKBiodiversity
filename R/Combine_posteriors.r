@@ -109,7 +109,7 @@ for(group in groups){
     sp <- allfiles[grep(paste0(species_list[i], ".csv"), allfiles2, fixed = TRUE)]
 
     # read in the species csv posterior samples file
-    sp_post <- read.csv(paste0(datadir, "/POSTERIOR_SAMPLES/", sp))
+    sp_post <- read.csv(paste0(datadir, "/", sp))
 
     # select the largest region values (GB or UK)
 
