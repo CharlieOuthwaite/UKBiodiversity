@@ -29,7 +29,7 @@
 #' @export
 #' @import ggplot2
 
-generate_fig1  <- function(postdir, status = TRUE){
+generate_fig1  <- function(postdir, status = TRUE, save_plot = TRUE){
 
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))

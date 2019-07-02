@@ -66,7 +66,7 @@ library(UKBiodiversity)
 
 For some of the analyses we will need a matrix containing all the posterior samples of the species within each of the major groups and for each of the taxa level groups.  In the repository, the posterior samples for each species are saved as individual csv files, one for each species.  Use the `combine_posteriors` function to make the required combinations of the posteriors by major group  and taxa. The function will save the outputs as .rdata files in a subfolder of the directory that you specify, within a group specific subfolder. Use the `group_level` argument to select either "major_groups" or "taxa" level datasets.
 
-```{r combine_posteriors}
+```{r combine_posteriors, cache= TRUE}
 
 # Run the combine posteriors function providing a data directory and and output directory.
 
