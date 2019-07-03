@@ -20,6 +20,9 @@ This vignette uses the UKBiodiversity R package to recreate the figures generate
 
 First you will need to download the dataset used.  These data are freely available from the EIDC [repository](https://catalogue.ceh.ac.uk/documents/0ec7e549-57d4-4e2d-b2d3-2199e1578d84) and are described in full in the accompanying data paper: Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O. L., … Isaac, N. J. B. (in review). Annual estimates of occupancy for bryophytes, lichens and invertebrates in the UK (1970 – 2015). *Scientific Data*.
 
+
+To download you will need to register with the website first, then you can follow the intructions to download the data.
+
 In the repository you will find the following items:
 
 * POSTERIOR_SAMPLES: zip file containing 1 file per species of the posterior samples of average occupancy.
@@ -66,7 +69,7 @@ library(UKBiodiversity)
 
 For some of the analyses we will need a matrix containing all the posterior samples of the species within each of the major groups and for each of the taxa level groups.  In the repository, the posterior samples for each species are saved as individual csv files, one for each species.  Use the `combine_posteriors` function to make the required combinations of the posteriors by major group  and taxa. The function will save the outputs as .rdata files in a subfolder of the directory that you specify, within a group specific subfolder. Use the `group_level` argument to select either "major_groups" or "taxa" level datasets.
 
-```{r combine_posteriors, cache= TRUE}
+```{r combine_posteriors}
 
 # Run the combine posteriors function providing a data directory and and output directory.
 
@@ -83,7 +86,7 @@ head(files)
 
 
 ## Then for taxa.
-# Runtime for this function:
+# Runtime for this function: ~ 53 minutes
 combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
                    outdir = getwd(), 
                    group_level = "taxa",
