@@ -11,7 +11,7 @@
 #' as means and indicator values are being estimated. Default is `TRUE`.
 #' @param save_plot Logical. If `TRUE` plot will be saved as a PDF file as well
 #' as being returned to the console.
-#' @parm intervals A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -30,7 +30,7 @@
 #' @export
 #' @import ggplot2
 
-generate_fig1  <- function(postdir, status = TRUE, save_plot = TRUE, intervals=90){
+generate_fig1  <- function(postdir, status = TRUE, save_plot = TRUE, interval=90){
 
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
@@ -42,9 +42,9 @@ files <- list.files(postdir, pattern = ".rdata")
 # check there's only 4 sets of posteriors
 if(length(files) != 5) stop("There are more than 5 datafiles in the directory.")
 
-# convert invervals (a number between 0 and 100) into quantiles
-if(intervals > 100 | intervals < 0) stop("Intervals must be between 0 and 100") 
-q <- 0.5 + (c(-1,1)*intervals/200)
+# convert inverval (a number between 0 and 100) into quantiles
+if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+q <- 0.5 + (c(-1,1)*interval/200)
 
 # loop through each group and generate the indicator values
 for(file in files){

@@ -18,14 +18,3 @@ rescale <- function(x){
   rescaled <- x*multipier
   return(rescaled)
 }
-
-
-# estimating quantiles
-quantiles_95 <- function(x) {
-  r <- quantile(x, probs=c(0.025, 0.25, 0.5, 0.75, 0.975))
-  names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
-  r
-}
-
-
-

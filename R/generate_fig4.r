@@ -6,6 +6,8 @@
 #' @param postdir A filepath specifying where the posterior combinations are saved.
 #' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
 #' within the `postdir`. Default is `TRUE`.
+#' @parm intervals A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
+
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -25,8 +27,12 @@
 #' @import ggplot2
 #' @importFrom cowplot plot_grid
 
-generate_fig4 <- function(postdir, save_plot = TRUE){
+generate_fig4 <- function(postdir, save_plot = TRUE, interval=90){
 
+# convert inverval (a number between 0 and 100) into quantiles
+if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+q <- 0.5 + (c(-1,1)*interval/200)
+  
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
 outdir <- paste0(postdir, "/geomeans")
@@ -80,8 +86,8 @@ for(file in files){
 
   # calculate mean and 95% CIs
   final_rescaled <- data.frame(avg_occ = apply(all_means_rescaled, 2, mean, na.rm = TRUE),
-                               upper_CI = apply(all_means_rescaled, 2, quantile, probs = 0.95, na.rm = TRUE),
-                               lower_CI = apply(all_means_rescaled, 2, quantile, probs = 0.05, na.rm = TRUE))
+                               upper_CI = apply(all_means_rescaled, 2, quantile, probs = q[2], na.rm = TRUE),
+                               lower_CI = apply(all_means_rescaled, 2, quantile, probs = q[1], na.rm = TRUE))
 
   # add in the year
   final_rescaled$year <- as.numeric(rownames(final_rescaled))

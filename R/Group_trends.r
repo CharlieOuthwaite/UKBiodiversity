@@ -7,6 +7,7 @@
 #'
 #' @param datadir A filepath specifying where the posteior indicator values are saved.
 #' If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".
+#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -26,7 +27,7 @@
 
 
 
-group_trends <- function(datadir){
+group_trends <- function(datadir, interval=90){
 
 # list the geomean iterations outputs
 files <- list.files(datadir, pattern = "_indicator_posterior_vals")
@@ -36,6 +37,10 @@ files <- list.files(datadir, pattern = "_indicator_posterior_vals")
 results_tab <- NULL
 
 iters_tab <- NULL
+
+# convert inverval (a number between 0 and 100) into quantiles
+if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+q <- 0.5 + (c(-1,1)*interval/200)
 
 # loop through each group
 for(file in files){
@@ -49,13 +54,13 @@ for(file in files){
   # get the mean and 95% CIs for the change in this group
   overall_change <- ((iters_data[,46] - iters_data[, 1])/iters_data[, 1]) * 100
   mean <- mean(overall_change)
-  UCI_95 <- quantile(overall_change, probs = 0.975)
-  LCI_95 <-  quantile(overall_change, probs = 0.025)
+  UCI <- quantile(overall_change, probs = q[2])
+  LCI <-  quantile(overall_change, probs = q[1])
 
   # round to 3 decimal places
   mean <- round(mean, 3)
-  UCI_95 <- round(UCI_95, 3)
-  LCI_95 <- round(LCI_95, 3)
+  UCI <- round(UCI, 3)
+  LCI <- round(LCI, 3)
 
   overall_change <- as.data.frame(overall_change)
   overall_change$group <- group
@@ -63,7 +68,7 @@ for(file in files){
   iters_tab <- rbind(iters_tab, overall_change)
 
   # combine results
-  result <- c(group, mean, LCI_95, UCI_95)
+  result <- c(group, mean, LCI, UCI)
 
   # add to results table
   results_tab <- rbind(results_tab, result)
