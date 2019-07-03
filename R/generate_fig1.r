@@ -11,6 +11,7 @@
 #' as means and indicator values are being estimated. Default is `TRUE`.
 #' @param save_plot Logical. If `TRUE` plot will be saved as a PDF file as well
 #' as being returned to the console.
+#' @parm intervals A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -29,7 +30,7 @@
 #' @export
 #' @import ggplot2
 
-generate_fig1  <- function(postdir, status = TRUE, save_plot = TRUE){
+generate_fig1  <- function(postdir, status = TRUE, save_plot = TRUE, intervals=90){
 
 # where to save the outputs
 dir.create(paste0(postdir, "/geomeans"))
@@ -40,6 +41,10 @@ files <- list.files(postdir, pattern = ".rdata")
 
 # check there's only 4 sets of posteriors
 if(length(files) != 5) stop("There are more than 5 datafiles in the directory.")
+
+# convert invervals (a number between 0 and 100) into quantiles
+if(intervals > 100 | intervals < 0) stop("Intervals must be between 0 and 100") 
+q <- 0.5 + (c(-1,1)*intervals/200)
 
 # loop through each group and generate the indicator values
 for(file in files){
@@ -85,10 +90,10 @@ write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals
 all_means_rescaled <- t(apply(all_means, 1, rescale))
 
 
-# calculate mean and 95% CIs
+# calculate mean and CIs
 final_rescaled <- data.frame(avg_occ = apply(all_means_rescaled, 2, mean, na.rm = TRUE),
-                    upper_CI = apply(all_means_rescaled, 2, quantile, probs = 0.95, na.rm = TRUE),
-                    lower_CI = apply(all_means_rescaled, 2, quantile, probs = 0.05, na.rm = TRUE))
+                    upper_CI = apply(all_means_rescaled, 2, quantile, probs = q[2], na.rm = TRUE),
+                    lower_CI = apply(all_means_rescaled, 2, quantile, probs = q[1], na.rm = TRUE))
 
 # add in the year
 final_rescaled$year <- as.numeric(rownames(final_rescaled))
