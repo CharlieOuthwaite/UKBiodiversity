@@ -58,7 +58,7 @@ head(files)
 library(devtools)
 
 # Install the R package from GitHUb
-install_github("CharlieOuthwaite/UKBiodiversity", quiet = T, force = TRUE)
+install_github("CharlieOuthwaite/UKBiodiversity", quiet = TRUE, force = TRUE)
 
 # Load the package
 library(UKBiodiversity)

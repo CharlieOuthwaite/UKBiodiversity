@@ -4,7 +4,8 @@
 \alias{generate_fig5}
 \title{Generate Figure 5}
 \usage{
-generate_fig5(postdir, outdir, sp_trends, status = TRUE)
+generate_fig5(postdir, outdir, sp_trends, status = TRUE,
+  save_plot = TRUE)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the species level posteriors have been saved.
@@ -16,6 +17,9 @@ If outputs have not been moved, this will be in a directory "/POSTERIOR_SAMPLES"
 level trends in occupancy and the years for which data were avaialble for each species.}
 
 \item{status}{Logical. If TRUE the species name being worked on will be printed to the console.}
+
+\item{save_plot}{Logical.  If `TRUE`, the plot will be saved as a PDF file
+within the `outdir`. Default is `TRUE`.}
 }
 \description{
 This takes the posterior estimates for each species and the species trend estimates

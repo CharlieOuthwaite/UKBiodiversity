@@ -4,12 +4,15 @@
 \alias{generate_fig3}
 \title{Generate Figure 3}
 \usage{
-generate_fig3(postdir)
+generate_fig3(postdir, save_plot = TRUE)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the posteior samples that are generated
 from the combine_posteriors function are saved. are saved. If outputs have not been
 moved, this will be in a directory "/MajorGroups".}
+
+\item{save_plot}{Logical.  If `TRUE`, the plot will be saved as a PDF file
+within the `postdir`. Default is `TRUE`.}
 }
 \description{
 This takes the posterior values of the group level indicators generated within the

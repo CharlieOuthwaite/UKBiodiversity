@@ -4,7 +4,7 @@
 \alias{generate_fig1supp}
 \title{Generating Supplementary Figure 1}
 \usage{
-generate_fig1supp(postdir, sp_trends, status = TRUE)
+generate_fig1supp(postdir, sp_trends, status = TRUE, save_plot = TRUE)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the posterior combinations are saved.}
@@ -12,7 +12,10 @@ generate_fig1supp(postdir, sp_trends, status = TRUE)
 \item{sp_trends}{A dataframe, downloaded from the repository which details the species
 level trends in occupancy and the years for which data were avaialble for each species.}
 
-\item{status}{Logical. If \code{TRUE} the progress through each group and number of records subset will be printed to the console.}
+\item{status}{Logical. If `TRUE` the progress through each group and number of records subset will be printed to the console.}
+
+\item{save_plot}{Logical.  If `TRUE`, the plot will be saved as a PDF file
+within the `outdir`. Default is `TRUE`.}
 }
 \description{
 This generates version of figure 1 but with subsets of species based on the number of records available for the occupancy estimation.
