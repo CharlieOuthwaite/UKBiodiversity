@@ -38,7 +38,7 @@ Set your working directory so that this folder is within it, you can do this usi
 You will also need to download the R package called UKBiodiversity from Github.  How to do this is detailed below.
 
 
-```{r explore_data, message = FALSE}
+```{r explore_data, message = FALSE, warning = FALSE}
 
 # Where are the posterior sample files?
 datadir <- paste0(getwd(), "/POSTERIOR_SAMPLES")
@@ -76,7 +76,7 @@ Note that these functions can take a long time to run (estimated run time below)
 # Run the combine posteriors function providing a data directory and and output directory.
 
 ## First for Major groups.
-# Runtime of this function: ~ mins (when status = FALSE)
+# Runtime of this function: 76 mins (when status = FALSE)
 combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
                    outdir = getwd(), 
                    group_level = "major_group",
