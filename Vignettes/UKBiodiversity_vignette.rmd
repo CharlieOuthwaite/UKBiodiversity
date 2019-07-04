@@ -57,7 +57,7 @@ head(files)
 library(devtools)
 
 # Install the R package from GitHUb
-#devtools::install_github("CharlieOuthwaite/UKBiodiversity", quiet = TRUE)
+install_github("CharlieOuthwaite/UKBiodiversity", quiet = TRUE)
 
 # Load the package
 library(UKBiodiversity)
@@ -185,8 +185,9 @@ Figure 5 presents the average occupancy for each species plotted against its ave
 # Runtime for this function: 9 minutes (when status = FALSE)
 generate_fig5(postdir = paste0(getwd(), "/POSTERIOR_SAMPLES"),
               outdir = getwd(),
-              sp_trends = paste0(getwd(), "/Species_Trends.csv"),
-              save_plot = TRUE)
+              sp_trends = read.csv(paste0(getwd(), "/Species_Trends.csv")),
+              save_plot = TRUE,
+              status = FALSE)
 
 ```
 
@@ -200,7 +201,7 @@ Supplementary Figure 1 is a representation of Figure 1 in the main text except v
 ## Use the generate_fig1supp function to recreate the figure in the paper supplementary materials.
 # Runtime for this function: 13 minutes
 generate_fig1supp(postdir = paste0(getwd(), "/MajorGroups"),
-                  sp_trends = paste0(getwd(), "/Species_Trends.csv"),
+                  sp_trends = read.csv(paste0(getwd(), "/Species_Trends.csv")),
                   status = FALSE,
                   save_plot = TRUE)
 
