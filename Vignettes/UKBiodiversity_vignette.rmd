@@ -54,11 +54,10 @@ head(files)
 
 
 ## Download the UKBiodiversity R package from GitHub, to do this you will first need the devtools package
-install.packages("devtools")
 library(devtools)
 
 # Install the R package from GitHUb
-devtools::install_github("CharlieOuthwaite/UKBiodiversity", quiet = TRUE)
+#devtools::install_github("CharlieOuthwaite/UKBiodiversity", quiet = TRUE)
 
 # Load the package
 library(UKBiodiversity)
@@ -154,7 +153,7 @@ Figure 3 presents the changes in the quantiles of occupancy over time to assess 
 ## Use the generate_fig3 function to recreate figure 3.
 # Runtime of this function: 7 mins
 generate_fig3(postdir = paste0(getwd(), "/MajorGroups"),
-              save_plot == TRUE)
+              save_plot = TRUE)
 
 
 ```
