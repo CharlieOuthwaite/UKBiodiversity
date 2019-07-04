@@ -39,6 +39,9 @@
 generate_fig5 <- function(postdir, outdir, sp_trends, status = TRUE, save_plot = TRUE){
 
 
+if(nrow(sp_trends) != 5293) stop("Complete Species_Trends csv file not found, should have 5293 rows.")
+
+
 #### first need to calculate average occupancy for each species
 
 
