@@ -54,11 +54,11 @@ head(files)
 
 
 ## Download the UKBiodiversity R package from GitHub, to do this you will first need the devtools package
-#install.packages("devtools")
+install.packages("devtools")
 library(devtools)
 
 # Install the R package from GitHUb
-install_github("CharlieOuthwaite/UKBiodiversity", quiet = TRUE)
+devtools::install_github("CharlieOuthwaite/UKBiodiversity", quiet = TRUE)
 
 # Load the package
 library(UKBiodiversity)
