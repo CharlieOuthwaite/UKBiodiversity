@@ -47,8 +47,6 @@ if(nrow(sp_trends) != 5293) stop("Complete Species_Trends csv file not found, sh
 
 # use group posteriors to calculate average occupancy
 
-#postdir <- paste0(datadir, "/POSTERIOR_SAMPLES")
-
 post.files <- list.files(postdir)
 
 post.files2 <- sub("\\(", "", post.files)
@@ -60,9 +58,7 @@ mean.tab <- matrix(NA, ncol = 3, nrow = 5293)
 
 mean.tab <- as.data.frame(mean.tab)
 
-mean.tab[, 1:2] <- sp_trends[, 1:2]
 
-colnames(mean.tab) <- c("Group", "Species", "avg.occ")
 
 sp_trends$Species <- sub("\\(", "", sp_trends$Species)
 sp_trends$Species <- sub("\\)", "", sp_trends$Species)
@@ -70,6 +66,8 @@ sp_trends$Species <- gsub("\\?", "", sp_trends$Species)
 
 sp_trends$Species <- gsub("Pardosa saltans/lugubris", "Pardosa saltans_lugubris", sp_trends$Species)
 
+mean.tab[, 1:2] <- sp_trends[, 1:2]
+colnames(mean.tab) <- c("Group", "Species", "avg.occ")
 
 # loop through each group in good sp table
 for(sp in unique(sp_trends$Species)){
