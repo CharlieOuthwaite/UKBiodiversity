@@ -77,6 +77,8 @@ results_tab$Mean_change <- as.numeric(as.character(results_tab$Mean_change))
 results_tab$LCI <- as.numeric(as.character(results_tab$LCI))
 results_tab$UCI <- as.numeric(as.character(results_tab$UCI))
 
+rownames(results_tab) <- NULL
+
 # save results
 write.csv(results_tab, paste0(datadir, "/Group_level_change.csv"), row.names = F)
 
