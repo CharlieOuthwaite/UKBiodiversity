@@ -196,4 +196,12 @@ ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 10, width = 16)
 
 }
 
+
+return(plot_grid(p[[2]], p[[1]], p[[4]], p[[3]], align = "hv", ncol = 2,
+                 labels = c("Freshwater Species",
+                            "Insects",
+                            "Inverts",
+                            "Bryophytes & Lichens"),
+                 hjust = 0, label_size = 12, label_x = 0.1))
+
 }
