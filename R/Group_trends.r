@@ -70,7 +70,11 @@ for(file in files){
 
 } # end of group level files
 
-colnames(results_tab) <- c("Group", "Mean change", "LCI", "UCI")
+colnames(results_tab) <- c("Group", "Mean_change", "LCI", "UCI")
+
+results_tab$Mean_change <- as.numeric(results_tab$Mean_change)
+results_tab$LCI <- as.numeric(results_tab$LCI)
+results_tab$UCI <- as.numeric(results_tab$UCI)
 
 # save results
 write.csv(results_tab, paste0(datadir, "/Group_level_change.csv"), row.names = F)
