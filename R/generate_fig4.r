@@ -27,15 +27,15 @@
 #' @import ggplot2
 #' @importFrom cowplot plot_grid
 
-generate_fig4 <- function(postdir, save_plot = TRUE, interval=90){
+generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
 # convert inverval (a number between 0 and 100) into quantiles
 if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
 q <- 0.5 + (c(-1,1)*interval/200)
   
 # where to save the outputs
-dir.create(paste0(postdir, "/geomeans"))
 outdir <- paste0(postdir, "/geomeans")
+if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
 
 # list the group level files
 files <- list.files(postdir, pattern = "posterior_samples")

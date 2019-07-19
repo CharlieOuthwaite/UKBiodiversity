@@ -27,11 +27,11 @@
 #' @import ggplot2
 
 
-generate_fig3 <- function(postdir, save_plot = TRUE, interval=90){
+generate_fig3 <- function(postdir, save_plot = TRUE, interval=95){
 
 # where to save the outputs
-dir.create(paste0(postdir, "/quantiles"))
 outdir <- paste0(postdir, "/quantiles")
+if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
 
 # list the
 files <- list.files(postdir, pattern = ".rdata")

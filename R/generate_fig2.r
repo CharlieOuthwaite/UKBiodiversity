@@ -25,7 +25,7 @@
 #' @import ggplot2
 
 
-generate_fig2 <- function(datadir, save_plot = TRUE, interval=90){
+generate_fig2 <- function(datadir, save_plot = TRUE, interval=95){
 
 # list the geomean iterations outputs
 datasets <- list.files(datadir, pattern = "indicator_posterior_vals")
@@ -133,7 +133,7 @@ fivequantiles <- function(x, lq=0.025, uq=0.975) {
 
 # generate the plot
 p1 <- ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
-  stat_summary(fun.data = fivequantiles(lq=q[1], uq=q[2]), geom="boxplot", lwd = 0.1) +
+  stat_summary(fun.data = fivequantiles, fun.args=list(lq=q[1], uq=q[2]), geom="boxplot", lwd = 0.1) +
   theme_bw() +
   theme(axis.title.x = element_blank(),
         legend.position = 'none',

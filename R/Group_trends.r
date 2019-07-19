@@ -27,11 +27,10 @@
 
 
 
-group_trends <- function(datadir, interval=90){
+group_trends <- function(datadir, interval=95){
 
 # list the geomean iterations outputs
 files <- list.files(datadir, pattern = "_indicator_posterior_vals")
-
 
 # create a results table
 results_tab <- NULL
@@ -68,14 +67,17 @@ for(file in files){
   iters_tab <- rbind(iters_tab, overall_change)
 
   # combine results
-  result <- c(group, mean, LCI, UCI)
-
+  #result <- c(group, mean, LCI, UCI)
+  result <- c(mean=mean, LCI, UCI)
+  
   # add to results table
   results_tab <- rbind(results_tab, result)
 
 } # end of group level files
 
-colnames(results_tab) <- c("Group", "Mean change", "LCI", "UCI")
+rownames(results_tab) <- gsub("_indicator_posterior_vals.csv", "", files)
+#colnames(results_tab) <- c("Group", "Mean change", "LCI", "UCI")
+#colnames(results_tab) <- c("Mean change", "LCI", "UCI") # not required
 
 # save results
 write.csv(results_tab, paste0(datadir, "/Group_level_change.csv"), row.names = F)

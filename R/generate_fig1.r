@@ -29,12 +29,14 @@
 #' }
 #' @export
 #' @import ggplot2
+#' @import reshape2
 
-generate_fig1  <- function(postdir, status = TRUE, save_plot = TRUE, interval=90){
+generate_fig1  <- function(postdir, status = TRUE, save_plot = TRUE, interval=95){
 
 # where to save the outputs
-dir.create(paste0(postdir, "/geomeans"))
 outdir <- paste0(postdir, "/geomeans")
+if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
+
 
 # list the posterior combination files
 files <- list.files(postdir, pattern = ".rdata")
@@ -71,17 +73,10 @@ for(file in files){
   # add the number of species
   n_sp <- length(unique(j_post$spp))
 
-  # loop through each iteration and take the geometric mean
-  for(i in 1:1000){
-
-    # subset the all ant data so that only have the i samples
-    j_post_iter <- j_post[j_post$iter == i, ]
-
-    geo_means <- apply(j_post_iter[1:46], 2, calc_geo)
-
-    all_means <- rbind(all_means, geo_means)
-  } # end of loop through iterations
-
+  # replace loop with acast and apply: about half the time taken
+  j_post <- melt(j_post, id=c("spp","iter"))
+  j_post <- acast(j_post, spp~iter~variable)
+  all_means <- apply(j_post, c(2,3), calc_geo)
 
 # save the posterior geometric means
 write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals.csv", sep = ""), row.names = FALSE)
@@ -100,7 +95,6 @@ final_rescaled$year <- as.numeric(rownames(final_rescaled))
 
 # Save the rescaled indicator values
 write.csv(final_rescaled, file = paste0(outdir, "/", group, "_rescaled_indicator_vals.csv"), row.names = FALSE)
-
 
 } # end of loop through files
 
