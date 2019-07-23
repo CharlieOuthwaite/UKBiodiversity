@@ -6,7 +6,8 @@
 #' @param datadir A filepath specifying where the posteior indicator values are saved.
 #' If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".
 #' @param save_plot Logical. If `TRUE` plot will be saved as a PDF in `datadir`.
-#'
+#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
+
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
 #' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
@@ -24,7 +25,7 @@
 #' @import ggplot2
 
 
-generate_fig2 <- function(datadir, save_plot = TRUE){
+generate_fig2 <- function(datadir, save_plot = TRUE, interval=95){
 
 # list the geomean iterations outputs
 datasets <- list.files(datadir, pattern = "indicator_posterior_vals")
@@ -33,6 +34,10 @@ datasets <- list.files(datadir, pattern = "indicator_posterior_vals")
 results_tab <- NULL
 
 iters_tab <- NULL
+
+# convert inverval (a number between 0 and 100) into quantiles
+if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+q <- 0.5 + (c(-1,1)*interval/200)
 
 # loop through each group
 for(dataset in datasets){
@@ -55,12 +60,12 @@ for(dataset in datasets){
   overall_change_after <- ((iters_data_after[,"2015"] - iters_data_after[, 1]))
 
   mean_before <- mean(overall_change_before)
-  UCI_95_before <- quantile(overall_change_before, probs = 0.975)
-  LCI_95_before <-  quantile(overall_change_before, probs = 0.025)
+  UCI_before <- quantile(overall_change_before, probs = q[2])
+  LCI_before <-  quantile(overall_change_before, probs = q[1])
 
   mean_after <- mean(overall_change_after)
-  UCI_95_after <- quantile(overall_change_after, probs = 0.975)
-  LCI_95_after <-  quantile(overall_change_after, probs = 0.025)
+  UCI_after <- quantile(overall_change_after, probs = q[2])
+  LCI_after <-  quantile(overall_change_after, probs = q[1])
 
   overall_change_before <- as.data.frame(overall_change_before)
   overall_change_before$group <- group
@@ -73,7 +78,7 @@ for(dataset in datasets){
   colnames(overall_change_after)[1] <- "value"
 
   # combine results
-  result <- c(group, mean_before, LCI_95_before, UCI_95_before, mean_after, LCI_95_after, UCI_95_after)
+  result <- c(group, mean_before, LCI_before, UCI_before, mean_after, LCI_after, UCI_after)
 
   # add to results tables
   results_tab <- rbind(results_tab, result)
@@ -118,9 +123,17 @@ plot_data$group <- as.factor(plot_data$group)
 plot_data$group <- factor(plot_data$group, levels(plot_data$group)[c(2, 3, 4, 1)] )
 
 
+# estimating quantiles
+fivequantiles <- function(x, lq=0.025, uq=0.975) {
+  r <- quantile(x, probs=c(lq, 0.25, 0.5, 0.75, uq))
+  names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
+  r
+}
+
+
 # generate the plot
 p1 <- ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
-  stat_summary(fun.data = quantiles_95, geom="boxplot", lwd = 0.1) +
+  stat_summary(fun.data = fivequantiles, fun.args=list(lq=q[1], uq=q[2]), geom="boxplot", lwd = 0.1) +
   theme_bw() +
   theme(axis.title.x = element_blank(),
         legend.position = 'none',

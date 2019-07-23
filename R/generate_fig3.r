@@ -8,6 +8,7 @@
 #' moved, this will be in a directory "/MajorGroups".
 #' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
 #' within the `postdir`. Default is `TRUE`.
+#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -26,11 +27,11 @@
 #' @import ggplot2
 
 
-generate_fig3 <- function(postdir, save_plot = TRUE){
+generate_fig3 <- function(postdir, save_plot = TRUE, interval=95){
 
 # where to save the outputs
-dir.create(paste0(postdir, "/quantiles"))
 outdir <- paste0(postdir, "/quantiles")
+if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
 
 # list the
 files <- list.files(postdir, pattern = ".rdata")
@@ -61,6 +62,10 @@ for(file in files){
   # add the number of species
   n_sp <- length(unique(j_post$spp))
 
+  # convert inverval (a number between 0 and 100) into quantiles
+  if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+  q <- 0.5 + (c(-1,1)*interval/200)
+  
   # loop through each iteration and take the geometric mean
   for(i in 1:1000){
 
@@ -91,14 +96,14 @@ for(file in files){
 
   # calculate mean and 95% CIs
   quants_rescaled <- data.frame(avg_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = 0.25, na.rm = TRUE),
-                      upper_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = 0.95, na.rm = TRUE),
-                      lower_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = 0.05, na.rm = TRUE),
+                      upper_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = q[2], na.rm = TRUE),
+                      lower_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = q[1], na.rm = TRUE),
                       avg_occ_0.5 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.5",], 2, mean, na.rm = TRUE),
-                      upper_CI_0.5 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.5",], 2, quantile, probs = 0.95, na.rm = TRUE),
-                      lower_CI_0.5 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.5",], 2, quantile, probs = 0.05, na.rm = TRUE),
+                      upper_CI_0.5 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.5",], 2, quantile, probs = q[2], na.rm = TRUE),
+                      lower_CI_0.5 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.5",], 2, quantile, probs = q[1], na.rm = TRUE),
                       avg_occ_0.75 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.75",], 2, mean, na.rm = TRUE),
-                      upper_CI_0.75 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.75",], 2, quantile, probs = 0.95, na.rm = TRUE),
-                      lower_CI_0.75 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.75",], 2, quantile, probs = 0.05, na.rm = TRUE))
+                      upper_CI_0.75 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.75",], 2, quantile, probs = q[2], na.rm = TRUE),
+                      lower_CI_0.75 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.75",], 2, quantile, probs = q[1], na.rm = TRUE))
 
 
   # add in the year

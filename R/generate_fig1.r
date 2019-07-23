@@ -11,6 +11,7 @@
 #' as means and indicator values are being estimated. Default is `TRUE`.
 #' @param save_plot Logical. If `TRUE` plot will be saved as a PDF file as well
 #' as being returned to the console.
+#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -28,18 +29,24 @@
 #' }
 #' @export
 #' @import ggplot2
+#' @import reshape2
 
-generate_fig1  <- function(postdir, status = TRUE, save_plot = TRUE){
+generate_fig1  <- function(postdir, status = TRUE, save_plot = TRUE, interval=95){
 
 # where to save the outputs
-dir.create(paste0(postdir, "/geomeans"))
 outdir <- paste0(postdir, "/geomeans")
+if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
+
 
 # list the posterior combination files
 files <- list.files(postdir, pattern = ".rdata")
 
 # check there's only 4 sets of posteriors
 if(length(files) != 5) stop("There are more than 5 datafiles in the directory.")
+
+# convert inverval (a number between 0 and 100) into quantiles
+if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+q <- 0.5 + (c(-1,1)*interval/200)
 
 # loop through each group and generate the indicator values
 for(file in files){
@@ -66,17 +73,10 @@ for(file in files){
   # add the number of species
   n_sp <- length(unique(j_post$spp))
 
-  # loop through each iteration and take the geometric mean
-  for(i in 1:1000){
-
-    # subset the all ant data so that only have the i samples
-    j_post_iter <- j_post[j_post$iter == i, ]
-
-    geo_means <- apply(j_post_iter[1:46], 2, calc_geo)
-
-    all_means <- rbind(all_means, geo_means)
-  } # end of loop through iterations
-
+  # replace loop with acast and apply: about half the time taken
+  j_post <- melt(j_post, id=c("spp","iter"))
+  j_post <- acast(j_post, spp~iter~variable)
+  all_means <- apply(j_post, c(2,3), calc_geo)
 
 # save the posterior geometric means
 write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals.csv", sep = ""), row.names = FALSE)
@@ -85,17 +85,16 @@ write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals
 all_means_rescaled <- t(apply(all_means, 1, rescale))
 
 
-# calculate mean and 95% CIs
+# calculate mean and CIs
 final_rescaled <- data.frame(avg_occ = apply(all_means_rescaled, 2, mean, na.rm = TRUE),
-                    upper_CI = apply(all_means_rescaled, 2, quantile, probs = 0.95, na.rm = TRUE),
-                    lower_CI = apply(all_means_rescaled, 2, quantile, probs = 0.05, na.rm = TRUE))
+                    upper_CI = apply(all_means_rescaled, 2, quantile, probs = q[2], na.rm = TRUE),
+                    lower_CI = apply(all_means_rescaled, 2, quantile, probs = q[1], na.rm = TRUE))
 
 # add in the year
 final_rescaled$year <- as.numeric(rownames(final_rescaled))
 
 # Save the rescaled indicator values
 write.csv(final_rescaled, file = paste0(outdir, "/", group, "_rescaled_indicator_vals.csv"), row.names = FALSE)
-
 
 } # end of loop through files
 
