@@ -4,10 +4,13 @@
 \alias{generate_fig4}
 \title{Generating Figure 4}
 \usage{
-generate_fig4(postdir)
+generate_fig4(postdir, save_plot = TRUE)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the posterior combinations are saved.}
+
+\item{save_plot}{Logical.  If `TRUE`, the plot will be saved as a PDF file
+within the `postdir`. Default is `TRUE`.}
 }
 \description{
 This takes the taxa level posterior combinations generated using the

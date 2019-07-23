@@ -150,11 +150,17 @@ for(group in groups){
 
 } # end of loop through groups
 
+
 if(group_level == "major_group"){
 
   ### combine posterior sets of all groups to get an "ALL" set for all species ###
   # this is used later to estimate overall change in average occupancy.
   files <- list.files(outdir, pattern = "_posterior_samples_national.rdata")
+
+  # incase being rerun, remove "ALL" combination if in directory
+  files <- files[!grepl("ALL", files)]
+
+  if(length(files) != 4) stop("There are more than required files in the directory.")
 
   # where to save
   all_post <- NULL

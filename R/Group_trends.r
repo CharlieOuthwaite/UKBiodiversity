@@ -67,17 +67,28 @@ for(file in files){
   iters_tab <- rbind(iters_tab, overall_change)
 
   # combine results
-  #result <- c(group, mean, LCI, UCI)
-  result <- c(mean=mean, LCI, UCI)
+  result <- c(group, mean, LCI, UCI)
+  #result <- c(mean=mean, LCI, UCI)
   
   # add to results table
   results_tab <- rbind(results_tab, result)
 
 } # end of group level files
 
-rownames(results_tab) <- gsub("_indicator_posterior_vals.csv", "", files)
+
+#rownames(results_tab) <- gsub("_indicator_posterior_vals.csv", "", files)
 #colnames(results_tab) <- c("Group", "Mean change", "LCI", "UCI")
 #colnames(results_tab) <- c("Mean change", "LCI", "UCI") # not required
+
+colnames(results_tab) <- c("Group", "Mean_change", "LCI", "UCI")
+results_tab <- as.data.frame(results_tab)
+
+results_tab$Mean_change <- as.numeric(as.character(results_tab$Mean_change))
+results_tab$LCI <- as.numeric(as.character(results_tab$LCI))
+results_tab$UCI <- as.numeric(as.character(results_tab$UCI))
+
+rownames(results_tab) <- NULL
+
 
 # save results
 write.csv(results_tab, paste0(datadir, "/Group_level_change.csv"), row.names = F)
