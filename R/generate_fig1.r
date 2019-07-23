@@ -142,7 +142,7 @@ p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fi
               alpha = 0.3) +
   geom_line(size = 0.5) +
   geom_hline(yintercept = 100, linetype = "dashed") +
-  ylab("Average Occupancy\n") +
+  ylab("Scaled Occupancy\n") +
   xlab("\nYear") +
   scale_y_continuous(limits = c(40, 150), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1970, 2015), expand = c(0, 0)) +
@@ -152,7 +152,7 @@ p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fi
 
 if(save_plot == TRUE){
 # save the plot
-ggsave(filename = paste0(outdir, "/Figure_1.pdf"), plot = p1, height = 6, width = 6)
+ggsave(filename = paste0(outdir, "/Figure1_CI",interval,".pdf"), plot = p1, height = 6, width = 6)
 }
 
 return(p1)

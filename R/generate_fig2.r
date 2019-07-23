@@ -152,7 +152,7 @@ p1 <- ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
 
 if(save_plot == TRUE){
 # save the plot
-ggsave(filename = paste0(datadir, "/Figure_2.pdf"), plot = p1, height = 6, width = 6)
+ggsave(filename = paste0(datadir, "/Figure2_CI",interval,".pdf"), plot = p1, height = 6, width = 6)
 }
 
 return(p1)

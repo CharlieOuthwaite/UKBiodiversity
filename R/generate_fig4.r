@@ -26,6 +26,9 @@
 #' @export
 #' @import ggplot2
 #' @importFrom cowplot plot_grid
+#' @importFrom stats quantile
+#' @importFrom utils read.csv
+
 
 generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
