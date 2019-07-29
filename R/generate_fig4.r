@@ -6,7 +6,8 @@
 #' @param postdir A filepath specifying where the posterior combinations are saved.
 #' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
 #' within the `postdir`. Default is `TRUE`.
-#' @parm intervals A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
+#' @param interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+#' Defaults to 95%
 
 #'
 #' @keywords trends, species, distribution, occupancy
