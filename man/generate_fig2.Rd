@@ -4,13 +4,16 @@
 \alias{generate_fig2}
 \title{Generate Figure 2}
 \usage{
-generate_fig2(datadir, save_plot = TRUE)
+generate_fig2(datadir, save_plot = TRUE, interval = 95)
 }
 \arguments{
 \item{datadir}{A filepath specifying where the posteior indicator values are saved.
 If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".}
 
 \item{save_plot}{Logical. If `TRUE` plot will be saved as a PDF in `datadir`.}
+
+\item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+Defaults to 95%}
 }
 \description{
 This takes the posterior values of the group level indicators generated within the

@@ -4,7 +4,8 @@
 \alias{generate_fig1}
 \title{Generating Figure 1}
 \usage{
-generate_fig1(postdir, status = TRUE, save_plot = TRUE)
+generate_fig1(postdir, status = TRUE, save_plot = TRUE,
+  interval = 95)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the posterior combinations are saved.}
@@ -14,6 +15,9 @@ as means and indicator values are being estimated. Default is `TRUE`.}
 
 \item{save_plot}{Logical. If `TRUE` plot will be saved as a PDF file as well
 as being returned to the console.}
+
+\item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+Defaults to 95%}
 }
 \description{
 This takes the major group level posterior combinations generated using the
@@ -28,7 +32,10 @@ of the associated paper and for the generation of figure 3.
 # Run generate_fig1 function
 # postdir should be the filepath of where the 4 major group level posteriors
 # combinations are saved.
-generate_fig1(postdir = paste0(getwd(), "/MajorGroups"))
+generate_fig1(postdir = paste0(getwd(), "/MajorGroups"),
+status = TRUE,
+save_plot = TRUE,
+interval = 90)
 
 }
 }

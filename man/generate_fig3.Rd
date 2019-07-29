@@ -4,7 +4,7 @@
 \alias{generate_fig3}
 \title{Generate Figure 3}
 \usage{
-generate_fig3(postdir, save_plot = TRUE)
+generate_fig3(postdir, save_plot = TRUE, interval = 95)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the posteior samples that are generated
@@ -13,6 +13,9 @@ moved, this will be in a directory "/MajorGroups".}
 
 \item{save_plot}{Logical.  If `TRUE`, the plot will be saved as a PDF file
 within the `postdir`. Default is `TRUE`.}
+
+\item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+Defaults to 95%.}
 }
 \description{
 This takes the posterior values of the group level indicators generated within the
@@ -23,7 +26,9 @@ This takes the posterior values of the group level indicators generated within t
 
 # Run generate_fig2 function to produce boxplot.
 # datadir should be the filepath of where the posterior indicator values are saved.
-# generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+# generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"),
+save_plot = TRUE,
+interval = 90)
 
 }
 }

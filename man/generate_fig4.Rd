@@ -4,13 +4,16 @@
 \alias{generate_fig4}
 \title{Generating Figure 4}
 \usage{
-generate_fig4(postdir, save_plot = TRUE)
+generate_fig4(postdir, save_plot = TRUE, interval = 95)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the posterior combinations are saved.}
 
 \item{save_plot}{Logical.  If `TRUE`, the plot will be saved as a PDF file
 within the `postdir`. Default is `TRUE`.}
+
+\item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+Defaults to 95%}
 }
 \description{
 This takes the taxa level posterior combinations generated using the
