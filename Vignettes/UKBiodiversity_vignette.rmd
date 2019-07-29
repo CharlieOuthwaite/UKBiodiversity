@@ -86,7 +86,7 @@ Note that these functions can take a long time to run (estimated run time below)
 # If status is TRUE, progress will be printed within the console.
 
 ## First for major groups.
-# Runtime of this function: 76 mins (when status = FALSE)
+# Runtime of this function: 67 mins (when status = FALSE)
 combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
                    outdir = getwd(), 
                    group_level = "major_group",
