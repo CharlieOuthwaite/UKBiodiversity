@@ -139,8 +139,10 @@ generate_fig1(postdir = paste0(getwd(), "/MajorGroups"),
 # and associated credible intervals.
 # Runtime of this function: 0.17 seconds
 
-# datadir should point to the geomeans folder created within the generate_fig1 function.
-trends <- group_trends(datadir = getwd())
+# datadir should point to the main directory in which the "MajorGroups" and "Taxa" subdirectories 
+#can be found created within the generate_fig1 function.
+trends <- group_trends(datadir = getwd(),
+                       inverval = 95)
 
 trends
 
