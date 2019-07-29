@@ -30,9 +30,9 @@
 generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
 # convert inverval (a number between 0 and 100) into quantiles
-if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100")
 q <- 0.5 + (c(-1,1)*interval/200)
-  
+
 # where to save the outputs
 outdir <- paste0(postdir, "/geomeans")
 if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
@@ -158,7 +158,8 @@ plot_group <- function(major_group){
     scale_x_continuous(limits = c(1970, 2015)) +
     theme(plot.title = element_text(size = 12), text = element_text(size = 12),
           aspect.ratio = 1,
-          legend.title = element_blank())+
+          legend.title = element_blank(),
+          legend.text = element_text(size = 6))+
     guides(colour = guide_legend(ncol = 1))
 }
 
@@ -185,7 +186,8 @@ p[[1]] <-   ggplot(all_plot_data[all_plot_data$major_group == "TERRESTRIAL_INSEC
   scale_y_continuous(limits = c(0, 200)) +
   scale_x_continuous(limits = c(1970, 2015)) +
   theme(plot.title = element_text(size = 12), text = element_text(size = 12), aspect.ratio = 1,
-        legend.title = element_blank()) +
+        legend.title = element_blank(),
+        legend.text = element_text(size = 6)) +
   guides(colour = guide_legend(ncol = 2))
 
 # organise plots using cowplot function
