@@ -7,7 +7,8 @@
 #'
 #' @param datadir A filepath specifying where the posteior indicator values are saved.
 #' If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".
-#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
+#' @param interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+#' Defaults to 95%
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -38,7 +39,7 @@ results_tab <- NULL
 iters_tab <- NULL
 
 # convert inverval (a number between 0 and 100) into quantiles
-if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100")
 q <- 0.5 + (c(-1,1)*interval/200)
 
 # loop through each group
@@ -69,7 +70,7 @@ for(file in files){
   # combine results
   result <- c(group, mean, LCI, UCI)
   #result <- c(mean=mean, LCI, UCI)
-  
+
   # add to results table
   results_tab <- rbind(results_tab, result)
 
