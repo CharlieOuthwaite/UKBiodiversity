@@ -152,7 +152,7 @@ p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fi
   scale_x_continuous(limits = c(1970, 2015), expand = c(0, 0)) +
   theme(text = element_text(size = 10), aspect.ratio = 1, legend.title = element_blank(),
         legend.position = c(0.2,0.85), panel.grid.minor = element_blank(),
-        panel.grid.major = element_blank())
+        panel.grid.major = element_blank(), legend.text = element_text(size = 8))
 
 if(save_plot == TRUE){
 # save the plot
