@@ -163,9 +163,9 @@ p1 <- ggplot() +
   geom_line(data = all_plot_data, aes(x = year, y = mean_0.5), colour = c("#EE7600"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.5', ymax = 'UCI_0.5', linetype = NA),
               alpha = 0.4, fill = c("#EE7600")) +
-  geom_line(data = all_plot_data, aes(x = year, y = mean_0.75), colour = c("#458B00"), size = 0.4) +
+  geom_line(data = all_plot_data, aes(x = year, y = mean_0.75), colour = c("#008B8B"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.75', ymax = 'UCI_0.75', linetype = NA),
-              alpha = 0.4, fill = c("#458B00")) +
+              alpha = 0.4, fill = c("#008B8B")) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.2) +
   scale_y_continuous(limits = c(20, 160)) +
   scale_x_continuous(limits = c(1970, 2015)) +
@@ -189,3 +189,4 @@ ggsave(filename = paste0(outdir, "/Figure_3.pdf"), plot = p1, height = 6, width 
 return(p1)
 }
 
+c("#008B8B")
