@@ -70,7 +70,7 @@ if(group_level == "major_group"){
 
   groups <- unique(major_groups$Major_group)
 
-  dir.create(paste0(outdir, "/MajorGroups"))
+  if(!dir.exists(paste0(outdir, "/MajorGroups"))) dir.create(paste0(outdir, "/MajorGroups"))
   outdir <- paste0(outdir, "/MajorGroups")
 }
 
@@ -79,7 +79,7 @@ if(group_level == "taxa"){
 
   groups <- unique(major_groups$Group)
 
-  dir.create(paste0(outdir, "/Taxa"))
+  if(!dir.exists(paste0(outdir, "/Taxa"))) dir.create(paste0(outdir, "/Taxa"))
   outdir <- paste0(outdir, "/Taxa")
 }
 
