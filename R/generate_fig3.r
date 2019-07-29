@@ -8,7 +8,8 @@
 #' moved, this will be in a directory "/MajorGroups".
 #' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
 #' within the `postdir`. Default is `TRUE`.
-#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
+#' @param interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+#' Defaults to 95%.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -20,7 +21,9 @@
 #'
 #' # Run generate_fig2 function to produce boxplot.
 #' # datadir should be the filepath of where the posterior indicator values are saved.
-#' # generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+#' # generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"),
+#' save_plot = TRUE,
+#' interval = 90)
 #'
 #' }
 #' @export
@@ -63,9 +66,9 @@ for(file in files){
   n_sp <- length(unique(j_post$spp))
 
   # convert inverval (a number between 0 and 100) into quantiles
-  if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+  if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100")
   q <- 0.5 + (c(-1,1)*interval/200)
-  
+
   # loop through each iteration and take the geometric mean
   for(i in 1:1000){
 
