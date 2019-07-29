@@ -77,7 +77,7 @@ for(file in files){
   # add the number of species
   n_sp <- length(unique(j_post$spp))
 
-  # replace loop with acast and apply: about half the time taken
+  # calculate geometric mean occupancy
   j_post <- melt(j_post, id=c("spp","iter"))
   j_post <- acast(j_post, spp~iter~variable)
   all_means <- apply(j_post, c(2,3), calc_geo)
