@@ -178,7 +178,7 @@ p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fi
     xlab("\nYear") +
     scale_y_continuous(limits = c(40, 150), expand = c(0, 0)) +
     scale_x_continuous(limits = c(1970, 2015), expand = c(0, 0)) +
-    theme(text = element_text(size = 14), aspect.ratio = 1, legend.title = element_blank(),
+    theme(text = element_text(size = 10), aspect.ratio = 1, legend.title = element_blank(),
           legend.position = "bottom", panel.grid.minor = element_blank(),
           panel.grid.major = element_blank(),
           strip.background = element_rect(size = 0.2),
