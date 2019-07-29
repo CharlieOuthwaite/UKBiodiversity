@@ -157,9 +157,9 @@ all_plot_data$group <- factor(all_plot_data$group, levels(all_plot_data$group)[c
 
 
 p1 <- ggplot() +
-  geom_line(data = all_plot_data, aes(x = year, y = mean_0.25), colour = c("#5D478B"), size = 0.4) +
+  geom_line(data = all_plot_data, aes(x = year, y = mean_0.25), colour = c("#7D26CD"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.25', ymax = 'UCI_0.25', linetype = NA),
-              alpha = 0.4, fill = c("#5D478B")) +
+              alpha = 0.4, fill = c("#7D26CD")) +
   geom_line(data = all_plot_data, aes(x = year, y = mean_0.5), colour = c("#EE7600"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.5', ymax = 'UCI_0.5', linetype = NA),
               alpha = 0.4, fill = c("#EE7600")) +
