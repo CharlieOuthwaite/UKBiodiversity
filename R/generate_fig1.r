@@ -11,7 +11,7 @@
 #' as means and indicator values are being estimated. Default is `TRUE`.
 #' @param save_plot Logical. If `TRUE` plot will be saved as a PDF file as well
 #' as being returned to the console.
-#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+#' @param interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
 #' Defaults to 95%
 #'
 #' @keywords trends, species, distribution, occupancy
