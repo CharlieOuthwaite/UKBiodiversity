@@ -5,12 +5,14 @@ date: "08/06/2019"
 output:
   pdf_document:
     toc: true 
+  html_document:
+    toc: true  
 urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-#knitr::opts_knit$set(root.dir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG #PAPER/Package_testing")
+#knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing")
 ```
 
 This vignette uses the UKBiodiversity R package to recreate the figures generated in the paper "Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens" by Outhwaite et al.
@@ -79,7 +81,7 @@ For some of the analyses we will need a matrix containing all the posterior samp
 Note that these functions can take a long time to run (estimated run time below) and may have high memory requirements.
 
 
-```{r combine_posteriors, warning = FALSE, message = FALSE}
+```{r combine_posteriors, warning = FALSE, message = FALSE, cache=TRUE}
 
 # Run the combine_posteriors function providing a data directory and and output directory.
 # select the group level you wish to generate datasets for, either "major_group" or "taxa".
@@ -116,11 +118,11 @@ These group level files are required for the following functions. Files must be 
 For the analyses carried out here, rove beetles are excluded since they do not have data from 1970 to 1979.  Therefore, there are 5,214 species included in the analyses carried out here.  79 Rove Beetle species are removed.
 
 
-# Recreating Figure 1 and associated trend estimates
+# Recreating Figure 1 
 
-Figure 1 within the paper presents indicators of average occupancy over time for the four major groups.  Within the text are associated group level trends and an average trend estimate for all species since 1970.
+Figure 1 within the paper presents indicators of average occupancy over time for the four major groups.  
 
-First, use the `generate_fig1` function to determine the group level average change associated indicator values and the plot of Figure 1.  Then use the `group_trends` function to estimate group and taxa level trends and credible intervals.  The `generate_fig1` function will save csv files of the indicator posterior values, the average annual indicator estimates and associated credible interval values, and a pdf file of the plot within a sub-directory of your specified folder called "geomeans".
+Use the `generate_fig1` function to determine the group level average change associated indicator values and the plot of Figure 1.    The `generate_fig1` function will save csv files of the indicator posterior values, the average annual indicator estimates and associated credible interval values, and a pdf file of the plot within a sub-directory of your specified folder called "geomeans".
 
 This function will only work if outputs have already been produced  from the "major_group" specification of the `combine_posteriors` function.  These should be in a sub-folder called "MajorGroups" in the `outdir` that you specified within that function.
 
@@ -135,16 +137,7 @@ generate_fig1(postdir = paste0(getwd(), "/MajorGroups"),
               interval = 95)
 
 
-# Use the group_trends function to estimate overall and major group level trends
-# and associated credible intervals.
-# Runtime of this function: 0.17 seconds
 
-# datadir should point to the main directory in which the "MajorGroups" and "Taxa" subdirectories 
-#can be found created within the generate_fig1 function.
-trends <- group_trends(datadir = getwd(),
-                       inverval = 95)
-
-trends
 
 ```
 
@@ -177,7 +170,7 @@ Figure 3 presents the changes in the quantiles of occupancy over time to assess 
 # Runtime of this function: 7 mins
 generate_fig3(postdir = paste0(getwd(), "/MajorGroups"),
               save_plot = TRUE,
-              interval = 95)
+              interval = 75)
 
 
 ```
@@ -218,6 +211,31 @@ generate_fig5(postdir = paste0(getwd(), "/POSTERIOR_SAMPLES"),
               sp_trends = read.csv(paste0(getwd(), "/Species_Trends.csv")),
               save_plot = TRUE,
               status = FALSE)
+
+```
+
+
+
+# Calculating group and taxa level trends
+
+Within the text are associated group level trends and an average trend estimate for all species since 1970.
+
+Trends can be calulated ones the associated indicator values have been generated via the generate)fi1 and generate_fig4 functions for major groups and taxa respectively.  Use the group_trends function to calculate the trends relative to 1970 and the associated credible intervals.  The credible interval value can be specified withiin the function, but defaults to 95%.
+
+```{r trends, warning = FALSE, message = FALSE}
+
+
+# Use the group_trends function to estimate overall and major group level trends
+# and associated credible intervals.
+# Runtime of this function: 0.17 seconds
+
+# datadir should point to the main directory in which the "MajorGroups" and "Taxa" subdirectories 
+#can be found created within the generate_fig1 function.
+trends <- group_trends(datadir = getwd(),
+                       interval = 95)
+
+trends
+
 
 ```
 
