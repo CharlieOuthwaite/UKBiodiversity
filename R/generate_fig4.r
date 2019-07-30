@@ -157,7 +157,7 @@ plot_group <- function(major_group){
     xlab("Year") +
     scale_y_continuous(limits = c(0, 200)) +
     scale_x_continuous(limits = c(1970, 2015)) +
-    theme(plot.title = element_text(size = 12), text = element_text(size = 12),
+    theme(plot.title = element_text(size = 10), text = element_text(size = 10),
           aspect.ratio = 1,
           legend.title = element_blank(),
           legend.text = element_text(size = 6))+
@@ -186,7 +186,7 @@ p[[1]] <-   ggplot(all_plot_data[all_plot_data$major_group == "TERRESTRIAL_INSEC
   xlab("Year") +
   scale_y_continuous(limits = c(0, 200)) +
   scale_x_continuous(limits = c(1970, 2015)) +
-  theme(plot.title = element_text(size = 12), text = element_text(size = 12), aspect.ratio = 1,
+  theme(plot.title = element_text(size = 10), text = element_text(size = 10), aspect.ratio = 1,
         legend.title = element_blank(),
         legend.text = element_text(size = 6)) +
   guides(colour = guide_legend(ncol = 2))
@@ -206,7 +206,7 @@ ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 10, width = 16)
 }
 
 
-return(plot_grid(p[[2]], p[[1]], p[[4]], p[[3]], align = "hv", ncol = 2,
+return(plot_grid(p[[2]], p[[1]], p[[4]], p[[3]], align = "hv", ncol = 1,
                  labels = c("Freshwater Species",
                             "Insects",
                             "Inverts",
