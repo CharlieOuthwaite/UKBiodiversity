@@ -33,8 +33,8 @@ group_trends <- function(datadir, interval=95){
 
 # list the geomean iterations outputs
 
-files_group <- list.files(paste0(datadir, "/MajorGroups/geomeans"))
-files_taxa <- list.files(paste0(datadir, "/Taxa/geomeans"))
+files_group <- list.files(paste0(datadir, "/MajorGroups/geomeans"), pattern = "posterior")
+files_taxa <- list.files(paste0(datadir, "/Taxa/geomeans"), pattern = "posterior")
 
 # create a results table
 results_tab <- NULL
