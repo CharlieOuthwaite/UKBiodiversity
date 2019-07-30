@@ -182,7 +182,7 @@ Figure 4 is a representation of Figure 1, except with a line for each taxonomic 
 
 
 
-```{r generate_fig4, warning = FALSE, message = FALSE, cache = TRUE, out.width = "80%"}
+```{r generate_fig4, warning = FALSE, message = FALSE, cache = TRUE, out.width = "100%"}
 
 ## Use the generate_fig4 function to recreate figure 4.
 
@@ -220,7 +220,7 @@ generate_fig5(postdir = paste0(getwd(), "/POSTERIOR_SAMPLES"),
 
 Within the text are associated group level trends and an average trend estimate for all species since 1970.
 
-Trends can be calulated ones the associated indicator values have been generated via the generate)fi1 and generate_fig4 functions for major groups and taxa respectively.  Use the group_trends function to calculate the trends relative to 1970 and the associated credible intervals.  The credible interval value can be specified withiin the function, but defaults to 95%.
+Trends can be calulated ones the associated posterior values have been generated via the generate_fi1 and generate_fig4 functions for major groups and taxa respectively.  Use the group_trends function to calculate the trends relative to 1970 and the associated credible intervals.  The credible interval value can be specified withiin the function, but defaults to 95%.
 
 ```{r trends, warning = FALSE, message = FALSE, cache = TRUE}
 
