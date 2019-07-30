@@ -161,7 +161,7 @@ plot_group <- function(major_group){
           aspect.ratio = 1,
           legend.title = element_blank(),
           legend.text = element_text(size = 6),
-          legend.key.size = 0.5)+
+          legend.key = element_rect(size = 0.5))+
     guides(colour = guide_legend(ncol = 1))
 }
 
@@ -190,7 +190,7 @@ p[[1]] <-   ggplot(all_plot_data[all_plot_data$major_group == "TERRESTRIAL_INSEC
   theme(plot.title = element_text(size = 10), text = element_text(size = 10), aspect.ratio = 1,
         legend.title = element_blank(),
         legend.text = element_text(size = 6),
-        legend.key.size = 0.5) +
+        legend.key = element_rect(size = 0.5)) +
   guides(colour = guide_legend(ncol = 2))
 
 # organise plots using cowplot function
