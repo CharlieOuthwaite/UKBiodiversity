@@ -215,4 +215,10 @@ return(plot_grid(p[[2]], p[[4]], p[[3]], p[[1]], align = "hv", ncol = 1,
                             "Insects"),
                  hjust = 0, label_size = 8, label_x = 0.1))
 
+
+return(p[[2]])
+return(p[[4]])
+return(p[[3]])
+return(p[[1]])
+
 }
