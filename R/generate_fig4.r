@@ -211,6 +211,6 @@ return(plot_grid(p[[2]], p[[4]], p[[3]], p[[1]], align = "hv", ncol = 1,
                             "Inverts",
                             "Bryophytes & Lichens",
                             "Insects"),
-                 hjust = 0, label_size = 12, label_x = 0.1))
+                 hjust = 0, label_size = 10, label_x = 0.1))
 
 }
