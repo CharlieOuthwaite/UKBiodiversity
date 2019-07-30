@@ -182,7 +182,7 @@ Figure 4 is a representation of Figure 1, except with a line for each taxonomic 
 
 
 
-```{r generate_fig4, warning = FALSE, message = FALSE, cache = TRUE, out.width = "70%"}
+```{r generate_fig4, warning = FALSE, message = FALSE, cache = TRUE, out.width = "80%"}
 
 ## Use the generate_fig4 function to recreate figure 4.
 
