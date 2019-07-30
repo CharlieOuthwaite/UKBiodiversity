@@ -98,7 +98,7 @@ for(file in files){
 
 
   # calculate mean and 95% CIs
-  quants_rescaled <- data.frame(avg_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = 0.25, na.rm = TRUE),
+  quants_rescaled <- data.frame(avg_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, mean, na.rm = TRUE),
                       upper_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = q[2], na.rm = TRUE),
                       lower_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = q[1], na.rm = TRUE),
                       avg_occ_0.5 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.5",], 2, mean, na.rm = TRUE),
