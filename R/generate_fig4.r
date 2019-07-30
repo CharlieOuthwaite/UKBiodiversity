@@ -160,7 +160,8 @@ plot_group <- function(major_group){
     theme(plot.title = element_text(size = 10), text = element_text(size = 10),
           aspect.ratio = 1,
           legend.title = element_blank(),
-          legend.text = element_text(size = 6))+
+          legend.text = element_text(size = 6),
+          legend.key.size = 0.5)+
     guides(colour = guide_legend(ncol = 1))
 }
 
@@ -188,7 +189,8 @@ p[[1]] <-   ggplot(all_plot_data[all_plot_data$major_group == "TERRESTRIAL_INSEC
   scale_x_continuous(limits = c(1970, 2015)) +
   theme(plot.title = element_text(size = 10), text = element_text(size = 10), aspect.ratio = 1,
         legend.title = element_blank(),
-        legend.text = element_text(size = 6)) +
+        legend.text = element_text(size = 6),
+        legend.key.size = 0.5) +
   guides(colour = guide_legend(ncol = 2))
 
 # organise plots using cowplot function
@@ -206,7 +208,7 @@ ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 10, width = 16)
 }
 
 
-return(plot_grid(p[[2]], p[[4]], p[[3]], p[[1]], align = "hv", ncol = 1,
+return(plot_grid(p[[2]], "", p[[4]], p[[3]], p[[1]], align = "hv", ncol = 1,
                  labels = c("Freshwater Species",
                             "Inverts",
                             "Bryophytes & Lichens",
