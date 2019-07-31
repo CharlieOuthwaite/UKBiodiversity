@@ -18,5 +18,7 @@ install_github("CharlieOuthwaite/UKBiodiversity")
 # Load the package
 library(UKBiodiversity)
 
+```
+
 For more information on using the functions to recreate the analyses, please read the vignette which can be found [here] (https://github.com/CharlieOuthwaite/UKBiodiversity/blob/master/Vignettes/UKBiodiversity_vignette.pdf).
 
