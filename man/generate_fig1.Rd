@@ -4,13 +4,17 @@
 \alias{generate_fig1}
 \title{Generating Figure 1}
 \usage{
-generate_fig1(postdir, status = TRUE)
+generate_fig1(postdir, status = TRUE, save_plot = TRUE,
+  interval = 95)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the posterior combinations are saved.}
 
 \item{status}{Logical.  If `TRUE`, group name will be printed to the console
 as means and indicator values are being estimated. Default is `TRUE`.}
+
+\item{save_plot}{Logical. If `TRUE` plot will be saved as a PDF file as well
+as being returned to the console.}
 }
 \description{
 This takes the major group level posterior combinations generated using the

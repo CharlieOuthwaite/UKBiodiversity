@@ -4,12 +4,19 @@
 \alias{generate_fig3}
 \title{Generate Figure 3}
 \usage{
-generate_fig3(postdir)
+generate_fig3(postdir, save_plot = TRUE, interval = 95,
+  dataprep = TRUE)
 }
 \arguments{
 \item{postdir}{A filepath specifying where the posteior samples that are generated
 from the combine_posteriors function are saved. are saved. If outputs have not been
 moved, this will be in a directory "/MajorGroups".}
+
+\item{save_plot}{Logical.  If `TRUE`, the plot will be saved as a PDF file
+within the `postdir`. Default is `TRUE`.}
+
+\item{dataprep}{Logical. Default is `TRUE`, which calls \code{dataprep_fig3} to prepare the data. 
+Having run \code{generage_fig3} once with \code{dataprep = TRUE}, the figure can be redrawn quickly with \code{dataprep = FALSE}, e.g. using different values for `interval`.}
 }
 \description{
 This takes the posterior values of the group level indicators generated within the
@@ -18,9 +25,9 @@ This takes the posterior values of the group level indicators generated within t
 \examples{
 \dontrun{
 
-# Run generate_fig2 function to produce boxplot.
+# Run generate_fig3 function to produce quantile plots
 # datadir should be the filepath of where the posterior indicator values are saved.
-# generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+# generate_fig3(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
 
 }
 }

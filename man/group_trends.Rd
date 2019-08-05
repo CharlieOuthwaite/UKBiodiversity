@@ -4,7 +4,7 @@
 \alias{group_trends}
 \title{Calculate group level trends}
 \usage{
-group_trends(datadir)
+group_trends(datadir, interval = 95)
 }
 \arguments{
 \item{datadir}{A filepath specifying where the posteior indicator values are saved.
