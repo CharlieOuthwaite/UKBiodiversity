@@ -42,6 +42,9 @@ generate_fig5 <- function(postdir, outdir, sp_trends, status = TRUE, save_plot =
 if(nrow(sp_trends) != 5293) stop("Complete Species_Trends csv file not found, should have 5293 rows.")
 
 
+# remove rove beetles from table as not covered in this analysis
+sp_trends <- sp_trends[!sp_trends$Group == "RoveBeetles", ]
+
 #### first need to calculate average occupancy for each species
 
 
@@ -54,7 +57,7 @@ post.files2 <- sub("\\)", "", post.files2)
 post.files2 <- gsub("\\?", "", post.files2)
 
 # table to save results
-mean.tab <- matrix(NA, ncol = 3, nrow = 5293)
+mean.tab <- matrix(NA, ncol = 3, nrow = 5214)
 
 mean.tab <- as.data.frame(mean.tab)
 

@@ -27,7 +27,9 @@ This takes the posterior values of the group level indicators generated within t
 
 # Run generate_fig3 function to produce quantile plots
 # datadir should be the filepath of where the posterior indicator values are saved.
-# generate_fig3(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+# generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"),
+save_plot = TRUE,
+interval = 95)
 
 }
 }

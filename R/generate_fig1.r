@@ -11,7 +11,8 @@
 #' as means and indicator values are being estimated. Default is `TRUE`.
 #' @param save_plot Logical. If `TRUE` plot will be saved as a PDF file as well
 #' as being returned to the console.
-#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
+#' @param interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+#' Defaults to 95%
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
@@ -24,7 +25,10 @@
 #' # Run generate_fig1 function
 #' # postdir should be the filepath of where the 4 major group level posteriors
 #' # combinations are saved.
-#' generate_fig1(postdir = paste0(getwd(), "/MajorGroups"))
+#' generate_fig1(postdir = paste0(getwd(), "/MajorGroups"),
+#' status = TRUE,
+#' save_plot = TRUE,
+#' interval = 90)
 #'
 #' }
 #' @export
@@ -45,7 +49,7 @@ files <- list.files(postdir, pattern = ".rdata")
 if(length(files) != 5) stop("There are more than 5 datafiles in the directory.")
 
 # convert inverval (a number between 0 and 100) into quantiles
-if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100")
 q <- 0.5 + (c(-1,1)*interval/200)
 
 # loop through each group and generate the indicator values
@@ -73,7 +77,7 @@ for(file in files){
   # add the number of species
   n_sp <- length(unique(j_post$spp))
 
-  # replace loop with acast and apply: about half the time taken
+  # calculate geometric mean occupancy
   j_post <- melt(j_post, id=c("spp","iter"))
   j_post <- acast(j_post, spp~iter~variable)
   all_means <- apply(j_post, c(2,3), calc_geo)
@@ -128,7 +132,7 @@ colnames(all_plot_data) <- c("mean", "UCI", "LCI", "year", "group")
 # change name labels
 all_plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater, n = 318", all_plot_data$group)
 all_plot_data$group <- sub("LOWER_PLANTS", "Bryophytes & lichens, n = 1269", all_plot_data$group)
-all_plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects, n = 3168", all_plot_data$group)
+all_plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects, n = 3089", all_plot_data$group)
 all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts, n = 538", all_plot_data$group)
 
 # change order of the lines
@@ -148,7 +152,7 @@ p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fi
   scale_x_continuous(limits = c(1970, 2015), expand = c(0, 0)) +
   theme(text = element_text(size = 10), aspect.ratio = 1, legend.title = element_blank(),
         legend.position = c(0.2,0.85), panel.grid.minor = element_blank(),
-        panel.grid.major = element_blank())
+        panel.grid.major = element_blank(), legend.text = element_text(size = 8))
 
 if(save_plot == TRUE){
 # save the plot

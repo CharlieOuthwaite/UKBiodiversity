@@ -9,6 +9,9 @@ group_trends(datadir, interval = 95)
 \arguments{
 \item{datadir}{A filepath specifying where the posteior indicator values are saved.
 If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".}
+
+\item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+Defaults to 95%.}
 }
 \description{
 This takes the posterior values of the group level indicators generated within the
@@ -21,7 +24,8 @@ accompanying paper.
 
 # Run group_trends function to estimate in text values
 # datadir should be the filepath of where the posterior indicator values are saved.
-#' group_trends(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+#' group_trends(datadir = getwd(),
+interval = 90)
 
 }
 }

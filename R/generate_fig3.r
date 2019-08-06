@@ -8,7 +8,7 @@
 #' moved, this will be in a directory "/MajorGroups".
 #' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
 #' within the `postdir`. Default is `TRUE`.
-#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
+#' @parm interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 95%
 #' @param dataprep Logical. Default is `TRUE`, which calls \code{dataprep_fig3} to prepare the data. 
 #' Having run \code{generage_fig3} once with \code{dataprep = TRUE}, the figure can be redrawn quickly with \code{dataprep = FALSE}, e.g. using different values for `interval`.
 #'
@@ -22,7 +22,9 @@
 #'
 #' # Run generate_fig3 function to produce quantile plots
 #' # datadir should be the filepath of where the posterior indicator values are saved.
-#' # generate_fig3(postdir = paste0(getwd(), "/MajorGroups/geomeans"))
+#' # generate_fig2(postdir = paste0(getwd(), "/MajorGroups/geomeans"),
+#' save_plot = TRUE,
+#' interval = 95)
 #'
 #' }
 #' @export
@@ -58,7 +60,7 @@ for(file in files){
   # read in the posterior geometric means
   all_quants <- read.csv(file = file.path(qdir, file), as.is=TRUE)
 
-    # All_quants contains a timeseries for each of 1000 iterations for each of 3 quantiles
+  # All_quants contains a timeseries for each of 1000 iterations for each of 3 quantiles
   # now rescale every timeseries to start at 100 in 1970
   
   # convert to long format
@@ -152,15 +154,15 @@ all_plot_data$group <- factor(all_plot_data$group, levels(all_plot_data$group)[c
 
 
 p1 <- ggplot() +
-  geom_line(data = all_plot_data, aes(x = year, y = mean_0.25), colour = c("#EE3B3B"), size = 0.4) +
+  geom_line(data = all_plot_data, aes(x = year, y = mean_0.25), colour = c("#7D26CD"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.25', ymax = 'UCI_0.25', linetype = NA),
-              alpha = 0.4, fill = c("#EE3B3B")) +
-  geom_line(data = all_plot_data, aes(x = year, y = mean_0.5), colour = c("#3A5FCD"), size = 0.4) +
+              alpha = 0.4, fill = c("#7D26CD")) +
+  geom_line(data = all_plot_data, aes(x = year, y = mean_0.5), colour = c("#EE7600"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.5', ymax = 'UCI_0.5', linetype = NA),
-              alpha = 0.4, fill = c("#27408B")) +
-  geom_line(data = all_plot_data, aes(x = year, y = mean_0.75), colour = c("#458B00"), size = 0.4) +
+              alpha = 0.4, fill = c("#EE7600")) +
+  geom_line(data = all_plot_data, aes(x = year, y = mean_0.75), colour = c("#008B8B"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.75', ymax = 'UCI_0.75', linetype = NA),
-              alpha = 0.4, fill = c("#458B00")) +
+              alpha = 0.4, fill = c("#008B8B")) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.2) +
   scale_y_continuous(limits = c(20, 160)) +
   scale_x_continuous(limits = c(1970, 2015)) +
@@ -184,4 +186,3 @@ ggsave(filename = paste0(qdir, "/Figure3_CI",interval,".pdf"), plot = p1, height
 
 return(p1)
 }
-

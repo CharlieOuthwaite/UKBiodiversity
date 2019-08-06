@@ -6,7 +6,8 @@
 #' @param postdir A filepath specifying where the posterior combinations are saved.
 #' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
 #' within the `postdir`. Default is `TRUE`.
-#' @parm intervals A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported. Defaults to 90%
+#' @param interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+#' Defaults to 95%
 
 #'
 #' @keywords trends, species, distribution, occupancy
@@ -33,9 +34,9 @@
 generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
 # convert inverval (a number between 0 and 100) into quantiles
-if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100") 
+if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100")
 q <- 0.5 + (c(-1,1)*interval/200)
-  
+
 # where to save the outputs
 outdir <- paste0(postdir, "/geomeans")
 if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
@@ -159,9 +160,11 @@ plot_group <- function(major_group){
     xlab("Year") +
     scale_y_continuous(limits = c(0, 200)) +
     scale_x_continuous(limits = c(1970, 2015)) +
-    theme(plot.title = element_text(size = 12), text = element_text(size = 12),
+    theme(plot.title = element_text(size = 10), text = element_text(size = 10),
           aspect.ratio = 1,
-          legend.title = element_blank())+
+          legend.title = element_blank(),
+          legend.text = element_text(size = 6),
+          legend.key = element_rect(size = 0.3))+
     guides(colour = guide_legend(ncol = 1))
 }
 
@@ -187,8 +190,10 @@ p[[1]] <-   ggplot(all_plot_data[all_plot_data$major_group == "TERRESTRIAL_INSEC
   xlab("Year") +
   scale_y_continuous(limits = c(0, 200)) +
   scale_x_continuous(limits = c(1970, 2015)) +
-  theme(plot.title = element_text(size = 12), text = element_text(size = 12), aspect.ratio = 1,
-        legend.title = element_blank()) +
+  theme(plot.title = element_text(size = 10), text = element_text(size = 10), aspect.ratio = 1,
+        legend.title = element_blank(),
+        legend.text = element_text(size = 6),
+        legend.key = element_rect(size = 0.3)) +
   guides(colour = guide_legend(ncol = 2))
 
 # organise plots using cowplot function
@@ -206,11 +211,17 @@ ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 10, width = 16)
 }
 
 
-return(plot_grid(p[[2]], p[[1]], p[[4]], p[[3]], align = "hv", ncol = 2,
+return(plot_grid(p[[2]], p[[4]], p[[3]], p[[1]], align = "hv", ncol = 1,
                  labels = c("Freshwater Species",
-                            "Insects",
                             "Inverts",
-                            "Bryophytes & Lichens"),
-                 hjust = 0, label_size = 12, label_x = 0.1))
+                            "Bryophytes & Lichens",
+                            "Insects"),
+                 hjust = 0, label_size = 8, label_x = 0.1))
+
+
+return(p[[2]])
+return(p[[4]])
+return(p[[3]])
+return(p[[1]])
 
 }

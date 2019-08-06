@@ -11,6 +11,9 @@ generate_fig4(postdir, save_plot = TRUE, interval = 95)
 
 \item{save_plot}{Logical.  If `TRUE`, the plot will be saved as a PDF file
 within the `postdir`. Default is `TRUE`.}
+
+\item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
+Defaults to 95%}
 }
 \description{
 This takes the taxa level posterior combinations generated using the

@@ -40,8 +40,13 @@ combine_posteriors <- function(group_level, datadir, outdir, status = TRUE){
   # check for correct group level specification
   if(!group_level == "taxa" & !group_level == "major_group") stop("group_level must be taxa or major_group")
 
+
 # load the major groups list
 major_groups <- as.data.frame(major_groups)
+
+# Remove Rove beetles from the major_groups table.
+# These are not analyses here since data starts in 1980 rather than 1970.
+major_groups <- major_groups[!major_groups$Group == "RoveBeetles", ]
 
 # remove brackets from list and outputs
 major_groups$Species <- sub("\\(", "", major_groups$Species)
@@ -65,7 +70,7 @@ if(group_level == "major_group"){
 
   groups <- unique(major_groups$Major_group)
 
-  dir.create(paste0(outdir, "/MajorGroups"))
+  if(!dir.exists(paste0(outdir, "/MajorGroups"))) dir.create(paste0(outdir, "/MajorGroups"))
   outdir <- paste0(outdir, "/MajorGroups")
 }
 
@@ -74,7 +79,7 @@ if(group_level == "taxa"){
 
   groups <- unique(major_groups$Group)
 
-  dir.create(paste0(outdir, "/Taxa"))
+  if(!dir.exists(paste0(outdir, "/Taxa"))) dir.create(paste0(outdir, "/Taxa"))
   outdir <- paste0(outdir, "/Taxa")
 }
 

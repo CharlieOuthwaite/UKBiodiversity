@@ -6,13 +6,14 @@ date: "08/06/2019"
 output:
   pdf_document:
     toc: true 
+  html_document:
+    toc: true  
 urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 #knitr::opts_knit$set(root.dir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing")
-knitr::opts_knit$set(root.dir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing")
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 This vignette uses the UKBiodiversity R package to recreate the figures generated in the paper "Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens" by Outhwaite et al.
@@ -40,7 +41,7 @@ Set your working directory so that the POSTERIOR_SAMPLES folder is a sub-folder 
 You will also need to download the R package called UKBiodiversity from Github.  How to do this is detailed below.
 
 First, let's take a look at the POSTERIOR_SAMPLES data files.
-```{r explore_data, message = FALSE, warning = FALSE}
+```{r explore_data, message = FALSE, warning = FALSE, cache = TRUE}
 # Where are the posterior sample files?
 # These should be in the named subfolder of your working directory.
 datadir <- paste0(getwd(), "/POSTERIOR_SAMPLES")
@@ -72,13 +73,13 @@ For some of the analyses we will need a matrix containing all the posterior samp
 Note that these functions can take a long time to run (estimated run time below) and may have high memory requirements.
 
 
-```{r combine_posteriors, warning = FALSE, message = FALSE}
+```{r combine_posteriors, warning = FALSE, message = FALSE, cache=TRUE}
 # Run the combine_posteriors function providing a data directory and and output directory.
 # select the group level you wish to generate datasets for, either "major_group" or "taxa".
 # If status is TRUE, progress will be printed within the console.
 
 ## First for major groups.
-# Runtime of this function: 76 mins (when status = FALSE)
+# Runtime of this function: 67 mins (when status = FALSE)
 combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
                    outdir = getwd(), 
                    group_level = "major_group",
@@ -89,7 +90,7 @@ head(files)
 # A file has been created for each of the major groups and for all species.
 
 ## Then for taxa.
-# Runtime for this function: ~ 53 minutes
+# Runtime for this function: ~ 20 minutes
 combine_posteriors(datadir = paste0(getwd(), "/POSTERIOR_SAMPLES"), 
                    outdir = getwd(), 
                    group_level = "taxa",
@@ -102,24 +103,24 @@ head(files)
 
 These group level files are required for the following functions. Files must be maintained within the folder they are placed by the function.
 
-
-# Recreating Figure 1 and associated trend estimates
-
-Figure 1 within the paper presents indicators of average occupancy over time for the four major groups.  Within the text are associated group level trends and an average trend estimate for all species since 1970.
+For the analyses carried out here, rove beetles are excluded since they do not have data from 1970 to 1979.  Therefore, there are 5,214 species included in the analyses carried out here.  79 Rove Beetle species are removed.
 
 
-First, use the `generate_fig1` function to determine the group level average change associated indicator values and the plot of Figure 1.  Then use the `group_trends` function to estimate group level trends and credible intervals.  The `generate_fig1` function will save csv files of the indicator posterior values, the average annual indicator estimates and associated credible interval values, and a pdf file of the plot within a sub-directory of your specified folder called "geomeans".
+# Recreating Figure 1 
+
+Figure 1 within the paper presents indicators of average occupancy over time for the four major groups.  
+
+Use the `generate_fig1` function to determine the group level average change associated indicator values and the plot of Figure 1.    The `generate_fig1` function will save csv files of the indicator posterior values, the average annual indicator estimates and associated credible interval values, and a pdf file of the plot within a sub-directory of your specified folder called "geomeans".
 
 This function will only work if outputs have already been produced  from the "major_group" specification of the `combine_posteriors` function.  These should be in a sub-folder called "MajorGroups" in the `outdir` that you specified within that function.
 
-```{r generate_fig1, warning = FALSE, message = FALSE}
+```{r generate_fig1, warning = FALSE, message = FALSE, cache = TRUE}
 # Use the generate_fig1 function to generate figure 1 nad associated outputs.
-# Runtime of this function: 15 mins
+# Runtime of this function: 6 mins
 generate_fig1(postdir = paste0(getwd(), "/MajorGroups"),
               status = FALSE,
               save_plot = TRUE,
               interval = 95)
-              save_plot = TRUE)
 
 # Use the group_trends function to estimate overall and major group level trends
 # and associated credible intervals.
@@ -137,7 +138,8 @@ Figure 2 presents box plots of absolute change in average occupancy across 2 hal
 
 Again, this function uses the major group level posteriors of average occupancy across each group that were generated and saved within the `generate_fig1` function.  These will have been saved within a sub-folder within the `/MajorGroups/geomeans`.  You will need to direct the function to this folder.
 
-```{r generate_fig2, warning = FALSE, message = FALSE}
+```{r generate_fig2, warning = FALSE, message = FALSE, cache = TRUE}
+
 ## Use the generate_fig2 function to recreate the box plots.
 # Runtime of this function: 0.55 seconds
 generate_fig2(datadir = paste0(getwd(), "/MajorGroups/geomeans"),
@@ -151,11 +153,12 @@ Figure 3 presents the changes in the quantiles of occupancy over time to assess 
 
 We plot this with 75% CI
 
-```{r generate_fig3, warning = FALSE, message = FALSE}
+```{r generate_fig3, warning = FALSE, message = FALSE, cache = TRUE}
 ## Use the generate_fig3 function to recreate figure 3.
 # Runtime of this function: 7 mins
 generate_fig3(postdir = paste0(getwd(), "/MajorGroups"),
-              save_plot = TRUE, interval = 75)
+              save_plot = TRUE,
+              interval = 75)
 ```
 
 
@@ -163,12 +166,13 @@ generate_fig3(postdir = paste0(getwd(), "/MajorGroups"),
 
 Figure 4 is a representation of Figure 1, except with a line for each taxonomic group. It uses the taxa level estimates generated from the `combine_posteriors` function to calculate the indicator posteriors and the average and 95% CI indicator values.  The combined samples should be in a sub-folder called "Taxa" which was generated by the `combine posteriors` function.  The outputs are the saved in a sub-folder called "Taxa/geomeans".  These are then used to recreate Figure 4 which is saved as a PDF file within that same sub-folder.
 
-```{r generate_fig4, warning = FALSE, message = FALSE}
+```{r generate_fig4, warning = FALSE, message = FALSE, cache = TRUE, out.width = "100%"}
 ## Use the generate_fig4 function to recreate figure 4.
 
 # Runtime of this function: 3.7 minutes
 generate_fig4(postdir = paste0(getwd(), "/Taxa"),
-              save_plot = TRUE, interval = 95)
+              save_plot = TRUE, 
+              interval = 95)
 ```
 
 
@@ -177,7 +181,7 @@ generate_fig4(postdir = paste0(getwd(), "/Taxa"),
 
 Figure 5 presents the average occupancy for each species plotted against its average annual growth rate.  Average occupancy across the time period is estimated within the function, growth rates are supplied within the "Species_Trends.csv" file downloaded from the repository.  
 
-```{r generate_fig5, warning = FALSE, message = FALSE}
+```{r generate_fig5, warning = FALSE, message = FALSE, cache = TRUE}
 ## Use the generate_fig5 function to recreate figure 5.
 # Runtime for this function: 9 minutes (when status = FALSE)
 generate_fig5(postdir = paste0(getwd(), "/POSTERIOR_SAMPLES"),
@@ -188,11 +192,36 @@ generate_fig5(postdir = paste0(getwd(), "/POSTERIOR_SAMPLES"),
 ```
 
 
+
+# Calculating group and taxa level trends
+
+Within the text are associated group level trends and an average trend estimate for all species since 1970.
+
+Trends can be calulated ones the associated posterior values have been generated via the generate_fi1 and generate_fig4 functions for major groups and taxa respectively.  Use the group_trends function to calculate the trends relative to 1970 and the associated credible intervals.  The credible interval value can be specified withiin the function, but defaults to 95%.
+
+```{r trends, warning = FALSE, message = FALSE, cache = TRUE}
+
+
+# Use the group_trends function to estimate overall and major group level trends
+# and associated credible intervals.
+# Runtime of this function: 0.17 seconds
+
+# datadir should point to the main directory in which the "MajorGroups" and "Taxa" subdirectories 
+#can be found created within the generate_fig1 function.
+trends <- group_trends(datadir = getwd(),
+                       interval = 95)
+
+trends
+
+
+```
+
+
 # Recreating Supplementary Figure 1
 
 Supplementary Figure 1 is a representation of Figure 1 in the main text except varying thresholds have been used to determine which species are included.  These thresholds detail the number of records a species must have as a minimum before they are included within the generation of the indicators.  The number of records within the raw data is specified within the "Species_Trends.csv" file that was downloaded from the repository.  These values are used to subset the species within each group according to thresholds of number of records: 50, 75, 100, 150 or 200 records.  In the main text, all species are used which have a minimum of 50 records. 
 
-```{r generate_fig1supp, warning = FALSE, message = FALSE}
+```{r generate_fig1supp, warning = FALSE, message = FALSE, cache = TRUE}
 
 ## Use the generate_fig1supp function to recreate the figure
 ## in the paper supplementary materials.
