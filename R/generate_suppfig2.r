@@ -1,9 +1,3 @@
-##%######################################################%##
-#                                                          #
-####     Function to create individual group plots      ####
-#                                                          #
-##%######################################################%##
-
 #' Generate Supplementary Figures
 #'
 #' This takes the posterior values of the group level indicators generated within the
