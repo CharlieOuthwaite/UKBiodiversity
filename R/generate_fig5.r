@@ -61,13 +61,18 @@ mean.tab <- matrix(NA, ncol = 3, nrow = 5214)
 
 mean.tab <- as.data.frame(mean.tab)
 
+sp_trends$Species <- gsub("Pardosa saltans/lugubris", "Pardosa saltans_lugubris", sp_trends$Species)
+
+# add on column for major group
+major_groups <- as.data.frame(major_groups)
+sp_trends$major_group <- major_groups[match(sp_trends$Species, major_groups$Species), 'Major_group']
 
 
+# remove dodgy characters
 sp_trends$Species <- sub("\\(", "", sp_trends$Species)
 sp_trends$Species <- sub("\\)", "", sp_trends$Species)
 sp_trends$Species <- gsub("\\?", "", sp_trends$Species)
 
-sp_trends$Species <- gsub("Pardosa saltans/lugubris", "Pardosa saltans_lugubris", sp_trends$Species)
 
 mean.tab[, 1:2] <- sp_trends[, 1:2]
 colnames(mean.tab) <- c("Group", "Species", "avg.occ")
@@ -144,6 +149,25 @@ plot.data <- mean.tab
 # add on column for growth rates
 plot.data$gr.rate <- sp_trends[match(plot.data$Species, sp_trends$Species), 'Mean_growth_rate']
 
+# save this table for calculating coeffs
+write.csv(plot.data, file = paste0(outdir, "/Average_occ_Growth_rates.csv"), row.names = F)
+
+
+# add on column for major group
+major_groups <- as.data.frame(major_groups)
+plot.data$major_group <- major_groups[match(plot.data$Species, major_groups$Species), 'Major_group']
+plot.data$major_group <- sp_trends[match(plot.data$Species, sp_trends$Species), 'major_group']
+
+
+# change name labels
+plot.data$major_group <- sub("FRESHWATER_SPECIES", "Freshwater species", plot.data$major_group)
+plot.data$major_group <- sub("LOWER_PLANTS", "Bryophytes & lichens", plot.data$major_group)
+plot.data$major_group <- sub("TERRESTRIAL_INSECTS", "Insects", plot.data$major_group)
+plot.data$major_group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts", plot.data$major_group)
+
+# reorganise factor levels for major groups
+plot.data$major_group <- factor(plot.data$major_group, levels = c("Freshwater species", "Insects", "Inverts","Bryophytes & lichens"))
+
 # data for a central line in plot
 line_data <- data.frame(x = c(0,1), y = c(0,-1), w = c(0,1), z = c(1,0))
 
@@ -157,16 +181,25 @@ p1 <- ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
   ylab("Growth Rate") +
   coord_flip() +
   theme_bw() +
-  theme(axis.title = element_text(size = 12),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.title = element_text(size = 12),
+  theme(axis.title = element_text(size = 8),
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 8),
         plot.margin = unit(c(1,1,1,1), "cm"),
         aspect.ratio = 1,
         panel.grid.minor = element_blank(),
-        panel.grid.major = element_blank()) +
+        panel.grid.major = element_blank(),
+        strip.text = element_text(size = 8),
+        strip.background = element_rect(size = 0.2),
+        panel.border = element_rect(size = 0.2)) +
   scale_x_sqrt(expand = c(0,0), limits=c(0, 1)) +
-  scale_y_continuous(limits = c(-20, 25))
+  scale_y_continuous(limits = c(-20, 25)) +
+  facet_wrap(facets = ~ major_group, nrow = 2, ncol = 2)
+
+theme(plot.title = element_text(size = 10), text = element_text(size = 10), aspect.ratio = 1,
+      legend.title = element_blank(),
+      legend.text = element_text(size = 6),
+      legend.key = element_rect(size = 0.3))
 
 if(save_plot == TRUE){
 # save the plot
