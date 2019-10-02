@@ -77,11 +77,9 @@ for(file in files){
 
     quant_0.25 <- apply(j_post_iter[1:46], 2, quantile, probs = 0.25, na.rm = T)
 
-    quant_0.5 <- apply(j_post_iter[1:46], 2, quantile, probs = 0.5, na.rm = T)
-
     quant_0.75 <- apply(j_post_iter[1:46], 2, quantile, probs = 0.75, na.rm = T)
 
-    result <- rbind(quant_0.25, quant_0.5, quant_0.75)
+    result <- rbind(quant_0.25, quant_0.75)
 
 
     all_quants <- rbind(all_quants, result)
@@ -101,9 +99,6 @@ for(file in files){
   quants_rescaled <- data.frame(avg_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, mean, na.rm = TRUE),
                       upper_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = q[2], na.rm = TRUE),
                       lower_CI_0.25 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.25",], 2, quantile, probs = q[1], na.rm = TRUE),
-                      avg_occ_0.5 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.5",], 2, mean, na.rm = TRUE),
-                      upper_CI_0.5 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.5",], 2, quantile, probs = q[2], na.rm = TRUE),
-                      lower_CI_0.5 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.5",], 2, quantile, probs = q[1], na.rm = TRUE),
                       avg_occ_0.75 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.75",], 2, mean, na.rm = TRUE),
                       upper_CI_0.75 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.75",], 2, quantile, probs = q[2], na.rm = TRUE),
                       lower_CI_0.75 = apply(all_quants_rescaled[rownames(all_quants_rescaled) == "quant_0.75",], 2, quantile, probs = q[1], na.rm = TRUE))
@@ -141,7 +136,7 @@ for(file in files){
 }
 
 # change column names
-colnames(all_plot_data) <- c("mean_0.25", "UCI_0.25", "LCI_0.25", "mean_0.5", "UCI_0.5", "LCI_0.5","mean_0.75", "UCI_0.75", "LCI_0.75","year", "group")
+colnames(all_plot_data) <- c("mean_0.25", "UCI_0.25", "LCI_0.25", "mean_0.75", "UCI_0.75", "LCI_0.75","year", "group")
 
 # change name labels
 all_plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater species", all_plot_data$group)
@@ -160,9 +155,6 @@ p1 <- ggplot() +
   geom_line(data = all_plot_data, aes(x = year, y = mean_0.25), colour = c("#7D26CD"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.25', ymax = 'UCI_0.25', linetype = NA),
               alpha = 0.4, fill = c("#7D26CD")) +
-  geom_line(data = all_plot_data, aes(x = year, y = mean_0.5), colour = c("#EE7600"), size = 0.4) +
-  geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.5', ymax = 'UCI_0.5', linetype = NA),
-              alpha = 0.4, fill = c("#EE7600")) +
   geom_line(data = all_plot_data, aes(x = year, y = mean_0.75), colour = c("#008B8B"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.75', ymax = 'UCI_0.75', linetype = NA),
               alpha = 0.4, fill = c("#008B8B")) +
@@ -189,4 +181,4 @@ ggsave(filename = paste0(outdir, "/Figure_3.pdf"), plot = p1, height = 6, width 
 return(p1)
 }
 
-c("#008B8B")
+
