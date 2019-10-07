@@ -1,16 +1,15 @@
-#' Generate Supplementary Figure 1
+#' Generating Supplementary Figure 2
 #'
-#' This takes the posterior values of the group level indicators generated within the
-#' \code{generage_fig1} function, calculates the occupancy estimates and plots plots of
-#' occupancy over time for each taxonomic grouping.
+#' This generates version of figure 1 but with subsets of species based on the number of records available for the occupancy estimation.
 #'
 #' @param postdir A filepath specifying where the posterior combinations are saved.
+#' @param sp_trends A dataframe, downloaded from the repository which details the species
+#' level trends in occupancy and the years for which data were avaialble for each species.
+#' @param status Logical. If `TRUE` the progress through each group and number of records subset will be printed to the console.
 #' @param save_plot Logical.  If `TRUE`, the plot will be saved as a PDF file
-#' within the `postdir`. Default is `TRUE`.
-#' @param interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
-#' Defaults to 95%
+#' within the `outdir`. Default is `TRUE`.
 #'
-#'#' @keywords trends, species, distribution, occupancy
+#' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
 #' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
 #'  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
@@ -18,112 +17,186 @@
 #' @examples
 #' \dontrun{
 #'
-#' # Run generate_suppfig1 function
-#' # postdir should be the filepath of where the taxa level posteriors
-#' # combinations are saved.
-#' generate_suppfig1(postdir = paste0(getwd(), "/Taxa"))
+#' # Run generate_fig1 function
+#' # postdir should be the filepath of where the 4 major group level posteriors
+#' # combinationss are saved.
+#' generate_fig2supp(postdir = paste0(getwd(), "/MajorGroups"),
+#' sp_trends = read.csv(paste0(datadir, "/Species_Trends.csv")),
+#' outdir = paste0(getwd(), "/MajorGroups"))
 #'
 #' }
 #' @export
 #' @import ggplot2
+#' @import cowplot
 
-generate_suppfig1 <- function(postdir, save_plot = TRUE, interval=95){
+generate_fig2supp  <- function(postdir, sp_trends, status = TRUE, save_plot = TRUE){
 
-# convert inverval (a number between 0 and 100) into quantiles
-if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100")
-q <- 0.5 + (c(-1,1)*interval/200)
-
-# where to save the outputs
-outdir <- paste0(postdir, "/geomeans")
-if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
-
-# list the group level files
-files <- list.files(paste0(postdir,"/geomeans/"), pattern = "rescaled_indicator_vals")
+  dir.create(paste0(postdir, "/supplementary"))
+  outdir <- paste0(postdir, "/supplementary")
 
 
+  # list the posterior combination files
+  files <- list.files(postdir, pattern = ".rdata")
 
-# file <- files[1]
+  # check there's only 4 sets of posteriors
+  if(length(files) != 5) stop("There are more than 5 datafiles in the directory.")
+
+  # remove the all species files
+  files <- files[!grepl("ALL", files)]
+
+  # remove dodgy characters
+  sp_trends$Species <- sub("/", "_", sp_trends$Species)
+  sp_trends$Species <- gsub("\\?", "", sp_trends$Species)
+
+  # specify the subsets based on minimum number of records per species
+  vals <- c(50, 75, 100, 150, 200)
+
+  # for each value, subset the species and generate fig 1.
+  for(val in vals){
+
+  # which species to include
+    species <- as.character(sp_trends[sp_trends$N_Records >= val, "Species"])
+
+  # loop through each group and generate the indicator values
+  for(file in files){
+
+    # extract the group name
+    group <- sub("_posterior_samples_national.rdata", "", file)
+
+    # load in the combined posterior generated from the combine_posteriors function
+    load(paste0(postdir, "/", file))
+
+    # subset to those species with minimum recs = val
+    group_post <- group_post[group_post$spp %in% species, ]
+
+    # how many species in the subset
+    nsp <- length(unique(group_post$spp))
+
+    if(status == TRUE) print(paste0(group, ", nrec minimum = ", val))
+
+    # convert 0 and 1 to 0.0001 and 0.9999 - solve the issue with logging 0 and 1
+    temp_post <- group_post[,1:(ncol(group_post)-2)]
+    temp_post[temp_post == 0] <- 0.0001
+    temp_post[temp_post == 1] <- 0.9999
+    temp_post <- cbind(temp_post, group_post[,c("spp","iter")])
+
+    j_post <- temp_post
+
+    # somewhere to save the means
+    all_means <- NULL
+
+    # loop through each iteration and take the geometric mean
+    for(i in 1:1000){
+
+      # subset the all ant data so that only have the i samples
+      j_post_iter <- j_post[j_post$iter == i, ]
+
+      geo_means <- apply(j_post_iter[1:46], 2, calc_geo)
+
+      all_means <- rbind(all_means, geo_means)
+    } # end of loop through iterations
+
+
+    # save the posterior geometric means
+    write.csv(all_means, file = paste0(outdir, "/", group, "_indicator_posterior_vals_", val,  ".csv"), row.names = FALSE)
+
+    # rescale the valiues to start at 100 in 1970
+    all_means_rescaled <- t(apply(all_means, 1, rescale))
+
+
+    # calculate mean and 95% CIs
+    final_rescaled <- data.frame(avg_occ = apply(all_means_rescaled, 2, mean, na.rm = TRUE),
+                                 upper_CI = apply(all_means_rescaled, 2, quantile, probs = 0.95, na.rm = TRUE),
+                                 lower_CI = apply(all_means_rescaled, 2, quantile, probs = 0.05, na.rm = TRUE))
+
+    # add in the year
+    final_rescaled$year <- as.numeric(rownames(final_rescaled))
+
+    # Save the rescaled indicator values
+    write.csv(final_rescaled, file = paste0(outdir, "/", group, "_rescaled_indicator_", val,  ".csv"), row.names = FALSE)
+
+
+  } # end of loop through files
+
+  } # loop through each val
+
+
+  #### Read in and organise all rescaled indicator files ####
+
+
+  # list the files of rescaled indicator values.  One per group.
+  files <- list.files(outdir, pattern = paste0("rescaled_indicator_"))
+
+
+  # somewhere to save the info
+  all_plot_data <- NULL
+
+  # combine all files to get a matrix of plot data
+  for(file in files){
+
+    # read in first group plot data
+    plot_data <- read.csv(paste0(outdir, "/", file))
+
+    # add a group name column
+    plot_data$group <- sub("_re.*", "", file)
+
+    nrecs <- sub(".*_", "", file)
+    nrecs <- sub(".csv", "", nrecs)
+
+    plot_data$nrecs <- nrecs
+
+    # combine into one data table
+    all_plot_data <- rbind(all_plot_data, plot_data)
+  }
+
+  # change column names
+  colnames(all_plot_data) <- c("mean", "UCI", "LCI", "year", "group", "nrecs")
+
+  # change name labels
+  all_plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater", all_plot_data$group)
+  all_plot_data$group <- sub("LOWER_PLANTS", "Bryophytes & lichens", all_plot_data$group)
+  all_plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects", all_plot_data$group)
+  all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts", all_plot_data$group)
+
+  # change order of the lines
+  all_plot_data$group <- as.factor(all_plot_data$group)
+  all_plot_data$group <- factor(all_plot_data$group, levels(all_plot_data$group)[c(2,3,4,1)])
+
+  # change order of nrecs
+  all_plot_data$nrecs <- as.factor(all_plot_data$nrecs)
+  all_plot_data$nrecs <- factor(all_plot_data$nrecs, levels(all_plot_data$nrecs)[c(4,5,1,2,3)])
 
 
 
-plot_list = list()
-
-for(i in 1:length(files)){
-
-
-  plot.data <- read.csv(paste0(postdir, "/geomeans/", files[i]))
-
-  group <- sub("_rescaled_indicator_vals.csv", "", files[i])
-
-    p <- ggplot(plot.data, aes_string(x = "year", y = "avg_occ")) +
+p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fill = "group")) +
     theme_bw() +
-    geom_ribbon(data = plot.data,
-                aes_string(ymin = "lower_CI", ymax = "upper_CI", linetype = NA),
-                alpha = 0.2, fill = "blue") +
-    geom_line(size = 0.5, col = "blue") +
-    geom_hline(yintercept = 100, lty = "dashed") +
-    ylab("Occupancy") +
-    xlab("Year") +
-    scale_y_continuous(limits = c(0, 300)) +
-    scale_x_continuous(limits = c(1970, 2015)) +
-    ggtitle(group) +
-    theme(plot.title = element_text(size = 10), text = element_text(size = 10),
-          aspect.ratio = 1)
+    geom_ribbon(aes_string(ymin = "LCI", ymax = "UCI", linetype = NA),
+                alpha = 0.3) +
+    geom_line(size = 0.2) +
+    geom_hline(yintercept = 100, linetype = "dashed", size = 0.2) +
+    ylab("Average Occupancy\n") +
+    xlab("\nYear") +
+    scale_y_continuous(limits = c(40, 150), expand = c(0, 0)) +
+    scale_x_continuous(limits = c(1970, 2015), expand = c(0, 0)) +
+    theme(text = element_text(size = 10), aspect.ratio = 1, legend.title = element_blank(),
+          legend.position = "bottom", panel.grid.minor = element_blank(),
+          panel.grid.major = element_blank(),
+          strip.background = element_rect(size = 0.2),
+          panel.border = element_rect(size = 0.2),
+          axis.ticks = element_line(size = 0.2)) +
+    facet_wrap(~nrecs, nrow = 2)
 
-    plot_list[[i]] = p
+if(save_plot == TRUE){
+  # save the plot
+  ggsave(filename = paste0(outdir, "/Supp_Fig2.pdf"), plot = p1, height = 10, width = 16)
 
-}
+  }
 
-library(gridExtra)
-library(grid)
-
-pdf(file = paste0(outdir, "/Supp_Fig1.pdf"), paper = "a4", height=11.69, width=8.27)
-
-
-
-grid.arrange(plot_list[[1]],
-             plot_list[[2]],
-             plot_list[[3]],
-             plot_list[[4]],
-             plot_list[[5]],
-             plot_list[[6]],ncol = 2,
-             plot_list[[7]],
-             plot_list[[8]],
-             top = textGrob("Supplementary Figure 1: \nAverage occupancy over time Values are scaled to 100 in 1970.\nColoured lines show the average response as the geometric mean occupancy \nand the shaded area represents the 95% credible intervals\n of the posterior distribution of the geometric mean",gp=gpar(fontsize=10,font=1)))
-
-
-grid.arrange(plot_list[[9]],
-             plot_list[[10]],
-             plot_list[[11]],
-             plot_list[[12]],
-             plot_list[[13]],
-             plot_list[[14]],
-             plot_list[[15]],
-             plot_list[[16]],ncol = 2)
-
-grid.arrange(plot_list[[17]],
-             plot_list[[18]],
-             plot_list[[19]],
-             plot_list[[20]],
-             plot_list[[21]],
-             plot_list[[22]],
-             plot_list[[23]],
-             plot_list[[24]],ncol = 2)
-
-grid.arrange(plot_list[[25]],
-             plot_list[[26]],
-             plot_list[[27]],
-             plot_list[[28]],
-             plot_list[[26]],
-             plot_list[[30]],
-             plot_list[[31]], ncol = 2)
-
-
-dev.off()
+return(p1)
+  }
 
 
 
-}
 
 
 
