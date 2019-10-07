@@ -77,7 +77,7 @@ for(i in 1:length(files)){
 library(gridExtra)
 library(grid)
 
-pdf(file = paste0(outdir, "/SuppFig1.pdf"), paper = "a4", height=11.69, width=8.27)
+pdf(file = paste0(outdir, "/Supp_Fig1.pdf"), paper = "a4", height=11.69, width=8.27)
 
 
 
