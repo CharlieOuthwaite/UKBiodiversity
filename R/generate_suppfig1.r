@@ -1,4 +1,4 @@
-#' Generating Supplementary Figure 1
+#' Generating Supplementary Figure 2
 #'
 #' This generates version of figure 1 but with subsets of species based on the number of records available for the occupancy estimation.
 #'
@@ -20,7 +20,7 @@
 #' # Run generate_fig1 function
 #' # postdir should be the filepath of where the 4 major group level posteriors
 #' # combinationss are saved.
-#' generate_fig1supp(postdir = paste0(getwd(), "/MajorGroups"),
+#' generate_fig2supp(postdir = paste0(getwd(), "/MajorGroups"),
 #' sp_trends = read.csv(paste0(datadir, "/Species_Trends.csv")),
 #' outdir = paste0(getwd(), "/MajorGroups"))
 #'
@@ -29,7 +29,7 @@
 #' @import ggplot2
 #' @import cowplot
 
-generate_fig1supp  <- function(postdir, sp_trends, status = TRUE, save_plot = TRUE){
+generate_fig2supp  <- function(postdir, sp_trends, status = TRUE, save_plot = TRUE){
 
   dir.create(paste0(postdir, "/supplementary"))
   outdir <- paste0(postdir, "/supplementary")
@@ -188,7 +188,7 @@ p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fi
 
 if(save_plot == TRUE){
   # save the plot
-  ggsave(filename = paste0(outdir, "/Supp_Fig1.pdf"), plot = p1, height = 10, width = 16)
+  ggsave(filename = paste0(outdir, "/Supp_Fig2.pdf"), plot = p1, height = 10, width = 16)
 
   }
 

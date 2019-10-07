@@ -1,4 +1,4 @@
-#' Generate Supplementary Figures
+#' Generate Supplementary Figure 1
 #'
 #' This takes the posterior values of the group level indicators generated within the
 #' \code{generage_fig1} function, calculates the occupancy estimates and plots plots of
@@ -18,16 +18,16 @@
 #' @examples
 #' \dontrun{
 #'
-#' # Run generate_fig4 function
-#' # postdir should be the filepath of where the 4 major group level posteriors
-#' # combinationss are saved.
-#' generate_suppfig2(postdir = paste0(getwd(), "/Taxa"))
+#' # Run generate_suppfig1 function
+#' # postdir should be the filepath of where the taxa level posteriors
+#' # combinations are saved.
+#' generate_suppfig1(postdir = paste0(getwd(), "/Taxa"))
 #'
 #' }
 #' @export
 #' @import ggplot2
 
-generate_suppfig2 <- function(postdir, save_plot = TRUE, interval=95){
+generate_suppfig1 <- function(postdir, save_plot = TRUE, interval=95){
 
 # convert inverval (a number between 0 and 100) into quantiles
 if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100")
@@ -77,7 +77,7 @@ for(i in 1:length(files)){
 library(gridExtra)
 library(grid)
 
-pdf(file = paste0(outdir, "/SuppFig2.pdf"), paper = "a4", height=11.69, width=8.27)
+pdf(file = paste0(outdir, "/SuppFig1.pdf"), paper = "a4", height=11.69, width=8.27)
 
 
 
@@ -89,7 +89,7 @@ grid.arrange(plot_list[[1]],
              plot_list[[6]],ncol = 2,
              plot_list[[7]],
              plot_list[[8]],
-             top = textGrob("Supplementary Figure 2: \nAverage occupancy over time Values are scaled to 100 in 1970.\nColoured lines show the average response as the geometric mean occupancy \nand the shaded area represents the 95% credible intervals\n of the posterior distribution of the geometric mean",gp=gpar(fontsize=10,font=1)))
+             top = textGrob("Supplementary Figure 1: \nAverage occupancy over time Values are scaled to 100 in 1970.\nColoured lines show the average response as the geometric mean occupancy \nand the shaded area represents the 95% credible intervals\n of the posterior distribution of the geometric mean",gp=gpar(fontsize=10,font=1)))
 
 
 grid.arrange(plot_list[[9]],
