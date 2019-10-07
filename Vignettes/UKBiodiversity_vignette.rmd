@@ -242,15 +242,32 @@ trends
 
 # Recreating Supplementary Figure 1
 
-Supplementary Figure 1 is a representation of Figure 1 in the main text except varying thresholds have been used to determine which species are included.  These thresholds detail the number of records a species must have as a minimum before they are included within the generation of the indicators.  The number of records within the raw data is specified within the "Species_Trends.csv" file that was downloaded from the repository.  These values are used to subset the species within each group according to thresholds of number of records: 50, 75, 100, 150 or 200 records.  In the main text, all species are used which have a minimum of 50 records. 
+Supplementary Figure 1 presents the occupancy plots for each taxonomic grouping separately within a PDF document.  These figures more clearly show the responses of individual groups which may otherwise be difficult to interpret from Figure 4 within the main text. 
 
 ```{r generate_fig1supp, warning = FALSE, message = FALSE, cache = TRUE}
 
 ## Use the generate_fig1supp function to recreate the figure
 ## in the paper supplementary materials.
 
+# Runtime for this function: 
+generate_suppfig1(postdir =  "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing2/Taxa",
+                              interval = 95, 
+                              save_plot = TRUE)
+
+
+```
+
+# Recreating Supplementary Figure 2
+
+Supplementary Figure 2 is a representation of Figure 1 in the main text except varying thresholds have been used to determine which species are included.  These thresholds detail the number of records a species must have as a minimum before they are included within the generation of the indicators.  The number of records within the raw data is specified within the "Species_Trends.csv" file that was downloaded from the repository.  These values are used to subset the species within each group according to thresholds of number of records: 50, 75, 100, 150 or 200 records.  In the main text, all species are used which have a minimum of 50 records. 
+
+```{r generate_fig2supp, warning = FALSE, message = FALSE, cache = TRUE}
+
+## Use the generate_fig1supp function to recreate the figure
+## in the paper supplementary materials.
+
 # Runtime for this function: 13 minutes
-generate_fig1supp(postdir = paste0(getwd(), "/MajorGroups"),
+generate_suppfig2(postdir = paste0(getwd(), "/MajorGroups"),
                   sp_trends = read.csv(paste0(getwd(), "/Species_Trends.csv")),
                   status = FALSE,
                   save_plot = TRUE)
