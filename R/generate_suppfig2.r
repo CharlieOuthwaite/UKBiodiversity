@@ -29,7 +29,7 @@
 #' @import ggplot2
 #' @import cowplot
 
-generate_fig2supp  <- function(postdir, sp_trends, status = TRUE, save_plot = TRUE){
+generate_suppfig2  <- function(postdir, sp_trends, status = TRUE, save_plot = TRUE){
 
   dir.create(paste0(postdir, "/supplementary"))
   outdir <- paste0(postdir, "/supplementary")
