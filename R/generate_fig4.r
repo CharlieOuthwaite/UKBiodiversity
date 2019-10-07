@@ -27,198 +27,196 @@
 #' @export
 #' @import ggplot2
 #' @importFrom cowplot plot_grid
+#' @importFrom reshape2 melt
+#' @importFrom reshape2 acast
 
 generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
-# convert inverval (a number between 0 and 100) into quantiles
-if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100")
-q <- 0.5 + (c(-1,1)*interval/200)
+  # convert inverval (a number between 0 and 100) into quantiles
+  if(interval > 100 | interval < 0) stop("Interval must be between 0 and 100")
+  q <- 0.5 + (c(-1,1)*interval/200)
 
-# where to save the outputs
-outdir <- paste0(postdir, "/geomeans")
-if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
+  # where to save the outputs
+  outdir <- paste0(postdir, "/geomeans")
+  if(!dir.exists(outdir)) dir.create(outdir) else print("Warning: overwriting existing files")
 
-# list the group level files
-files <- list.files(postdir, pattern = "posterior_samples")
+  # list the group level files
+  files <- list.files(postdir, pattern = "posterior_samples")
 
-# loop through each group and generate the indicator values
-for(file in files){
+  # loop through each group and generate the indicator values
+  for(file in files){
 
-  # extract the group name
-  group <- sub("_posterior_samples_national.rdata", "", file)
+    # extract the group name
+    group <- sub("_posterior_samples_national.rdata", "", file)
 
-  # load in the combined posterior generated from the combine_posteriors function
-  load(paste0(postdir, "/", file))
+    # load in the combined posterior generated from the combine_posteriors function
+    load(paste0(postdir, "/", file))
 
-  # convert 0 and 1 to 0.0001 and 0.9999 - solve the issue with logging 0 and 1
-  temp_post <- group_post[,1:(ncol(group_post)-2)]
-  temp_post[temp_post == 0] <- 0.0001
-  temp_post[temp_post == 1] <- 0.9999
-  temp_post <- cbind(temp_post, group_post[,c("spp","iter")])
+    # convert 0 and 1 to 0.0001 and 0.9999 - solve the issue with logging 0 and 1
+    temp_post <- group_post[,1:(ncol(group_post)-2)]
+    temp_post[temp_post == 0] <- 0.0001
+    temp_post[temp_post == 1] <- 0.9999
+    temp_post <- cbind(temp_post, group_post[,c("spp","iter")])
 
-  j_post <- temp_post
+    j_post <- temp_post
 
-  # somewhere to save the means
-  all_means <- NULL
+    # somewhere to save the means
+    all_means <- NULL
 
-  # add the number of species
-  n_sp <- length(unique(j_post$spp))
+    # add the number of species
+    n_sp <- length(unique(j_post$spp))
 
-  # loop through each iteration and take the geometric mean
-  for(i in 1:1000){
-
-    # subset the data so that only have the i samples
-    j_post_iter <- j_post[j_post$iter == i, ]
-
-    # calculate the geometric mean
-    geo_means <- apply(j_post_iter[1:46], 2, calc_geo)
-
-    # save output
-    all_means <- rbind(all_means, geo_means)
-
-  } # end of loop through iterations
+    # take the geometric mean across group iterations
+    j_post <- melt(j_post, id=c("spp","iter"))
+    j_post <- acast(j_post, spp~iter~variable)
+    all_means <- apply(j_post, c(2,3), calc_geo)
 
 
-  # save the posterior geometric means
-  write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals.csv", sep = ""), row.names = FALSE)
-
-  # rescale the values to start at 100 in 1970
-  all_means_rescaled <- t(apply(all_means, 1, rescale))
-
-  # calculate mean and 95% CIs
-  final_rescaled <- data.frame(avg_occ = apply(all_means_rescaled, 2, mean, na.rm = TRUE),
-                               upper_CI = apply(all_means_rescaled, 2, quantile, probs = q[2], na.rm = TRUE),
-                               lower_CI = apply(all_means_rescaled, 2, quantile, probs = q[1], na.rm = TRUE))
-
-  # add in the year
-  final_rescaled$year <- as.numeric(rownames(final_rescaled))
-
-  # Save the rescaled indicator values
-  write.csv(final_rescaled, file = paste0(outdir, "/", group, "_rescaled_indicator_vals.csv"), row.names = FALSE)
 
 
-} # end of loop through group files
+    # save the posterior geometric means
+    write.csv(all_means, file = paste(outdir, "/", group, "_indicator_posterior_vals.csv", sep = ""), row.names = FALSE)
 
-### Read in and organise all rescaled indicator files ###
+    # rescale the values to start at 100 in 1970
+    all_means_rescaled <- t(apply(all_means, 1, rescale))
 
-# list the files of rescaled indicator values.  One per group.
-files <- list.files(outdir, pattern = "_rescaled_indicator_vals")
+    # calculate mean and 95% CIs
+    final_rescaled <- data.frame(avg_occ = apply(all_means_rescaled, 2, mean, na.rm = TRUE),
+                                 upper_CI = apply(all_means_rescaled, 2, quantile, probs = q[2], na.rm = TRUE),
+                                 lower_CI = apply(all_means_rescaled, 2, quantile, probs = q[1], na.rm = TRUE))
 
-# somewhere to save the info
-all_plot_data <- NULL
+    # add in the year
+    final_rescaled$year <- as.numeric(rownames(final_rescaled))
 
-# combine all files for plot data
-for(file in files){
-
-  # read in first group plot data
-  plot_data <- read.csv(paste0(outdir, "/", file))
-
-  # add a group name column
-  plot_data$group <- sub("_rescaled.*", "", file)
-
-  # combine into one data table
-  all_plot_data <- rbind(all_plot_data, plot_data)
-}
-
-# change column names
-colnames(all_plot_data) <- c("mean", "UCI", "LCI", "year", "group")
+    # Save the rescaled indicator values
+    write.csv(final_rescaled, file = paste0(outdir, "/", group, "_rescaled_indicator_vals.csv"), row.names = FALSE)
 
 
-# get data on major groupings
-major_groups <- as.data.frame(major_groups)
+  } # end of loop through group files
 
-# space to save major group
-all_plot_data$major_group <- NA
+  ### Read in and organise all rescaled indicator files ###
 
-# look up the major groups from the major_groups file
-for(grp in unique(all_plot_data$group)){
+  # list the files of rescaled indicator values.  One per group.
+  files <- list.files(outdir, pattern = "_rescaled_indicator_vals")
 
-  # look up the major group for that taxa
-  major_grp <- as.character(unique(major_groups[major_groups$Group == grp, "Major_group"]))
+  # somewhere to save the info
+  all_plot_data <- NULL
 
-  # add into plot_data table
-  all_plot_data[all_plot_data$group == grp, "major_group"] <- major_grp
+  # combine all files for plot data
+  for(file in files){
 
-} # end of loop through groups
+    # read in first group plot data
+    plot_data <- read.csv(paste0(outdir, "/", file))
 
+    # add a group name column
+    plot_data$group <- sub("_rescaled.*", "", file)
 
-## a function to create a plot per group
-plot_group <- function(major_group){
+    # combine into one data table
+    all_plot_data <- rbind(all_plot_data, plot_data)
+  }
 
-
-  ggplot(all_plot_data[all_plot_data$major_group == major_group,], aes_string(x = "year", y = "mean", col = "group", fill = "group")) +
-    theme_bw() +
-    geom_ribbon(data = all_plot_data[all_plot_data$major_group == major_group,],
-                aes_string(ymin = "LCI", ymax = "UCI", linetype = NA),
-                alpha = 0.2) +
-    geom_line(size = 0.5) +
-    geom_hline(yintercept = 100) +
-    ylab("Occupancy") +
-    xlab("Year") +
-    scale_y_continuous(limits = c(0, 200)) +
-    scale_x_continuous(limits = c(1970, 2015)) +
-    theme(plot.title = element_text(size = 10), text = element_text(size = 10),
-          aspect.ratio = 1,
-          legend.title = element_blank(),
-          legend.text = element_text(size = 6),
-          legend.key = element_rect(size = 0.3))+
-    guides(colour = guide_legend(ncol = 1))
-}
-
-# where to store plots
-p = list()
-
-# run function across each group
-for(i in 1:length(unique(all_plot_data$major_group))){
-  major_group <- unique(all_plot_data$major_group)[i]
-
-  p[[i]] = plot_group(major_group)
-}
-
-# a separate plot for insects that has a larger legend
-p[[1]] <-   ggplot(all_plot_data[all_plot_data$major_group == "TERRESTRIAL_INSECTS",], aes_string(x = "year", y = "mean", col = "group", fill = "group")) +
-  theme_bw() +
-  geom_ribbon(data = all_plot_data[all_plot_data$major_group == "TERRESTRIAL_INSECTS",],
-              aes_string(ymin = "LCI", ymax = "UCI", linetype = NA),
-              alpha = 0.2) +
-  geom_line(size = 0.5) +
-  geom_hline(yintercept = 100) +
-  ylab("Occupancy") +
-  xlab("Year") +
-  scale_y_continuous(limits = c(0, 200)) +
-  scale_x_continuous(limits = c(1970, 2015)) +
-  theme(plot.title = element_text(size = 10), text = element_text(size = 10), aspect.ratio = 1,
-        legend.title = element_blank(),
-        legend.text = element_text(size = 6),
-        legend.key = element_rect(size = 0.3)) +
-  guides(colour = guide_legend(ncol = 2))
-
-# organise plots using cowplot function
-plot_grid(p[[2]], p[[1]], p[[4]], p[[3]], align = "hv", ncol = 2,
-          labels = c("Freshwater Species",
-                     "Insects",
-                     "Inverts",
-                     "Bryophytes & Lichens"),
-          hjust = 0, label_size = 12, label_x = 0.1)
-
-if(save_plot == TRUE){
-# save the plot
-ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 10, width = 16)
-
-}
+  # change column names
+  colnames(all_plot_data) <- c("mean", "UCI", "LCI", "year", "group")
 
 
-return(plot_grid(p[[2]], p[[4]], p[[3]], p[[1]], align = "hv", ncol = 1,
-                 labels = c("Freshwater Species",
-                            "Inverts",
-                            "Bryophytes & Lichens",
-                            "Insects"),
-                 hjust = 0, label_size = 8, label_x = 0.1))
+  # get data on major groupings
+  major_groups <- as.data.frame(major_groups)
+
+  # space to save major group
+  all_plot_data$major_group <- NA
+
+  # look up the major groups from the major_groups file
+  for(grp in unique(all_plot_data$group)){
+
+    # look up the major group for that taxa
+    major_grp <- as.character(unique(major_groups[major_groups$Group == grp, "Major_group"]))
+
+    # add into plot_data table
+    all_plot_data[all_plot_data$group == grp, "major_group"] <- major_grp
+
+  } # end of loop through groups
 
 
-return(p[[2]])
-return(p[[4]])
-return(p[[3]])
-return(p[[1]])
+  all_plot_data$panel <- NA
+
+  all_plot_data[all_plot_data$major_group == "TERRESTRIAL_NONINSECT_INVERTS", 'panel'] <- 8
+  all_plot_data[all_plot_data$major_group == "LOWER_PLANTS", 'panel'] <- 9
+  all_plot_data[all_plot_data$group %in% c("AquaticBugs", "Caddisflies", "Dragonflies"), 'panel'] <- 1
+  all_plot_data[all_plot_data$group %in% c("Mayflies", "NonmarineMolluscs_freshwater", "Stoneflies"), 'panel'] <- 2
+  all_plot_data[all_plot_data$group %in% c("Ants", "Bees", "Carabids", "Craneflies"), 'panel'] <- 3
+  all_plot_data[all_plot_data$group %in% c("Empid&DolichopodidFlies", "FungusGnats", "Gelechiids", "Hoverflies"), 'panel'] <- 4
+  all_plot_data[all_plot_data$group %in% c("Lacewings", "Ladybirds", "LeafSeedBeetles", "Moths"), 'panel'] <- 5
+  all_plot_data[all_plot_data$group %in% c("Orthoptera", "PlantBugs", "ShieldBugs", "SoldierBeetles"), 'panel'] <- 6
+  all_plot_data[all_plot_data$group %in% c("Soldierflies", "Wasps", "Weevils"), 'panel'] <- 7
+
+
+
+  ## a function to create a plot per group
+  plot_group <- function(panel){
+
+
+    ggplot(all_plot_data[all_plot_data$panel == panel,], aes_string(x = "year", y = "mean", col = "group", fill = "group")) +
+      theme_bw() +
+      geom_ribbon(data = all_plot_data[all_plot_data$panel == panel,],
+                  aes_string(ymin = "LCI", ymax = "UCI", linetype = NA),
+                  alpha = 0.2) +
+      geom_line(size = 0.5) +
+      geom_hline(yintercept = 100) +
+      ylab("Occupancy") +
+      xlab("Year") +
+      scale_y_continuous(limits = c(0, 300)) +
+      scale_x_continuous(limits = c(1970, 2015)) +
+      theme(plot.title = element_text(size = 10), text = element_text(size = 10),
+            aspect.ratio = 1,
+            legend.title = element_blank(),
+            legend.text = element_text(size = 8),
+            legend.key = element_rect(size = 0.3))+
+      guides(colour = guide_legend(ncol = 1))
+  }
+
+  # where to store plots
+  p = list()
+
+  # run function across each group
+  for(i in 1:length(unique(all_plot_data$panel))){
+    #major_group <- unique(all_plot_data$major_group)[i]
+    panel <- i
+
+    p[[i]] = plot_group(panel)
+  }
+
+
+
+  # organise plots using cowplot function
+  plot_grid(plotlist = p, align = "hv", ncol = 3,
+            labels = c("Freshwater Species",
+                       "Freshwater Species",
+                       "Insects",
+                       "Insects",
+                       "Insects",
+                       "Insects",
+                       "Insects",
+                       "Inverts",
+                       "Bryophytes & Lichens"),
+            hjust = 0, label_size = 10, label_x = 0.1)
+
+  if(save_plot == TRUE){
+    # save the plot
+    ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 11, width = 16)
+
+  }
+
+
+  return(plot_grid(plotlist = p, align = "hv", ncol = 3,
+            labels = c("Freshwater Species",
+                       "Freshwater Species",
+                       "Insects",
+                       "Insects",
+                       "Insects",
+                       "Insects",
+                       "Insects",
+                       "Inverts",
+                       "Bryophytes & Lichens"),
+            hjust = 0, label_size = 10, label_x = 0.1))
 
 }
