@@ -194,9 +194,8 @@ p1 <- ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
         panel.border = element_rect(size = 0.2)) +
   scale_x_sqrt(expand = c(0,0), limits=c(0, 1)) +
   scale_y_continuous(limits = c(-20, 25)) +
-  facet_wrap(facets = ~ major_group, nrow = 2, ncol = 2)
-
-theme(plot.title = element_text(size = 10), text = element_text(size = 10), aspect.ratio = 1,
+  facet_wrap(facets = ~ major_group, nrow = 2, ncol = 2) +
+  theme(plot.title = element_text(size = 10), text = element_text(size = 10), aspect.ratio = 1,
       legend.title = element_blank(),
       legend.text = element_text(size = 6),
       legend.key = element_rect(size = 0.3))
