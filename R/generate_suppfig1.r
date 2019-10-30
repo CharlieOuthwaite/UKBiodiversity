@@ -10,7 +10,7 @@
 #' @param interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
 #' Defaults to 95%
 #'
-#'#' @keywords trends, species, distribution, occupancy
+#' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
 #' @references Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pescott, O., … Isaac, N. J. B. (2019). Annual estimates of
 #'  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
@@ -26,6 +26,8 @@
 #' }
 #' @export
 #' @import ggplot2
+#' @import gridExtra
+#' @import grid
 
 generate_suppfig1 <- function(postdir, save_plot = TRUE, interval=95){
 
@@ -74,8 +76,6 @@ for(i in 1:length(files)){
 
 }
 
-library(gridExtra)
-library(grid)
 
 pdf(file = paste0(outdir, "/Supp_Fig1.pdf"), paper = "a4", height=11.69, width=8.27)
 

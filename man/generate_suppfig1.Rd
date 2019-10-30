@@ -13,9 +13,7 @@ generate_suppfig1(postdir, save_plot = TRUE, interval = 95)
 within the `postdir`. Default is `TRUE`.}
 
 \item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
-Defaults to 95%
-
-#' @keywords trends, species, distribution, occupancy}
+Defaults to 95%}
 }
 \description{
 This takes the posterior values of the group level indicators generated within the
@@ -39,3 +37,7 @@ Outhwaite, C. L., Powney, G. D., August, T. A., Chandler, R. E., Rorke, S., Pesc
  occupancy for bryophytes, lichens and invertebrates in the UK (1970-2015).
  NERC Environmental Information Data Centre. https://doi.org/10.5285/0ec7e549-57d4-4e2d-b2d3-2199e1578d84
 }
+\keyword{distribution,}
+\keyword{occupancy}
+\keyword{species,}
+\keyword{trends,}
