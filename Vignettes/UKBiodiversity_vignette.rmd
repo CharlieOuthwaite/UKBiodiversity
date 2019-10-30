@@ -201,7 +201,7 @@ generate_fig4(postdir = paste0(getwd(), "/Taxa"),
 Figure 5 presents the average occupancy for each species plotted against its average annual growth rate.  Average occupancy across the time period is estimated within the function, growth rates are supplied within the "Species_Trends.csv" file downloaded from the repository.  
 
 
-```{r generate_fig5, warning = FALSE, message = FALSE, cache = TRUE}
+```{r generate_fig5, warning = FALSE, message = FALSE, cache = T}
 
 ## Use the generate_fig5 function to recreate figure 5.
 
@@ -256,6 +256,8 @@ generate_suppfig1(postdir =  "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Packa
 
 
 ```
+
+The PDF version of this plot will be saved in the postdir/geomeans.
 
 # Recreating Supplementary Figure 2
 
