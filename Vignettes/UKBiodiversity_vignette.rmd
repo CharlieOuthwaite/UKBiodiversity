@@ -13,6 +13,10 @@ urlcolor: blue
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(cache = TRUE)
 knitr::opts_knit$set(root.dir = "C:/Users/charl/Dropbox/PhD WORK/1. BIG PAPER/Package_testing")
+
+library(devtools)
+install_github("CharlieOuthwaite/UKBiodiversity", force = T)
+
 library(UKBiodiversity)
 ```
 
