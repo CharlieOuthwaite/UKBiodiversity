@@ -171,7 +171,6 @@ plot.data$major_group <- factor(plot.data$major_group, levels = c("Freshwater sp
 # data for a central line in plot
 line_data <- data.frame(x = c(0,1), y = c(0,-1), w = c(0,1), z = c(1,0))
 
-
 # generate figure
 p1 <- ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
   stat_bin_hex(aes(fill = ..count..), binwidth = c(0.025, 0.5)) +
