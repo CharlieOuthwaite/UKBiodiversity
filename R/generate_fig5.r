@@ -182,22 +182,21 @@ p1 <- ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
   theme_bw() +
   theme(axis.title = element_text(size = 8),
         axis.text = element_text(size = 8),
-        legend.text = element_text(size = 8),
-        legend.title = element_text(size = 8),
         plot.margin = unit(c(1,1,1,1), "cm"),
         aspect.ratio = 1,
         panel.grid.minor = element_blank(),
         panel.grid.major = element_blank(),
         strip.text = element_text(size = 8),
         strip.background = element_rect(size = 0.2),
-        panel.border = element_rect(size = 0.2)) +
+        panel.border = element_rect(size = 0.2),
+        plot.title = element_text(size = 10),
+        text = element_text(size = 10),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 6),
+        legend.key = element_rect(size = 0.3)) +
   scale_x_sqrt(expand = c(0,0), limits=c(0, 1)) +
   scale_y_continuous(limits = c(-20, 25)) +
-  facet_wrap(facets = ~ major_group, nrow = 2, ncol = 2) +
-  theme(plot.title = element_text(size = 10), text = element_text(size = 10), aspect.ratio = 1,
-      legend.title = element_blank(),
-      legend.text = element_text(size = 6),
-      legend.key = element_rect(size = 0.3))
+  facet_wrap(facets = ~ major_group, nrow = 2, ncol = 2)
 
 if(save_plot == TRUE){
 # save the plot
