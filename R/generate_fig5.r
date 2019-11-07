@@ -155,6 +155,13 @@ write.csv(plot.data, file = paste0(outdir, "/Average_occ_Growth_rates.csv"), row
 
 # add on column for major group
 major_groups <- as.data.frame(major_groups)
+
+major_groups$Species <- sub("\\(", "", major_groups$Species)
+major_groups$Species <- sub("\\)", "", major_groups$Species)
+major_groups$Species <- gsub("\\?", "", major_groups$Species)
+
+
+
 plot.data$major_group <- major_groups[match(plot.data$Species, major_groups$Species), 'Major_group']
 plot.data$major_group <- sp_trends[match(plot.data$Species, sp_trends$Species), 'major_group']
 
