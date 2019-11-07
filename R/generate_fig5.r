@@ -170,10 +170,10 @@ plot.data$major_group <- sp_trends[match(plot.data$Species, sp_trends$Species), 
 plot.data$major_group <- sub("FRESHWATER_SPECIES", "Freshwater species", plot.data$major_group)
 plot.data$major_group <- sub("LOWER_PLANTS", "Bryophytes & lichens", plot.data$major_group)
 plot.data$major_group <- sub("TERRESTRIAL_INSECTS", "Insects", plot.data$major_group)
-plot.data$major_group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts", plot.data$major_group)
+plot.data$major_group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Invertebrates", plot.data$major_group)
 
 # reorganise factor levels for major groups
-plot.data$major_group <- factor(plot.data$major_group, levels = c("Freshwater species", "Insects", "Inverts","Bryophytes & lichens"))
+plot.data$major_group <- factor(plot.data$major_group, levels = c("Freshwater species", "Insects", "Invertebrates","Bryophytes & lichens"))
 
 # data for a central line in plot
 line_data <- data.frame(x = c(0,1), y = c(0,-1), w = c(0,1), z = c(1,0))

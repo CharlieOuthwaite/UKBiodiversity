@@ -142,7 +142,7 @@ colnames(all_plot_data) <- c("mean_0.25", "UCI_0.25", "LCI_0.25", "mean_0.75", "
 all_plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater species", all_plot_data$group)
 all_plot_data$group <- sub("LOWER_PLANTS", "Bryophytes & lichens", all_plot_data$group)
 all_plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects", all_plot_data$group)
-all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts", all_plot_data$group)
+all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Invertebrates", all_plot_data$group)
 
 
 
@@ -162,7 +162,7 @@ p1 <- ggplot() +
   scale_y_continuous(limits = c(20, 160)) +
   scale_x_continuous(limits = c(1970, 2015)) +
   xlab("Year") +
-  ylab("Occupancy") +
+  ylab("Index of occupancy (1970 = 100)") +
   facet_wrap(facets = ~ group, nrow = 2, ncol = 2) +
   theme_bw() +
   theme(aspect.ratio = 1, strip.text = element_text(size = 8),

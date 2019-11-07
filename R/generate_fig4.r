@@ -139,15 +139,26 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
   all_plot_data$panel <- NA
 
-  all_plot_data[all_plot_data$major_group == "TERRESTRIAL_NONINSECT_INVERTS", 'panel'] <- 8
-  all_plot_data[all_plot_data$major_group == "LOWER_PLANTS", 'panel'] <- 9
+  all_plot_data[all_plot_data$major_group == "Inverts", 'panel'] <- 9
+  all_plot_data[all_plot_data$major_group == "LOWER_PLANTS", 'panel'] <- 10
   all_plot_data[all_plot_data$group %in% c("AquaticBugs", "Caddisflies", "Dragonflies"), 'panel'] <- 1
   all_plot_data[all_plot_data$group %in% c("Mayflies", "NonmarineMolluscs_freshwater", "Stoneflies"), 'panel'] <- 2
-  all_plot_data[all_plot_data$group %in% c("Ants", "Bees", "Carabids", "Craneflies"), 'panel'] <- 3
-  all_plot_data[all_plot_data$group %in% c("Empid&DolichopodidFlies", "FungusGnats", "Gelechiids", "Hoverflies"), 'panel'] <- 4
-  all_plot_data[all_plot_data$group %in% c("Lacewings", "Ladybirds", "LeafSeedBeetles", "Moths"), 'panel'] <- 5
-  all_plot_data[all_plot_data$group %in% c("Orthoptera", "PlantBugs", "ShieldBugs", "SoldierBeetles"), 'panel'] <- 6
-  all_plot_data[all_plot_data$group %in% c("Soldierflies", "Wasps", "Weevils"), 'panel'] <- 7
+
+
+  #all_plot_data[all_plot_data$group %in% c("Ants", "Bees", "Carabids", "Craneflies"), 'panel'] <- 3
+  #all_plot_data[all_plot_data$group %in% c("Empid&DolichopodidFlies", "FungusGnats", "Gelechiids", "Hoverflies"), 'panel'] <- 4
+  #all_plot_data[all_plot_data$group %in% c("Lacewings", "Ladybirds", "LeafSeedBeetles", "Moths"), 'panel'] <- 5
+  #all_plot_data[all_plot_data$group %in% c("Orthoptera", "PlantBugs", "ShieldBugs", "SoldierBeetles"), 'panel'] <- 6
+  #all_plot_data[all_plot_data$group %in% c("Soldierflies", "Wasps", "Weevils"), 'panel'] <- 7
+
+
+  all_plot_data[all_plot_data$group %in% c("Carabids", "Ladybirds", "LeafSeedBeetles", "SoldierBeetles", "Weevils"), 'panel'] <- 3
+  all_plot_data[all_plot_data$group %in% c("Craneflies", "FungusGnats", "Empid&DolichopodidFlies", "Hoverflies", "Soldierflies"), 'panel'] <- 4
+  all_plot_data[all_plot_data$group %in% c("PlantBugs", "ShieldBugs"), 'panel'] <- 5
+  all_plot_data[all_plot_data$group %in% c("Ants", "Bees", "Wasps"), 'panel'] <- 6
+  all_plot_data[all_plot_data$group %in% c("Moths", "Gelechiids"), 'panel'] <- 7
+  all_plot_data[all_plot_data$group %in% c("Lacewings", "Orthoptera"), 'panel'] <- 8
+
 
 
 
@@ -162,7 +173,7 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
                   alpha = 0.2) +
       geom_line(size = 0.5) +
       geom_hline(yintercept = 100) +
-      ylab("Occupancy") +
+      ylab("Index of occupancy (1970 = 100)") +
       xlab("Year") +
       scale_y_continuous(limits = c(0, 300)) +
       scale_x_continuous(limits = c(1970, 2015)) +
@@ -189,14 +200,15 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
   # organise plots using cowplot function
   plot_grid(plotlist = p, align = "hv", ncol = 3,
-            labels = c("Freshwater Species",
-                       "Freshwater Species",
-                       "Insects",
-                       "Insects",
-                       "Insects",
-                       "Insects",
-                       "Insects",
-                       "Inverts",
+            labels = c("Freshwater Species 1",
+                       "Freshwater Species 2",
+                       "Insects: Coleoptera",
+                       "Insects: Diptera",
+                       "Insects: Hemiptera",
+                       "Insects: Hymenoptera",
+                       "Insects: Lepidoptera",
+                       "Insects: other",
+                       "Invertebrates",
                        "Bryophytes & Lichens"),
             hjust = 0, label_size = 10, label_x = 0.1)
 
@@ -207,16 +219,17 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
   }
 
 
-  return(plot_grid(plotlist = p, align = "hv", ncol = 3,
-            labels = c("Freshwater Species",
-                       "Freshwater Species",
-                       "Insects",
-                       "Insects",
-                       "Insects",
-                       "Insects",
-                       "Insects",
-                       "Inverts",
+  plot_grid(plotlist = p, align = "hv", ncol = 3,
+            labels = c("Freshwater Species 1",
+                       "Freshwater Species 2",
+                       "Insects: Coleoptera",
+                       "Insects: Diptera",
+                       "Insects: Hemiptera",
+                       "Insects: Hymenoptera",
+                       "Insects: Lepidoptera",
+                       "Insects: other",
+                       "Invertebrates",
                        "Bryophytes & Lichens"),
-            hjust = 0, label_size = 10, label_x = 0.1))
+            hjust = 0, label_size = 10, label_x = 0.1)
 
 }

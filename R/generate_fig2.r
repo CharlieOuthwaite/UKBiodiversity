@@ -108,7 +108,7 @@ plot_data <- plot_data[!plot_data$group == "ALL", ]
 plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater", plot_data$group)
 plot_data$group <- sub("LOWER_PLANTS", "Bryophytes \n& Lichens", plot_data$group)
 plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects", plot_data$group)
-plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts", plot_data$group)
+plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Invertebrates", plot_data$group)
 
 plot_data$trend <- sub("before", "Pre-1992", plot_data$trend)
 plot_data$trend <- sub("after", "Post-1992", plot_data$trend)

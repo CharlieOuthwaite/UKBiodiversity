@@ -64,7 +64,7 @@ for(i in 1:length(files)){
                 alpha = 0.2, fill = "blue") +
     geom_line(size = 0.5, col = "blue") +
     geom_hline(yintercept = 100, lty = "dashed") +
-    ylab("Occupancy") +
+    ylab("Index of occupancy (1970 = 100)") +
     xlab("Year") +
     scale_y_continuous(limits = c(0, 300)) +
     scale_x_continuous(limits = c(1970, 2015)) +

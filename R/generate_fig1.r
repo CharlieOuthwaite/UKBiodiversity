@@ -133,7 +133,7 @@ colnames(all_plot_data) <- c("mean", "UCI", "LCI", "year", "group")
 all_plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater, n = 318", all_plot_data$group)
 all_plot_data$group <- sub("LOWER_PLANTS", "Bryophytes & lichens, n = 1269", all_plot_data$group)
 all_plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects, n = 3089", all_plot_data$group)
-all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts, n = 538", all_plot_data$group)
+all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Invertebrates, n = 538", all_plot_data$group)
 
 # change order of the lines
 all_plot_data$group <- as.factor(all_plot_data$group)
@@ -146,7 +146,7 @@ p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fi
               alpha = 0.3) +
   geom_line(size = 0.5) +
   geom_hline(yintercept = 100, linetype = "dashed") +
-  ylab("Average Occupancy\n") +
+  ylab("Index of occupancy (1970 = 100)\n") +
   xlab("\nYear") +
   scale_y_continuous(limits = c(40, 150), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1970, 2015), expand = c(0, 0)) +

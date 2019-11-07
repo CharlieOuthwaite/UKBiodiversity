@@ -156,7 +156,7 @@ generate_suppfig2  <- function(postdir, sp_trends, status = TRUE, save_plot = TR
   all_plot_data$group <- sub("FRESHWATER_SPECIES", "Freshwater", all_plot_data$group)
   all_plot_data$group <- sub("LOWER_PLANTS", "Bryophytes & lichens", all_plot_data$group)
   all_plot_data$group <- sub("TERRESTRIAL_INSECTS", "Insects", all_plot_data$group)
-  all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Inverts", all_plot_data$group)
+  all_plot_data$group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Invertebrates", all_plot_data$group)
 
   # change order of the lines
   all_plot_data$group <- as.factor(all_plot_data$group)
@@ -174,7 +174,7 @@ p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fi
                 alpha = 0.3) +
     geom_line(size = 0.2) +
     geom_hline(yintercept = 100, linetype = "dashed", size = 0.2) +
-    ylab("Average Occupancy\n") +
+    ylab("Index of occupancy (1970 = 100)\n") +
     xlab("\nYear") +
     scale_y_continuous(limits = c(40, 150), expand = c(0, 0)) +
     scale_x_continuous(limits = c(1970, 2015), expand = c(0, 0)) +
