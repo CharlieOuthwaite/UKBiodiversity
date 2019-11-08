@@ -11,7 +11,7 @@ group_trends(datadir, interval = 95)
 If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".}
 
 \item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
-Defaults to 95%.}
+Defaults to 95\%.}
 }
 \description{
 This takes the posterior values of the group level indicators generated within the

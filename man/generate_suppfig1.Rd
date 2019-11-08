@@ -13,7 +13,7 @@ generate_suppfig1(postdir, save_plot = TRUE, interval = 95)
 within the `postdir`. Default is `TRUE`.}
 
 \item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
-Defaults to 95%}
+Defaults to 95\%}
 }
 \description{
 This takes the posterior values of the group level indicators generated within the

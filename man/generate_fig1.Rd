@@ -17,7 +17,7 @@ as means and indicator values are being estimated. Default is `TRUE`.}
 as being returned to the console.}
 
 \item{interval}{A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
-Defaults to 95%}
+Defaults to 95\%}
 }
 \description{
 This takes the major group level posterior combinations generated using the
