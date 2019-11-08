@@ -8,7 +8,7 @@
 #' @param datadir A filepath specifying where the posteior indicator values are saved.
 #' If outputs have not been moved, this will be in a directory "/MajorGroups/geomeans".
 #' @param interval A number between 0 and 100 indicating the percentiles of the credible intervals to be plotted and reported.
-#' Defaults to 95%.
+#' Defaults to 95\%.
 #'
 #' @keywords trends, species, distribution, occupancy
 #' @references Outhwaite et al (in prep) Complexity of biodiversity change revealed through long-term trends of invertebrates, bryophytes and lichens.
