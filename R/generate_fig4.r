@@ -139,8 +139,8 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
   all_plot_data$panel <- NA
 
-  all_plot_data[all_plot_data$major_group == "Inverts", 'panel'] <- 9
-  all_plot_data[all_plot_data$major_group == "Bryophytes & lichens", 'panel'] <- 10
+  all_plot_data[all_plot_data$major_group == "TERRESTRIAL_NONINSECT_INVERTS", 'panel'] <- 9
+  all_plot_data[all_plot_data$major_group == "LOWER_PLANTS", 'panel'] <- 10
   all_plot_data[all_plot_data$group %in% c("AquaticBugs", "Caddisflies", "Dragonflies"), 'panel'] <- 1
   all_plot_data[all_plot_data$group %in% c("Mayflies", "NonmarineMolluscs_freshwater", "Stoneflies"), 'panel'] <- 2
 
