@@ -140,7 +140,7 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
   all_plot_data$panel <- NA
 
   all_plot_data[all_plot_data$major_group == "Inverts", 'panel'] <- 9
-  all_plot_data[all_plot_data$major_group == "LOWER_PLANTS", 'panel'] <- 10
+  all_plot_data[all_plot_data$major_group == "Bryophytes & lichens", 'panel'] <- 10
   all_plot_data[all_plot_data$group %in% c("AquaticBugs", "Caddisflies", "Dragonflies"), 'panel'] <- 1
   all_plot_data[all_plot_data$group %in% c("Mayflies", "NonmarineMolluscs_freshwater", "Stoneflies"), 'panel'] <- 2
 
@@ -177,7 +177,7 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
       xlab("Year") +
       scale_y_continuous(limits = c(0, 300)) +
       scale_x_continuous(limits = c(1970, 2015)) +
-      theme(plot.title = element_text(size = 10), text = element_text(size = 10),
+      theme(plot.title = element_text(size = 10), text = element_text(size = 6),
             aspect.ratio = 1,
             legend.title = element_blank(),
             legend.text = element_text(size = 8),
@@ -199,7 +199,7 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
 
   # organise plots using cowplot function
-  plot_grid(plotlist = p, align = "hv", ncol = 3,
+  plot_grid(plotlist = p, align = "hv", ncol = 2,
             labels = c("Freshwater Species 1",
                        "Freshwater Species 2",
                        "Insects: Coleoptera",
@@ -210,16 +210,16 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
                        "Insects: other",
                        "Invertebrates",
                        "Bryophytes & Lichens"),
-            hjust = 0, label_size = 10, label_x = 0.1)
+            hjust = 0, label_size = 8, label_x = 0.1)
 
   if(save_plot == TRUE){
     # save the plot
-    ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 11, width = 16)
+    ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 11, width = 8)
 
   }
 
 
-  plot_grid(plotlist = p, align = "hv", ncol = 3,
+  plot_grid(plotlist = p, align = "hv", ncol = 2,
             labels = c("Freshwater Species 1",
                        "Freshwater Species 2",
                        "Insects: Coleoptera",

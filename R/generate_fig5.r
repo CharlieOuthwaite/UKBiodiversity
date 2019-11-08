@@ -163,14 +163,14 @@ major_groups$Species <- gsub("\\?", "", major_groups$Species)
 
 
 plot.data$major_group <- major_groups[match(plot.data$Species, major_groups$Species), 'Major_group']
-plot.data$major_group <- sp_trends[match(plot.data$Species, sp_trends$Species), 'major_group']
+#plot.data$major_group <- sp_trends[match(plot.data$Species, sp_trends$Species), 'major_group']
 
 
 # change name labels
-plot.data$major_group <- sub("FRESHWATER_SPECIES", "Freshwater species", plot.data$major_group)
-plot.data$major_group <- sub("LOWER_PLANTS", "Bryophytes & lichens", plot.data$major_group)
-plot.data$major_group <- sub("TERRESTRIAL_INSECTS", "Insects", plot.data$major_group)
-plot.data$major_group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Invertebrates", plot.data$major_group)
+#plot.data$major_group <- sub("FRESHWATER_SPECIES", "Freshwater species", plot.data$major_group)
+#plot.data$major_group <- sub("LOWER_PLANTS", "Bryophytes & lichens", plot.data$major_group)
+#plot.data$major_group <- sub("TERRESTRIAL_INSECTS", "Insects", plot.data$major_group)
+plot.data$major_group <- sub("Inverts", "Invertebrates", plot.data$major_group)
 
 # reorganise factor levels for major groups
 plot.data$major_group <- factor(plot.data$major_group, levels = c("Freshwater species", "Insects", "Invertebrates","Bryophytes & lichens"))
