@@ -150,13 +150,17 @@ p1 <- ggplot(all_plot_data, aes_string(x = "year", y = "mean", col = 'group', fi
   xlab("\nYear") +
   scale_y_continuous(limits = c(40, 150), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1970, 2015), expand = c(0, 0)) +
-  theme(text = element_text(size = 10), aspect.ratio = 1, legend.title = element_blank(),
-        legend.position = c(0.2,0.85), panel.grid.minor = element_blank(),
-        panel.grid.major = element_blank(), legend.text = element_text(size = 8))
+  theme(text = element_text(size = 12),
+        #aspect.ratio = 1,
+        legend.title = element_blank(),
+        legend.position = c(0.2,0.85),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.text = element_text(size = 9))
 
 if(save_plot == TRUE){
 # save the plot
-ggsave(filename = paste0(outdir, "/Figure_1.pdf"), plot = p1, height = 6, width = 6)
+ggsave(filename = paste0(outdir, "/Figure_1.pdf"), plot = p1, height = 5, width = 7)
 }
 
 return(p1)

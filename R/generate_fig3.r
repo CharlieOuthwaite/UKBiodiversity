@@ -152,12 +152,12 @@ all_plot_data$group <- factor(all_plot_data$group, levels(all_plot_data$group)[c
 
 
 p1 <- ggplot() +
-  geom_line(data = all_plot_data, aes(x = year, y = mean_0.25), colour = c("#7D26CD"), size = 0.4) +
+  geom_line(data = all_plot_data, aes(x = year, y = mean_0.25), colour = c("#1C86EE"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.25', ymax = 'UCI_0.25', linetype = NA),
-              alpha = 0.4, fill = c("#7D26CD")) +
-  geom_line(data = all_plot_data, aes(x = year, y = mean_0.75), colour = c("#008B8B"), size = 0.4) +
+              alpha = 0.4, fill = c("#1C86EE")) +
+  geom_line(data = all_plot_data, aes(x = year, y = mean_0.75), colour = c("#EE5C42"), size = 0.4) +
   geom_ribbon(data = all_plot_data, aes_string(x = 'year', ymin = 'LCI_0.75', ymax = 'UCI_0.75', linetype = NA),
-              alpha = 0.4, fill = c("#008B8B")) +
+              alpha = 0.4, fill = c("#EE5C42")) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.2) +
   scale_y_continuous(limits = c(20, 160)) +
   scale_x_continuous(limits = c(1970, 2015)) +
@@ -165,20 +165,21 @@ p1 <- ggplot() +
   ylab("Index of occupancy (1970 = 100)") +
   facet_wrap(facets = ~ group, nrow = 2, ncol = 2) +
   theme_bw() +
-  theme(aspect.ratio = 1, strip.text = element_text(size = 8),
+  theme(#aspect.ratio = 1,
+        strip.text = element_text(size = 10),
         panel.grid.minor = element_blank(),
         panel.grid.major = element_blank(),
-        text = element_text(size = 8),
+        text = element_text(size = 10),
         panel.border = element_rect(size = 0.2),
         axis.ticks = element_line(size = 0.2),
         strip.background = element_rect(size = 0.2))
 
 if(save_plot == TRUE){
 # save the plot as a pdf
-ggsave(filename = paste0(outdir, "/Figure_3.pdf"), plot = p1, height = 6, width = 6)
+ggsave(filename = paste0(outdir, "/Figure_3.pdf"), plot = p1, height = 5, width = 7)
 }
 
 return(p1)
 }
 
-
+c("#1C86EE", "#EE5C42")

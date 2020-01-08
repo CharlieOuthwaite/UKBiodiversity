@@ -140,8 +140,8 @@ p1 <- ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
         legend.position = 'none',
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        strip.text = element_text(size = 10),
-        text = element_text(size = 10),
+        strip.text = element_text(size = 5.6),
+        text = element_text(size = 5.6),
         panel.border = element_rect(size = 0.2),
         axis.ticks = element_line(size = 0.2),
         strip.background = element_rect(size = 0.2)) +
@@ -153,7 +153,7 @@ p1 <- ggplot(plot_data, aes(x = trend, y = value, fill = group)) +
 
 if(save_plot == TRUE){
 # save the plot
-ggsave(filename = paste0(datadir, "/Figure_2.pdf"), plot = p1, height = 6, width = 6)
+ggsave(filename = paste0(datadir, "/Figure_2.pdf"), plot = p1, height = 3, width = 3.5)
 }
 
 return(p1)
