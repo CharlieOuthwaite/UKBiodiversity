@@ -139,17 +139,11 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
   all_plot_data$panel <- NA
 
-  all_plot_data[all_plot_data$major_group == "TERRESTRIAL_NONINSECT_INVERTS", 'panel'] <- 9
-  all_plot_data[all_plot_data$major_group == "LOWER_PLANTS", 'panel'] <- 10
+  all_plot_data[all_plot_data$major_group == "Inverts", 'panel'] <- 9
+  all_plot_data[all_plot_data$major_group == "Bryophytes & lichens", 'panel'] <- 10
   all_plot_data[all_plot_data$group %in% c("AquaticBugs", "Caddisflies", "Dragonflies"), 'panel'] <- 1
   all_plot_data[all_plot_data$group %in% c("Mayflies", "NonmarineMolluscs_freshwater", "Stoneflies"), 'panel'] <- 2
 
-
-  #all_plot_data[all_plot_data$group %in% c("Ants", "Bees", "Carabids", "Craneflies"), 'panel'] <- 3
-  #all_plot_data[all_plot_data$group %in% c("Empid&DolichopodidFlies", "FungusGnats", "Gelechiids", "Hoverflies"), 'panel'] <- 4
-  #all_plot_data[all_plot_data$group %in% c("Lacewings", "Ladybirds", "LeafSeedBeetles", "Moths"), 'panel'] <- 5
-  #all_plot_data[all_plot_data$group %in% c("Orthoptera", "PlantBugs", "ShieldBugs", "SoldierBeetles"), 'panel'] <- 6
-  #all_plot_data[all_plot_data$group %in% c("Soldierflies", "Wasps", "Weevils"), 'panel'] <- 7
 
 
   all_plot_data[all_plot_data$group %in% c("Carabids", "Ladybirds", "LeafSeedBeetles", "SoldierBeetles", "Weevils"), 'panel'] <- 3
@@ -160,7 +154,9 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
   all_plot_data[all_plot_data$group %in% c("Lacewings", "Orthoptera"), 'panel'] <- 8
 
 
-
+  all_plot_data$group <- sub("NonmarineMolluscs_freshwater", "NonmarineMolluscs:\nfreshwater", all_plot_data$group )
+  all_plot_data$group <- sub("NonmarineMolluscs_terrestrial", "NonmarineMolluscs:\nterrestrial", all_plot_data$group )
+  all_plot_data$group <- sub("Empid&DolichopodidFlies", "Empid&Dolichopodid\nFlies", all_plot_data$group )
 
   ## a function to create a plot per group
   plot_group <- function(panel){
@@ -175,13 +171,18 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
       geom_hline(yintercept = 100) +
       ylab("Index of occupancy (1970 = 100)") +
       xlab("Year") +
-      scale_y_continuous(limits = c(0, 300)) +
+      #scale_y_continuous(limits = c(0, 300)) +
       scale_x_continuous(limits = c(1970, 2015)) +
-      theme(plot.title = element_text(size = 10), text = element_text(size = 6),
+      theme(plot.title = element_text(size = 10),
+            text = element_text(size = 6),
+            plot.margin = unit(c(10, 5.5, 5.5, 5.5), "points"),
             aspect.ratio = 1,
             legend.title = element_blank(),
             legend.text = element_text(size = 8),
-            legend.key = element_rect(size = 0.3))+
+            legend.key = element_rect(size = 0.3),
+            legend.justification = "top",
+            legend.box.margin=margin(0,-10,-10,-10),
+            legend.margin=margin(0,0,0,0))+
       guides(colour = guide_legend(ncol = 1))
   }
 
@@ -199,7 +200,10 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
 
 
   # organise plots using cowplot function
-  plot_grid(plotlist = p, align = "hv", ncol = 2,
+  plot_grid(plotlist = p,
+            align = "v",
+            axis = "r",
+            ncol = 2,
             labels = c("Freshwater Species 1",
                        "Freshwater Species 2",
                        "Insects: Coleoptera",
@@ -210,11 +214,15 @@ generate_fig4 <- function(postdir, save_plot = TRUE, interval=95){
                        "Insects: other",
                        "Invertebrates",
                        "Bryophytes & Lichens"),
-            hjust = 0, label_size = 8, label_x = 0.1)
+            hjust = -0.4,
+            vjust = 1,
+            label_size = 8,
+            label_x = c(0, 0, 0, 0.02, 0, 0, 0, 0.03, 0.03, 0)
+            )
 
   if(save_plot == TRUE){
     # save the plot
-    ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 11, width = 8)
+    ggsave(filename = paste0(outdir, "/Figure_4.pdf"), height = 12, width = 8)
 
   }
 
