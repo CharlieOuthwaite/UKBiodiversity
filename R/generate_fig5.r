@@ -167,10 +167,10 @@ plot.data$major_group <- major_groups[match(plot.data$Species, major_groups$Spec
 
 
 # change name labels
-plot.data$major_group <- sub("FRESHWATER_SPECIES", "Freshwater species", plot.data$major_group)
-plot.data$major_group <- sub("LOWER_PLANTS", "Bryophytes & lichens", plot.data$major_group)
-plot.data$major_group <- sub("TERRESTRIAL_INSECTS", "Insects", plot.data$major_group)
-plot.data$major_group <- sub("TERRESTRIAL_NONINSECT_INVERTS", "Invertebrates", plot.data$major_group)
+#plot.data$major_group <- sub("FRESHWATER_SPECIES", "Freshwater species", plot.data$major_group)
+#plot.data$major_group <- sub("LOWER_PLANTS", "Bryophytes & lichens", plot.data$major_group)
+#plot.data$major_group <- sub("TERRESTRIAL_INSECTS", "Insects", plot.data$major_group)
+plot.data$major_group <- sub("Inverts", "Invertebrates", plot.data$major_group)
 
 # reorganise factor levels for major groups
 plot.data$major_group <- factor(plot.data$major_group, levels = c("Freshwater species", "Insects", "Invertebrates","Bryophytes & lichens"))
@@ -187,19 +187,19 @@ p1 <- ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
   ylab("Growth Rate") +
   coord_flip() +
   theme_bw() +
-  theme(axis.title = element_text(size = 8),
-        axis.text = element_text(size = 8),
+  theme(axis.title = element_text(size = 12),
+        axis.text = element_text(size = 12),
         plot.margin = unit(c(1,1,1,1), "cm"),
-        aspect.ratio = 1,
+        #aspect.ratio = 1,
         panel.grid.minor = element_blank(),
         panel.grid.major = element_blank(),
         strip.text = element_text(size = 8),
         strip.background = element_rect(size = 0.2),
         panel.border = element_rect(size = 0.2),
         plot.title = element_text(size = 10),
-        text = element_text(size = 10),
+        text = element_text(size = 12),
         legend.title = element_blank(),
-        legend.text = element_text(size = 6),
+        legend.text = element_text(size = 9),
         legend.key = element_rect(size = 0.3)) +
   scale_x_sqrt(expand = c(0,0), limits=c(0, 1)) +
   scale_y_continuous(limits = c(-20, 25)) +
@@ -207,7 +207,7 @@ p1 <- ggplot(data = plot.data, aes(x = avg.occ, y = gr.rate)) +
 
 if(save_plot == TRUE){
 # save the plot
-ggsave(filename = paste0(outdir, "/Figure_5.pdf"), plot = p1, height = 6, width = 6)
+ggsave(filename = paste0(outdir, "/Figure_5.pdf"), plot = p1, height = 5, width = 7)
 }
 
 return(p1)
