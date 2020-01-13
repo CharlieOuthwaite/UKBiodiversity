@@ -126,6 +126,70 @@ dev.off()
 }
 
 
+# save in Jpeg for submission
+#jpeg(file = paste0(outdir, "/Supp_Fig1_1.jpeg"), height=11.69, width=8.27, units = 'in', res = 200)
 
 
+
+#grid.arrange(plot_list[[1]],
+#             plot_list[[2]],
+#             plot_list[[3]],
+#             plot_list[[4]],
+#             plot_list[[5]],
+#             plot_list[[6]],ncol = 2,
+#             plot_list[[7]],
+#             plot_list[[8]],
+#             top = textGrob("Supplementary Figure 1: \nAverage occupancy over time Values are scaled to 100 in 1970.\nColoured lines show the average response as the geometric mean occupancy \nand the shaded area represents the 95% credible intervals\n of the posterior distribution of the geometric mean",gp=gpar(fontsize=10,font=1)))
+
+
+#dev.off()
+
+#jpeg(file = paste0(outdir, "/Supp_Fig1_2.jpeg"), height=11.69, width=8.27, units = 'in', res = 200)
+
+#grid.arrange(plot_list[[9]],
+#             plot_list[[10]],
+#             plot_list[[11]],
+#             plot_list[[12]],
+#             plot_list[[13]],
+#             plot_list[[14]],
+#             plot_list[[15]],
+#             plot_list[[16]],ncol = 2,
+#             top = textGrob("Supplementary Figure 1 continued",gp=gpar(fontsize=10,font=1)))
+
+
+#dev.off()
+
+#jpeg(file = paste0(outdir, "/Supp_Fig1_3.jpeg"), height=11.69, width=8.27, units = 'in', res = 200)
+
+#grid.arrange(plot_list[[17]],
+#             plot_list[[18]],
+#             plot_list[[19]],
+#             plot_list[[20]],
+#             plot_list[[21]],
+#             plot_list[[22]],
+#             plot_list[[23]],
+#             plot_list[[24]],ncol = 2,
+#             top = textGrob("Supplementary Figure 1 continued",gp=gpar(fontsize=10,font=1)))
+
+
+#dev.off()
+
+#jpeg(file = paste0(outdir, "/Supp_Fig1_4.jpeg"), height=11.69, width=8.27, units = 'in', res = 200)
+
+#grid.arrange(plot_list[[25]],
+#             plot_list[[26]],
+#             plot_list[[27]],
+#             plot_list[[28]],
+#             plot_list[[26]],
+#             plot_list[[30]],
+#             plot_list[[31]], ncol = 2,
+#             top = textGrob("Supplementary Figure 1 continued",gp=gpar(fontsize=10,font=1)))
+
+
+
+#dev.off()
+
+
+
+}
 
