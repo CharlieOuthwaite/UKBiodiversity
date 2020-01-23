@@ -114,7 +114,7 @@ grid.arrange(plot_list[[25]],
              plot_list[[26]],
              plot_list[[27]],
              plot_list[[28]],
-             plot_list[[26]],
+             plot_list[[29]],
              plot_list[[30]],
              plot_list[[31]], ncol = 2)
 
